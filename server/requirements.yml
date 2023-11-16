@@ -1,0 +1,10 @@
+name: aixm_graph
+dependencies:
+- python
+- pytest
+- pytest-cov
+- lxml
+- PyYAML
+- Flask
+- Flask-Cors
+- gunicorn
