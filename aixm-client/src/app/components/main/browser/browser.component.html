@@ -1,0 +1,83 @@
+<div class="page-container">
+    <div class="page-title">Dataset Browser</div>
+    <div class="page-subtitle">Browse dataset features and its properties</div>
+
+    <div class="pg-bar">
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <mat-toolbar>
+        <mat-toolbar-row style="padding: 0">
+            <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="addDataset()" ><mat-icon>add</mat-icon></button>
+            <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
+            <ng-container *ngIf="dataset">
+                <button mat-button (click)="dataset = undefined;feature = undefined;">
+                    <mat-icon style="transform: rotate(-90deg)">turn_right</mat-icon>
+                    <span>..</span>
+                </button>
+                <span>/</span>
+                <button mat-button (click)="datasetClick(dataset)">
+                    <mat-icon>storage</mat-icon>
+                    <span>{{dataset?.name}}</span>
+                </button>
+            </ng-container>
+            <ng-container *ngIf="feature">
+                <span>/</span>
+                <button mat-button (click)="featureClick(feature)">
+                    <mat-icon>
+                        <app-aixm-icon [feature]="feature" [width]="24"></app-aixm-icon>
+                    </mat-icon>
+                    <span>{{feature?.name}}</span>
+                </button>
+            </ng-container>
+            <div style="display: flex; flex-grow: 1"></div>
+            <mat-button-toggle-group [value]="viewLayout" (valueChange)="switchLayout($event)">
+                <mat-button-toggle value="browser" matTooltip="Browser layout">
+                    <mat-icon>web</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="graph" matTooltip="Graph layout">
+                    <mat-icon>spoke</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="combined" matTooltip="Combined layout">
+                    <mat-icon>vertical_split</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+            <div style="width: 1em"></div>
+            <mat-form-field style="width: 20%" appearance="outline" subscriptSizing="dynamic" >
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput type="search" placeholder="search here">
+            </mat-form-field>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div style="display: flex; flex-flow: row; width: 100%">
+        <div style="overflow: scroll; overflow-x: hidden;" [ngStyle]="{
+            width: viewLayout==='browser' ? '100%' : (viewLayout==='combined' ? '50%' : '0'),
+            height: '800px'}">
+            <div *ngIf="!dataset" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
+                <app-dataset style="flex: 0.1;" *ngFor="let d of datasets" [dataset]="d" (cardClick)="datasetClick($event)"></app-dataset>
+            </div>
+            <div *ngIf="dataset && !feature" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
+                <app-feature style="flex: 0.7;" *ngFor="let f of dataset.featureLists" [featureList]="f" (cardClick)="featureClick($event)"></app-feature>
+            </div>
+            <div *ngIf="feature" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
+                <app-dataset-feature style="flex: 0.7;" *ngFor="let df of datasetFeatures" [feature]="feature" [datasetFeature]="df"></app-dataset-feature>
+            </div>
+        </div>
+        <div  #graphContainer [ngStyle]="{
+            width: viewLayout==='browser' ? '0' : (viewLayout==='combined' ? '50%' : '100%'),
+            height: '800px'}">
+        </div>
+    </div>
+
+    <mat-paginator mat-paginator #paginator style="position: sticky; bottom: 1px; left: 1px; display: flex; width: 100%; z-index: 5000"
+                   (page)="handlePageEvent($event)"
+                   [length]="pageEvent.length"
+                   [pageSize]="pageEvent.pageSize"
+                   [showFirstLastButtons]="true"
+                   [pageSizeOptions]= pageSizeOptions
+                   [pageIndex]="pageEvent.pageIndex"
+                   aria-label="Select page">
+    </mat-paginator>
+
+</div>

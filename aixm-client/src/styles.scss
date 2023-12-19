@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+
+// define theme
+@use '@angular/material' as mat;
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$my-warn: mat.define-palette(mat.$red-palette);
+$my-theme: mat.define-light-theme((
+        color: (
+                primary: $my-primary,
+                accent: $my-accent,
+                warn: $my-warn,
+        )
+));
+// define theme
+@use '@ng-matero/extensions' as mtx;
+@include mtx.all-component-themes($my-theme);
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.page-container {
+  min-height: calc(100% - 100px);
+  min-height: -moz-calc(100% - 100px);
+  min-height: -webkit-calc(100% - 100px);
+  background: white;
+  padding: 1em;
+}
+.page-title {
+  font-size: x-large;
+  font-weight: bold;
+}
+.page-subtitle {
+  font-size: large;
+  color: #2B2A29;
+}
+
+.tbr-btn {
+  margin-left: 0.3em!important;
+  .mat-icon {
+    margin-left: 0px!important;
+    margin-right: 0px!important;
+  }
+}
+
+.flex-full-row {
+  display: flex;
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}

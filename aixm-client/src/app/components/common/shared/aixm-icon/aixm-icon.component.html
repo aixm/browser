@@ -1,0 +1,25 @@
+<ng-container *ngIf="feature;then fTemplate else aTemplate">
+</ng-container>
+
+<ng-template #aTemplate>
+    <img *ngIf="matCardAvatar" mat-card-avatar alt="{{ abbreviation }}" width="{{ width }}"
+         [src]="'assets/images/icons/AIXM/'+ abbreviation+'/'+abbreviation+'.svg'"
+         (error)="handleErrorMissingFeatureImage($event)">
+    <img *ngIf="!matCardAvatar" alt="{{ abbreviation }}" width="{{ width }}"
+         [src]="'assets/images/icons/AIXM/'+ abbreviation+'/'+abbreviation+'.svg'"
+         (error)="handleErrorMissingFeatureImage($event)">
+</ng-template>
+
+<ng-template #fTemplate>
+    <img *ngIf="matCardAvatar" mat-card-avatar alt="{{ feature?.abbreviation }}" width="{{ width }}" [src]="(feature?.icon ? feature?.icon :
+            'assets/images/icons/AIXM/'+ feature?.abbreviation+'/'+feature?.abbreviation+'.svg')"
+         (error)="handleErrorMissingFeatureImage($event)">
+    <mat-icon svgIcon="">
+    <img *ngIf="!matCardAvatar" alt="{{ feature?.abbreviation }}" width="{{ width }}" [src]="(feature?.icon ? feature?.icon :
+            'assets/images/icons/AIXM/'+ feature?.abbreviation+'/'+feature?.abbreviation+'.svg')"
+         (error)="handleErrorMissingFeatureImage($event)">
+    </mat-icon>
+</ng-template>
+
+
+

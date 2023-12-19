@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+
+  aixm-graph-server:
+    container_name: aixm-graph-server
+    image: aixm/aixm-graph-server:latest
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile-dev
+      args:
+        APP_DEBUG: ${APP_DEBUG}
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    env_file:
+      - .env
+    depends_on:
+      - aixm-graph-postgres
+    networks:
+      - aixm-graph
+
+  aixm-graph-nginx:
+    container_name: aixm-graph-nginx
+    image: aixm/aixm-graph-nginx:latest
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    ports:
+      - "${SERVER_WEBPORT}:80"
+      - "${SERVER_SSLPORT}:443"
+    depends_on:
+      - aixm-graph-server
+    networks:
+      - aixm-graph
+
+  aixm-graph-postgres:
+    container_name: aixm-graph-postgres
+    image: aixm/aixm-graph-postgres:latest
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_DBPORT}:5432"
+    volumes:
+      - aixm-graph-db-data:/var/lib/postgresql/data
+      - ./docker/postgres/data:/tmp/data
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - LANG=${DB_LANG}
+    networks:
+      - aixm-graph
+
+networks:
+  aixm-graph:
+    driver: bridge
+
+volumes:
+  aixm-graph-db-data:
+

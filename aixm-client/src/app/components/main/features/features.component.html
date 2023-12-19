@@ -1,0 +1,43 @@
+<div class="page-container">
+    <div class="page-title">AIXM Features</div>
+    <div class="page-subtitle">Management of AIXM Features and Objects</div>
+    <div>
+        <mtx-grid [data]="features"
+                  [columns]="defaultColumns"
+                  [cellTemplate]="{icon: iconTpl, color: colorTpl}"
+                  [showToolbar]="true"
+                  [showColumnMenuButton]="false"
+                  [toolbarTemplate]="toolbarTpl"
+                  [pageSizeOptions]="[5,10,15]"
+                  [loading]="loading">
+        </mtx-grid>
+<!--        <mtx-grid [data]="features"
+                  [columns]="defaultColumns"
+                  [cellTemplate]="{}"
+                  [loading]="loading"
+                  [hideRowSelectionCheckbox]="true"
+                  [rowSelectable]="true"
+                  [rowSelected]="rowSelected"
+                  [rowHover]="true"
+                  [showToolbar]="true"
+                  [showColumnMenuButton]="true"
+                  [columnMenuButtonIcon]="'settings'"
+                  [columnMenuButtonText]="' '"
+                  [columnMenuButtonType]="'stroked'"
+                  [toolbarTemplate]="toolbarTpl">
+        </mtx-grid>-->
+        <ng-template #toolbarTpl>
+            <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
+            <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
+            <input class="tbr-btn" placeholder="Search" ngDefaultControl [(ngModel)]="searchText" [value]="searchText">
+        </ng-template>
+        <ng-template #colorTpl let-row let-index="index">
+            <div style="border-radius: 5px; width: 3em; height: 3em"
+                 [ngStyle]="{ backgroundColor: row.color ?  (row.color | hexToRgbA : 1) : 'white' }">
+            </div>
+        </ng-template>
+        <ng-template #iconTpl let-row let-index="index">
+            <app-aixm-icon [feature]="row"></app-aixm-icon>
+        </ng-template>
+    </div>
+</div>

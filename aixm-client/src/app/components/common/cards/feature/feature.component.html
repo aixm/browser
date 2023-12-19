@@ -1,0 +1,19 @@
+<mat-card class="mat-card-feature" [ngStyle]="{
+    cursor: (cardClick.observers.length > 0) ? 'pointer' : ''
+    }" (click)="click()">
+    <mat-card-header>
+        <app-aixm-icon [feature]="feature" [matCardAvatar]="true"></app-aixm-icon>
+        <mat-card-title>{{feature?.abbreviation}}</mat-card-title>
+        <div class="flex-full-row"></div>
+        <mat-chip color="primary">{{featureList?.count}}</mat-chip>
+        <mat-card-subtitle>{{feature?.name}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        {{feature?.description | limitTo: 100}}
+<!--        <app-aixm-icon [feature]="feature"></app-aixm-icon>-->
+    </mat-card-content>
+<!--    <mat-card-actions style="justify-content: flex-end">
+        <button mat-stroked-button><mat-icon>spoke</mat-icon>Graph</button>
+        <button mat-stroked-button><mat-icon>web</mat-icon>Browse</button>
+    </mat-card-actions>-->
+</mat-card>

@@ -1,0 +1,12 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{data.title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content style="margin-bottom: 1em">
+        <p>{{data.message}}</p>
+    </mat-card-content>
+    <mat-card-actions style="justify-content: flex-end">
+        <button mat-stroked-button (click)="dialogRef.close(true)">Ok</button>
+        <button mat-stroked-button (click)="dialogRef.close(false)">Cancel</button>
+    </mat-card-actions>
+</mat-card>

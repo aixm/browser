@@ -1,0 +1,15 @@
+.main-container {
+  height: calc(100% - 4em);
+  margin: 0px;
+  //border: 1px solid #555;
+}
+
+.feature-button {
+  width: 100%;
+  text-align: start;
+  justify-content: flex-start;
+  span {
+    padding: 0.3em;
+  }
+  margin-bottom: 1em;
+}

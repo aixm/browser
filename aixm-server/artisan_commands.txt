@@ -1,0 +1,21 @@
+------------------------------------------
+- Recreate DB and seed data
+------------------------------------------
+php artisan migrate:fresh --seed
+
+------------------------------------------
+- Seed part of data
+------------------------------------------
+php artisan db:seed --class=UserSeeder
+
+
+------------------------------------------
+- Generate classes
+------------------------------------------
+php artisan make:model Aixm/Feature -mfs
+php artisan make:controller Aixm/FeatureController --resource --model=Aixm/Feature
+php artisan make:resource Aixm/FeatureResource
+
+-- after creation in container:
+chown 1000:1000 -R ./
+

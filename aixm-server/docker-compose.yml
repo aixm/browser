@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+
+  aixm-server:
+    container_name: aixm-server
+    image: aixm/aixm-server:latest
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile-dev
+      args:
+        APP_DEBUG: ${APP_DEBUG}
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    env_file:
+      - .env
+    depends_on:
+      - aixm-postgres
+    networks:
+      - aixm
+
+  aixm-nginx:
+    container_name: aixm-nginx
+    image: aixm/aixm-nginx:latest
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    ports:
+      - "${SERVER_WEBPORT}:80"
+      - "${SERVER_SSLPORT}:443"
+    depends_on:
+      - aixm-server
+    networks:
+      - aixm
+
+  aixm-postgres:
+    container_name: aixm-postgres
+    image: aixm/aixm-postgres:latest
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_DBPORT}:5432"
+    volumes:
+      - aixm-db-data:/var/lib/postgresql/data
+      - ./docker/postgres/data:/tmp/data
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - LANG=${DB_LANG}
+    networks:
+      - aixm
+
+networks:
+  aixm:
+    driver: bridge
+
+volumes:
+  aixm-db-data:
+

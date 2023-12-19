@@ -1,0 +1,19 @@
+<div class="page-container">
+    <div class="page-title">Datasets</div>
+    <div class="page-subtitle">Management of AIXM Datasets</div>
+    <div>
+        <mtx-grid [data]="datasets"
+                  [columns]="defaultColumns"
+                  [showToolbar]="true"
+                  [showColumnMenuButton]="false"
+                  [toolbarTemplate]="toolbarTpl"
+                  [pageSizeOptions]="[5,10,15]"
+                  [loading]="loading">
+        </mtx-grid>
+        <ng-template #toolbarTpl>
+            <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
+            <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
+            <input class="tbr-btn" placeholder="Search" ngDefaultControl [(ngModel)]="searchText" [value]="searchText">
+        </ng-template>
+    </div>
+</div>

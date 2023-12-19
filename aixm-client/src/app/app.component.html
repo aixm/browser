@@ -1,0 +1,60 @@
+<mat-drawer-container class="main-container">
+    <mat-drawer #drawer style="min-width: 10em; max-width: 20em;"
+                [opened]="false"
+                [mode]="'over'">
+        <mat-nav-list style="padding: 0px; min-width: 15em" (click)="drawer.close()">
+            <a mat-list-item [routerLink]="''" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>house</mat-icon>
+                  <span>Home</span>
+                </span>
+            </a>
+            <mat-divider></mat-divider>
+<!--            <a mat-list-item [routerLink]="'graph'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>spoke</mat-icon>
+                  <span>Graph</span>
+                </span>
+            </a>-->
+            <a mat-list-item [routerLink]="'map'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>map</mat-icon>
+                  <span>Map</span>
+                </span>
+            </a>
+            <a mat-list-item [routerLink]="'browser'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>web</mat-icon>
+                  <span>Browser</span>
+                </span>
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="'datasets'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>storage</mat-icon>
+                  <span>Datasets</span>
+                </span>
+            </a>
+            <a mat-list-item [routerLink]="'features'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>category</mat-icon>
+                  <span>Features</span>
+                </span>
+            </a>
+            <mat-divider></mat-divider>
+        </mat-nav-list>
+        <label style="position: fixed; bottom: 1.5em; left: 0.5em; font-size: small">{{ title }}&nbsp;v{{ version }}</label>
+    </mat-drawer>
+    <mat-drawer-content style="overflow-y: hidden">
+        <mat-toolbar color="primary" style="z-index: 5001">
+            <mat-toolbar-row style="padding-left: 0.3em">
+                <button mat-icon-button style="margin-right: 0.3em" matTooltip="Show Menu" (click)="drawer.open()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <label>{{ title }}</label>
+                <span style="font-size: small">&nbsp;v{{ version }}</span>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>
