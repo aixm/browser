@@ -2,65 +2,71 @@ version: '3'
 
 services:
 
-  aixm-graph-server:
-    container_name: aixm-graph-server
-    image: aixm/aixm-graph-server:latest
-    build:
-      context: .
-      dockerfile: docker/php-fpm/Dockerfile-dev
-      args:
-        APP_DEBUG: ${APP_DEBUG}
-    restart: unless-stopped
+  aixm-client:
+    container_name: aixm-client
+    image: aixm/aixm-client:latest
+    restart: on-failure
+    depends_on:
+      - aixm-proxy
+    networks:
+      - aixm
+
+  aixm-server:
+    container_name: aixm-server
+    image: aixm/aixm-server:latest
+    restart: on-failure
     volumes:
-      - ./:/var/www
+      - ./.env:/var/www/.env
+      - ./aixm-server/storage:/var/www/storage
     env_file:
       - .env
     depends_on:
-      - aixm-graph-postgres
+      - aixm-postgres
     networks:
-      - aixm-graph
+      - aixm
 
-  aixm-graph-nginx:
-    container_name: aixm-graph-nginx
-    image: aixm/aixm-graph-nginx:latest
-    build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
-    restart: unless-stopped
+  aixm-nginx:
+    container_name: aixm-nginx
+    image: aixm/aixm-nginx:latest
+    restart: on-failure
     volumes:
-      - ./:/var/www
-    ports:
-      - "${SERVER_WEBPORT}:80"
-      - "${SERVER_SSLPORT}:443"
+      - ./aixm-server/storage:/var/www/storage:ro
     depends_on:
-      - aixm-graph-server
+      - aixm-server
     networks:
-      - aixm-graph
+      - aixm
 
-  aixm-graph-postgres:
-    container_name: aixm-graph-postgres
-    image: aixm/aixm-graph-postgres:latest
-    build:
-      context: .
-      dockerfile: docker/postgres/Dockerfile
-    restart: unless-stopped
-    ports:
-      - "${DOCKER_DBPORT}:5432"
+  aixm-postgres:
+    container_name: aixm-postgres
+    image: aixm/aixm-postgres:latest
+    restart: on-failure
     volumes:
-      - aixm-graph-db-data:/var/lib/postgresql/data
-      - ./docker/postgres/data:/tmp/data
+      - ./aixm-server/docker/postgres/postgresql/data:/var/lib/postgresql/data
+      - ./aixm-server/docker/postgres/tmp/data:/tmp/data
     environment:
       - POSTGRES_DB=${DB_DATABASE}
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - LANG=${DB_LANG}
     networks:
-      - aixm-graph
+      - aixm
+      
+  aixm-proxy:
+    container_name: aixm-proxy
+    image: aixm/aixm-nginx:latest
+    restart: on-failure
+    ports: [ "${CLIENT_WEBPORT}:443" ]
+    volumes:
+      - ./proxy.conf:/etc/nginx/conf.d/default.conf:ro
+    extra_hosts:
+      - localnode:${LOCALNODE:-172.17.0.1}
+    depends_on:
+      - aixm-nginx
+    networks:
+      - aixm
 
 networks:
-  aixm-graph:
+  aixm:
     driver: bridge
 
-volumes:
-  aixm-graph-db-data:
 
