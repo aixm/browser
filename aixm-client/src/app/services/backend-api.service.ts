@@ -25,9 +25,9 @@ export class BackendApiService {
   getBackendUrlValue(): string {
     // console.log(window.location.host);
     let url: string = this.backendUrlValue;
-/*    if (!window.location.host.includes('localhost')) {
+    if (!window.location.host.includes('localhost')) {
       url = `https://${window.location.host}/api/v1`;
-    }*/
+    }
     return url;
   }
 
@@ -36,7 +36,7 @@ export class BackendApiService {
    * @param apiPath
    */
   getData(apiPath: string): Observable<ApiResponse> {
-    const url: string = `${this.backendUrlValue}/${apiPath}`;
+    const url: string = `${this.getBackendUrlValue()}/${apiPath}`;
     // console.log('GET', url);
     return this.httpClient.get<ApiResponse>(url)
         .pipe(
@@ -53,7 +53,7 @@ export class BackendApiService {
    * @param params
    */
   postItem(apiPath: string, item: any, params?: any, formGroup?: FormGroup): Observable<ApiResponse> {
-    const url: string = `${this.backendUrlValue}/${apiPath}`;
+    const url: string = `${this.getBackendUrlValue()}/${apiPath}`;
     // console.log('POST', url);
     return this.httpClient.post<ApiResponse>(url, item, params).pipe(
         map((x: HttpEvent<ApiResponse>) => toCamel(x)),
@@ -69,7 +69,7 @@ export class BackendApiService {
    * @param params
    */
   putItem(apiPath: string, item: any, params?: any, formGroup?: FormGroup): Observable<ApiResponse> {
-    const url: string = `${this.backendUrlValue}/${apiPath}/${item.id}`;
+    const url: string = `${this.getBackendUrlValue()}/${apiPath}/${item.id}`;
     // console.log('PUT', url);
     return this.httpClient.put<ApiResponse>(url, item, params).pipe(
         map((x: HttpEvent<ApiResponse>) => toCamel(x)),
@@ -84,7 +84,7 @@ export class BackendApiService {
    * @param id
    */
   deleteItem(apiPath: string, id: any): Observable<ApiResponse> {
-    const url: string = `${this.backendUrlValue}/${apiPath}/${id}`;
+    const url: string = `${this.getBackendUrlValue()}/${apiPath}/${id}`;
     // console.log('DELETE', url);
     return this.httpClient.delete<ApiResponse>(url).pipe(
         map((x: ApiResponse) => toCamel(x)),

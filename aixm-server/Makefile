@@ -49,10 +49,6 @@ create: ## Create using cache
 -t $(PREFIX)/$(CONTAINER_NAME2):latest -f ./docker/nginx/Dockerfile .
 	$(docker_bin) build --rm --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME3):$(PACKAGE_VERSION) \
 -t $(PREFIX)/$(CONTAINER_NAME3):latest -f ./docker/postgres/Dockerfile .
-	$(docker_bin) build --rm --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME4):$(PACKAGE_VERSION) \
--t $(PREFIX)/$(CONTAINER_NAME4):latest -f ./docker/redis/Dockerfile .
-	$(docker_bin) build --rm --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME5):$(PACKAGE_VERSION) \
--t $(PREFIX)/$(CONTAINER_NAME5):latest -f ./docker/php-fpm-socket/Dockerfile .
 
 create-no-cache: ## Create without cache
 	$(docker_bin) build --rm --no-cache --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME1):$(PACKAGE_VERSION) \
@@ -61,10 +57,6 @@ create-no-cache: ## Create without cache
 -t $(PREFIX)/$(CONTAINER_NAME2):latest ./docker/nginx/Dockerfile .
 	$(docker_bin) build --rm --no-cache --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME3):$(PACKAGE_VERSION) \
 -t $(PREFIX)/$(CONTAINER_NAME3):latest ./docker/postgres/Dockerfile .
-	$(docker_bin) build --rm --no-cache --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME4):$(PACKAGE_VERSION) \
--t $(PREFIX)/$(CONTAINER_NAME4):latest ./docker/redis/Dockerfile .
-	$(docker_bin) build --rm --no-cache --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME5):$(PACKAGE_VERSION) \
--t $(PREFIX)/$(CONTAINER_NAME5):latest ./docker/php-fpm-socket/Dockerfile .
 
 create-php: ## Create using cache (php only)
 	$(docker_bin) build --rm --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME1):$(PACKAGE_VERSION) \

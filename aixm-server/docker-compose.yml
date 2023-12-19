@@ -49,6 +49,8 @@ services:
     volumes:
       - aixm-db-data:/var/lib/postgresql/data
       - ./docker/postgres/data:/tmp/data
+      - ./docker/postgres/postgresql/data:/var/lib/postgresql/data
+      - ./docker/postgres/tmp/data:/tmp/data
     environment:
       - POSTGRES_DB=${DB_DATABASE}
       - POSTGRES_USER=${DB_USERNAME}

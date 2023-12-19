@@ -1,0 +1,10 @@
+/.idea/
+/bootstrap/cache/*
+/docker/postgres/
+/node_modules/
+/storage/*
+/tests/
+/vendor/
+*.tar
+*.sh
+*.yml

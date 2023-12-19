@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://aixm-graph-nginx/api/v1',
+  apiUrl: 'https://localhost/api/v1',
   appTitle: 'AIXM Browser'
 };
