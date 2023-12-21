@@ -8,19 +8,20 @@
     </mat-card-header>
     <mat-card-content>
         <div *ngFor="let dfp of datasetFeature?.datasetFeatureProperties">
-            <a *ngIf="dfp.xlinkHref" href="" (click)="xlink();false;">{{dfp.property?.name}}</a>
-            <span *ngIf="!dfp.xlinkHref">{{dfp.property?.name}} : {{dfp.value}}</span>
+            <ng-container *ngIf="dfp.property?.isIdentifying">
+                <a *ngIf="dfp.xlinkHref" href="" (click)="xlink();false;">{{dfp.property?.name}}</a>
+                <span *ngIf="!dfp.xlinkHref">{{dfp.property?.name}} : {{dfp.value}}</span>
+            </ng-container>
         </div>
     </mat-card-content>
     <mat-card-actions style="justify-content: flex-end">
-        <button mat-stroked-button color="accent" [matBadgeHidden]="datasetFeature ? datasetFeature.associatedFeaturesCount === 0 : true"
-                [matBadge]="datasetFeature ? datasetFeature.associatedFeaturesCount : 0"
+        <button mat-stroked-button color="accent" [matBadgeHidden]="datasetFeature ? datasetFeature.referenceToFeaturesCount === 0 : true"
+                [matBadge]="datasetFeature ? datasetFeature.referenceToFeaturesCount : 0"
                 matBadgeColor="accent">
-            <mat-icon>output</mat-icon>Associations</button>
+            <mat-icon>output</mat-icon>Ref.To</button>
         <button mat-stroked-button color="primary"
-                [matBadgeHidden]="datasetFeature ? datasetFeature.descendantFeaturesCount === 0 : true"
-                [matBadge]="datasetFeature ? datasetFeature.descendantFeaturesCount : 0">
-            <mat-icon>input</mat-icon>Dependants
-        </button>
+                [matBadgeHidden]="datasetFeature ? datasetFeature.referencedByFeaturesCount === 0 : true"
+                [matBadge]="datasetFeature ? datasetFeature.referencedByFeaturesCount : 0">
+            <mat-icon>input</mat-icon>Ref.By</button>
     </mat-card-actions>
 </mat-card>

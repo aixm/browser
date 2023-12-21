@@ -1,4 +1,13 @@
 import { environment } from '../../environments/environment';
+import { Feature }     from '../models/aixm/feature';
+
+export function getFeatureImagePath(feature: Feature | undefined): string {
+  return `assets/images/icons/AIXM/${feature?.abbreviation}/${feature?.abbreviation}.svg`;
+}
+
+export function getFeatureDefaultImagePath(): string {
+  return `assets/images/icons/AIXM/default.svg`;
+}
 
 export function getTitle(): string {
   return environment.appTitle;

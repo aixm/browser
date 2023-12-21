@@ -17,6 +17,7 @@ class DatasetFeaturePropertyResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
+            'parent_id' => $this->parent_id,
             'dataset_feature_id' => $this->dataset_feature_id,
             'property_id' => $this->property_id,
             'value' => $this->value,

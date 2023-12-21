@@ -7,6 +7,12 @@ app-dataset, app-feature, app-dataset-feature {
   width: 100%;
 }
 
+.browser-panel {
+  height: calc(100vh - 260px);
+  height: -moz-calc(100vh - 260px);
+  height: -webkit-calc(100vh - 260px);
+}
+
 .graph {
   height: calc(100% - 100px);
   height: -moz-calc(100% - 100px);

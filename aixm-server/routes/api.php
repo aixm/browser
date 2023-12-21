@@ -48,8 +48,8 @@ Route::prefix('v1')->group( function () {
         Route::apiResource('/datasets/{dataset}/features', DatasetFeatureController::class);
         Route::get('/datasets/{dataset}/features_list', [DatasetFeatureController::class, 'list']);
         Route::get('/datasets/{dataset}/features_list/{feature}', [DatasetFeatureController::class, 'features']);
-        Route::get('/dataset_features/{dataset_feature}/associated', [DatasetFeatureController::class, 'associated']);
-        Route::get('/dataset_features/{dataset_feature}/descendant', [DatasetFeatureController::class, 'descendant']);
+        Route::get('/dataset_features/{dataset_feature}/reference_to', [DatasetFeatureController::class, 'reference_to']);
+        Route::get('/dataset_features/{dataset_feature}/referenced_by', [DatasetFeatureController::class, 'referenced_by']);
     });
 
 });

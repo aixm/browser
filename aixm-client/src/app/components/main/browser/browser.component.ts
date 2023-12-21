@@ -99,9 +99,12 @@ export class BrowserComponent implements OnInit {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
-        dataset.featureLists = data.data;
-        this.nodes = dataset.featureLists.map((featureList: FeatureList): Node => {
-          return {id: featureList.feature.id, label: featureList.feature.abbreviation};
+        this.nodes = [];
+        this.edges = [];
+        dataset.featureLists = data.data.map((x: FeatureList): FeatureList => {
+          const featureList: FeatureList = Object.assign(new FeatureList(), x);
+          this.nodes.push(featureList.getNode());
+          return featureList;
         });
       }
       this.loading = false;
@@ -112,17 +115,23 @@ export class BrowserComponent implements OnInit {
 
   refreshDatasetFeatures(feature: Feature): void {
     this.loading = true;
+    this.clearGraph();
     this.backendApiService.getData(`${this.url}/${this.dataset?.id}/features_list/${feature.id
     }?with=datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property&${this.getPagingUrl()
     }`).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
-        this.nodes = [];
-        this.edges = [];
+
         this.datasetFeatures = data.data.map((x: DatasetFeature): DatasetFeature => {
           const datasetFeature: DatasetFeature = Object.assign(new DatasetFeature(), x);
-          this.nodes.push(...datasetFeature.getNodes());
+          const nodes: Node[] = datasetFeature.getNodes();
+          nodes.forEach((node: Node): void => {
+            if (this.nodes.findIndex((n:Node): boolean => n.id === node.id) === -1) {
+              this.nodes.push(node);
+            }
+          });
+          // this.nodes.push(...datasetFeature.getUniqNodes(this.nodes));
           this.edges.push(...datasetFeature.edges);
           return datasetFeature;
         });
@@ -147,12 +156,33 @@ export class BrowserComponent implements OnInit {
     this.refreshDatasetFeatures(feature);
   }
 
+  clearGraph(): void {
+    this.nodes = [];
+    this.edges = [];
+    this.redrawGraph();
+  }
+
   redrawGraph(): void {
     let data: Data = {
       nodes: this.nodes,
       edges: this.edges,
     };
-    var options: Options = {};
+    var options: Options = {
+      interaction: {
+        hover: true,
+      },
+      nodes: {
+        shapeProperties: {
+          interpolation: false,
+        },
+      },
+      layout: {
+        improvedLayout: false,
+      },
+      physics: {
+        stabilization: false,
+      },
+    };
     this.network = new Network(this.graphContainer.nativeElement, data, options);
   }
 

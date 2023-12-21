@@ -16,6 +16,11 @@ class DatasetFeatureProperty extends AixmGraphModel
         return $this->belongsTo(DatasetFeature::class);
     }
 
+    public function parent_dataset_property()
+    {
+        return $this->belongsTo(DatasetFeatureProperty::class, 'parent_id');
+    }
+
     public function property()
     {
         return $this->belongsTo(Property::class);

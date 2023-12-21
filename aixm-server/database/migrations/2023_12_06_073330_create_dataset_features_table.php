@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('dataset_id')->default(0);
             $table->unsignedBigInteger('feature_id')->default(0);
-            $table->unsignedBigInteger('parent_id')->default(0);
             $table->string('gml_id_value')->nullable();
             $table->string('gml_identifier_value')->nullable();
             $table->timestamp('created_at')->nullable()->useCurrent();

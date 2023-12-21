@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class DatasetFeature extends AixmGraphModel
 {
     // add additional attributes to the array
-    protected $appends = ['associated_features_count', 'descendant_features_count', 'descendant_features'];
+    protected $appends = ['reference_to_features_count', 'reference_by_features_count', 'reference_by_features'];
 
     ##################################################################################
     # Relations
@@ -39,7 +39,7 @@ class DatasetFeature extends AixmGraphModel
     ##################################################################################
     # Append attributes
     ##################################################################################
-    public function getAssociatedFeaturesCountAttribute()
+    public function getReferenceToFeaturesCountAttribute()
     {
         return DatasetFeature::where('dataset_id',$this->dataset_id)
             ->whereIn('gml_identifier_value', $this->dataset_feature_properties()
@@ -50,14 +50,14 @@ class DatasetFeature extends AixmGraphModel
             )->get()->count();
     }
 
-    public function getDescendantFeaturesCountAttribute()
+    public function getReferencedByFeaturesCountAttribute()
     {
         return DatasetFeature::whereHas('dataset_feature_properties', function ($query) {
             $query->where('xlink_href', '=', $this->gml_identifier_value);
         }) ->get()->count();
     }
 
-    public function getDescendantFeaturesAttribute()
+    public function getReferencedByFeaturesAttribute()
     {
         return DatasetFeature::whereHas('dataset_feature_properties', function ($query) {
             $query->where('xlink_href', '=', $this->gml_identifier_value);

@@ -7,7 +7,7 @@ use App\Models\Aixm\DatasetFeatureProperty;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DatasetFeatureResource extends JsonResource
+class DatasetFeatureReferencesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -26,11 +26,8 @@ class DatasetFeatureResource extends JsonResource
             'gml_identifier_value' => $this->gml_identifier_value,
             'reference_to_features_count' => $this->reference_to_features_count,
             'referenced_by_features_count' => $this->referenced_by_features_count,
-            'dataset_feature_properties' => DatasetFeaturePropertyResource::collection($this->whenLoaded('dataset_feature_properties')),
-            'dataset' => DatasetResource::make($this->whenLoaded('dataset')),
             'feature' => FeatureResource::make($this->whenLoaded('feature')),
-            //'reference_to_features' => DatasetFeatureResource::collection($this->reference_to_features),
-            'referenced_by_features' => DatasetFeatureReferencesResource::collection($this->referenced_by_features),
+            'dataset_feature_properties' => DatasetFeaturePropertyResource::collection($this->whenLoaded('dataset_feature_properties')),
         ];
     }
 }

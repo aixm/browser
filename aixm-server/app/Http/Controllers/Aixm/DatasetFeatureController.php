@@ -76,7 +76,7 @@ class DatasetFeatureController extends Controller
         return $this->successResponse(DatasetFeatureResource::collection($features));
     }
 
-    public function associated(DatasetFeature $datasetFeature)
+    public function reference_to(DatasetFeature $datasetFeature)
     {
         $features = DatasetFeature::where('dataset_id',$datasetFeature->dataset_id)
             ->whereIn('gml_identifier_value', $datasetFeature->dataset_feature_properties()
@@ -88,7 +88,7 @@ class DatasetFeatureController extends Controller
         return $this->successResponse(DatasetFeatureResource::collection($features));
     }
 
-    public function descendant(DatasetFeature $datasetFeature)
+    public function referenced_by(DatasetFeature $datasetFeature)
     {
         $features = DatasetFeature::whereHas('dataset_feature_properties', function ($query) use ($datasetFeature) {
             $query->where('xlink_href', '=', $datasetFeature->gml_identifier_value);

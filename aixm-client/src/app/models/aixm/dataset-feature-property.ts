@@ -3,6 +3,7 @@ import { Property }       from './property';
 
 export class DatasetFeatureProperty {
   id!: number;
+  parentId!: number;
   datasetFeatureId!: number;
   propertyId!: number;
   value!: string;

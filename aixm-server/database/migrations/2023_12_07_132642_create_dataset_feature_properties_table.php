@@ -13,19 +13,23 @@ return new class extends Migration
     {
         Schema::create('dataset_feature_properties', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('parent_id')->default(0);
             $table->unsignedBigInteger('dataset_feature_id')->default(0);
             $table->unsignedBigInteger('property_id')->default(0);
-            $table->string('value')->nullable();
+            $table->string('gml_id_value')->nullable();
             $table->string('xlink_href_type')->nullable();
             $table->string('xlink_href')->nullable();
+            $table->text('value')->nullable();
             $table->timestamp('created_at')->nullable()->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrent()->useCurrentOnUpdate();
 
+            $table->index('gml_id_value');
             $table->index('xlink_href_type');
             $table->index('xlink_href');
 
             // add FK
             $table->foreign('dataset_feature_id')->references('id')->on('dataset_features')->onDelete('cascade');
+            // $table->foreign('parent_id')->references('id')->on('dataset_feature_properties')->onDelete('cascade');
 
         });
 

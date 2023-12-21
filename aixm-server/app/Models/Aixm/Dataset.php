@@ -62,103 +62,73 @@ class Dataset extends AixmGraphModel
         $reader = new XMLReader();
         $reader->open(Storage::disk('private')->path($this->getPathWithFileName()));
 
-        $dataset_features = [];
-        $cnt = 0;
-
         // reach first feature
         while($reader->read() && $reader->localName != $this->featureParentTagName){;}
         // loop features
         while($reader->localName == $this->featureParentTagName){
             $element = new SimpleXMLElement($reader->readInnerXml());
-            $name = $element->getName();
-            $feature = Feature::getFeature($name);
+            $feature = Feature::getFeature($element->getName());
             if ($feature?->type === 'feature') {
                 // Log::channel('stderr')->info('Read feature: ' . $name);
-                // save properties
-                $dataset_feature = new DatasetFeature();
-                $dataset_feature->fill([
-                    'feature_id' => $feature->id,
-                    'gml_id_value' => strval($element->attributes('gml', true)->id),
-                    'gml_identifier_value' => strval($element->xpath('gml:identifier')[0])
-                ]);
-                // $dataset_features[] = $dataset_feature;
-                $this->dataset_features()->saveMany([$dataset_feature]);
-
-                $ns = array_keys($element->getNameSpaces())[0];
-                $timeSlices = $element->xpath( $ns . ':timeSlice/'. $ns . ':' . $name . 'TimeSlice');
-                if (sizeof($timeSlices) > 0) {
-                    // save properties
-                    $dataset_feature_properties = [];
-                    foreach ($feature->properties as $property) {
-                        // TODO save all properties?
-                       // if ($property->is_identifying) {
-                            $p = $timeSlices[0]->xpath($ns . ':' . $property->name);
-                            if (sizeof($p) > 0) {
-                                // Log::channel('stderr')->info('Property: ' . $property->name . ': ' . strval($p[0]));
-                                $dataset_feature_property = new DatasetFeatureProperty();
-                                $value = strval($p[0]);
-                                $xlink_href = '';
-                                $xlink_href_type = '';
-                                if ($property->is_xlink) {
-                                    $xlink = strval($p[0]->attributes('xlink', true)->href);
-                                    $xlink_arr = preg_split('/[:.]+/', $xlink);
-                                    $xlink_href = array_pop($xlink_arr);
-                                    $xlink_href_type = str_replace($xlink_href, '', $xlink);
-                                }
-                                $dataset_feature_property->fill([
-                                    'property_id' => $property->id,
-                                    'value' => $value,
-                                    'xlink_href_type' => $xlink_href_type,
-                                    'xlink_href' => $xlink_href
-                                ]);
-                                $dataset_feature_properties[] = $dataset_feature_property;
-                            }
-                        //}
-                    }
-                    $dataset_feature->dataset_feature_properties()->saveMany($dataset_feature_properties);
-                }
-                $cnt++;
+                $this->parseDatasetFeature($this, $feature, $element);
             }
             $reader->next('hasMember');
             unset($element);
         }
         $reader->close();
-        Log::channel('stderr')->info('Parsed ' . $cnt . ' features in ' . intval(round(1000 * (microtime(true) - $start))) . ' ms');
-
+        Log::channel('stderr')->info('Parsed ' . $this->dataset_features()->count() .
+            ' features in ' . intval(round(1000 * (microtime(true) - $start))) . ' ms');
     }
 
-    private function parseFeatureChildren($xml, $parent) {
-        $reader = new XMLReader();
-        $reader->xml($xml);
-        $reader->read();
-        // Log::channel('stderr')->info('Inner XML: ' . $xml);
-        while ($reader->read()) {
-            if ($reader->nodeType == XMLReader::ELEMENT) {
-                $feature = Feature::getFeature($reader->localName);
-                if ($feature?->type === 'feature') {
-                    //$parent .= ' -> ' . $reader->localName;
-                    Log::channel('stderr')->info('Read feature children: ' . $parent . ' -> ' . $reader->localName);
-                    $this->parseFeatureChildren($reader->readOuterXml(), $parent . ' -> ' . $reader->localName);
-                } else {
-                    //Log::channel('stderr')->info('Read children: ' . $reader->localName);
+    private function parseDatasetFeature($dataset, $feature, $element) {
+        // Log::channel('stderr')->info('Feature: ' . $feature->name . ': ' . strval($element));
+        $ns = array_keys($element->getNameSpaces())[0];
+        $dataset_feature = $dataset->dataset_features()->create([
+            'feature_id' => $feature->id,
+            'gml_id_value' => strval($element->attributes('gml', true)->id),
+            'gml_identifier_value' => strval($element->xpath('gml:identifier')[0])
+        ]);
+        // root feature with timeSlice
+        $timeSlices = $element->xpath( $ns . ':timeSlice/'. $ns . ':' . $element->getName() . 'TimeSlice');
+        if (sizeof($timeSlices) > 0) {
+            $feature_node = $timeSlices[0];
+            // save properties
+            foreach ($feature->properties as $property) {
+                $p = $feature_node->xpath($ns . ':' . $property->name);
+                if (sizeof($p) > 0) {
+                    $this->parseDatasetFeatureProperty($dataset_feature, $property, $p[0], $ns);
                 }
             }
         }
     }
 
+    private function parseDatasetFeatureProperty($dataset_feature, $property, $node, $ns, $parent_dataset_feature_property_id=0) {
+        // Log::channel('stderr')->info('Property: ' . $property->name . ': ' . strval($node));
+        $value = strval($node);
+        $xlink_href = '';
+        $xlink_href_type = '';
+        if ($property->is_xlink) {
+            $xlink = strval($node->attributes('xlink', true)->href);
+            $xlink_arr = preg_split('/[:.]+/', $xlink);
+            $xlink_href = array_pop($xlink_arr);
+            $xlink_href_type = str_replace($xlink_href, '', $xlink);
+        }
+        $dataset_feature_property = $dataset_feature->dataset_feature_properties()->create([
+            'parent_id' => $parent_dataset_feature_property_id,
+            'property_id' => $property->id,
+            'gml_id_value' => strval($node->attributes('gml', true)->id),
+            'xlink_href_type' => $xlink_href_type,
+            'xlink_href' => $xlink_href,
+            'value' => $value
+        ]);
 
-    private function parseFeatureChildren2(XMLReader $reader, $parent) {
-        $reader->read();
-        while ($reader->read()) {
-            if ($reader->nodeType == XMLReader::ELEMENT) {
-                $feature = Feature::getFeature($reader->localName);
-                if ($feature?->type === 'feature') {
-                    //$parent .= ' -> ' . $reader->localName;
-                    Log::channel('stderr')->info('Read feature: ' . $parent . ' -> ' . $reader->localName);
-                    $this->parseFeatureChildren($reader, $parent . ' -> ' . $reader->localName);
-                    //$dataset_feature = new DatasetFeature();
-                    //$dataset_feature->fill(['feature_id' => $feature->id]);
-                    //$dataset_features[] = $dataset_feature;
+        // check if property has child feature/ object
+        if ($property->ref_feature_id) {
+            $feature = Feature::find($property->ref_feature_id);
+            foreach ($feature->properties as $prop) {
+                $p = $node->xpath('.//' . $ns . ':' . $prop->name);
+                if (sizeof($p) > 0) {
+                    $this->parseDatasetFeatureProperty($dataset_feature, $prop, $p[0], $ns, $dataset_feature_property->id);
                 }
             }
         }
