@@ -40,6 +40,7 @@ help: ## Show this help
 --------------------: ## ------------------------------
 
 create: ## Create using cache
+	@npm run build
 	$(docker_bin) build --rm --build-arg VERSION=$(PACKAGE_VERSION) -t $(PREFIX)/$(CONTAINER_NAME):$(PACKAGE_VERSION) \
 -t $(PREFIX)/$(CONTAINER_NAME):latest -f ./docker/nginx/Dockerfile .
 
