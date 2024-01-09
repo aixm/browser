@@ -8,9 +8,10 @@ use App\Traits\ProcessRelations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Request as RequestAlias;
+use Illuminate\Support\Str;
+
 
 abstract class AixmGraphModel extends Model
 {
@@ -24,6 +25,13 @@ abstract class AixmGraphModel extends Model
     protected $guarded = ['id'];
 
     /**
+     * Searchable fields
+     *
+     * @var string[]
+     */
+    public $searchable = [];
+
+    /**
      * Cast dates in models
      *
      * @var string[]
@@ -34,5 +42,23 @@ abstract class AixmGraphModel extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'time' => 'datetime:Y-m-d H:i:s'
     ];
+
+    ##################################################################################
+    # Scopes
+    ##################################################################################
+    public function scopeSearch(Builder $query): void
+    {
+        if (Request::input('search')) {
+            $search = Str::of(Request::input('search'));
+            $count = count($this->searchable);
+            for ($i = 0; $i < $count; $i++) {
+                if ($i == 0) {
+                    $query->where($this->searchable[$i], 'ilike', "%" . $search . "%");
+                } else {
+                    $query->orWhere($this->searchable[$i], 'ilike', "%" . $search . "%");
+                }
+            }
+        }
+    }
 
 }

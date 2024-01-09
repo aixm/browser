@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class DatasetFeature extends AixmGraphModel
 {
+    public $searchable = ['gml_id_value', 'gml_identifier_value'];
     // add additional attributes to the array
     protected $appends = ['reference_to_features_count', 'reference_by_features_count', 'reference_by_features'];
 
@@ -54,7 +55,7 @@ class DatasetFeature extends AixmGraphModel
     {
         return DatasetFeature::whereHas('dataset_feature_properties', function ($query) {
             $query->where('xlink_href', '=', $this->gml_identifier_value);
-        }) ->get()->count();
+        })->get()->count();
     }
 
     public function getReferencedByFeaturesAttribute()

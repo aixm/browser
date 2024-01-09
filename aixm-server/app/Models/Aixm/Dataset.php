@@ -14,6 +14,7 @@ use SimpleXMLElement;
 
 class Dataset extends AixmGraphModel
 {
+    public $searchable = ['name', 'filename', 'description'];
     protected $withCount = ['dataset_features'];
     private $xmlFilesFolder = 'datasets';
     private $featureParentTagName = 'hasMember';

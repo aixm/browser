@@ -6,7 +6,7 @@
         <p>{{data.message}}</p>
     </mat-card-content>
     <mat-card-actions style="justify-content: flex-end">
-        <button mat-stroked-button (click)="dialogRef.close(true)">Ok</button>
-        <button mat-stroked-button (click)="dialogRef.close(false)">Cancel</button>
+        <button color="primary" mat-stroked-button (click)="dialogRef.close(true)">Ok</button>
+        <button style="margin-left: 0.3em" color="accent" mat-stroked-button (click)="dialogRef.close(false)">Cancel</button>
     </mat-card-actions>
 </mat-card>

@@ -37,6 +37,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #2B2A29;
 }
 
+.table-grid {
+  max-height: calc(100vh - 135px);
+  max-height: -moz-calc(100vh - 135px);
+  max-height: -webkit-calc(100vh - 135px);
+}
+
 .tbr-btn {
   margin-left: 0.3em!important;
   .mat-icon {

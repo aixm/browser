@@ -2,7 +2,7 @@
     <div class="page-title">Datasets</div>
     <div class="page-subtitle">Management of AIXM Datasets</div>
     <div>
-        <mtx-grid [data]="datasets"
+        <mtx-grid class="table-grid" [data]="datasets"
                   [columns]="defaultColumns"
                   [showToolbar]="true"
                   [showColumnMenuButton]="false"
@@ -13,7 +13,7 @@
         <ng-template #toolbarTpl>
             <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
             <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
-            <input class="tbr-btn" placeholder="Search" ngDefaultControl [(ngModel)]="searchText" [value]="searchText">
+            <input class="tbr-btn" placeholder="Search" type="search" [(ngModel)]="searchText" (search)="refresh()">
         </ng-template>
     </div>
 </div>

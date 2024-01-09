@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Aixm\DatasetFeatureListResource;
 use App\Http\Resources\Aixm\DatasetFeatureResource;
 use App\Models\Aixm\DatasetFeature;
+use App\Models\Aixm\Feature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatasetFeatureController extends Controller
 {
@@ -16,7 +18,7 @@ class DatasetFeatureController extends Controller
      */
     public function index(Request $request)
     {
-        $features = DatasetFeature::query();
+        $features = DatasetFeature::search();
         if ($request->dataset) {
             $features = $features->where('dataset_id', $request->dataset);
         }
@@ -59,17 +61,34 @@ class DatasetFeatureController extends Controller
 
     public function list(Request $request)
     {
+        // get Feature searchable fields for relation sub query
+        $f = new Feature();
+        $fields = $f->searchable;
+
         $features = DatasetFeature::query()
             ->select(['feature_id', DB::raw('COUNT(feature_id) AS count')])
+            ->whereHas('feature', function ($query) use ($request, $fields) {
+                if ($request->search) {
+                    $search = Str::of($request->search);
+                    $count = count($fields);
+                    for ($i = 0; $i < $count; $i++) {
+                        if ($i == 0) {
+                            $query->where($fields[$i], 'ilike', "%" . $search . "%");
+                        } else {
+                            $query->orWhere($fields[$i], 'ilike', "%" . $search . "%");
+                        }
+                    }
+                }
+            })
             ->where('dataset_id', $request->dataset)
-            ->groupBy(['feature_id'])
-            ->paginate();
+            ->groupBy(['feature_id'])->paginate();
+
         return $this->successResponse(DatasetFeatureListResource::collection($features));
     }
 
     public function features(Request $request)
     {
-        $features = DatasetFeature::where([
+        $features = DatasetFeature::search()->where([
                 ['dataset_id', '=', $request->dataset],
                 ['feature_id', '=', $request->feature]
             ])->paginate();

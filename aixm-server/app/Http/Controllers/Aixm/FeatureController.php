@@ -14,7 +14,7 @@ class FeatureController extends Controller
      */
     public function index()
     {
-        $features = Feature::all();
+        $features = Feature::search()->paginate();
         return $this->successResponse(FeatureResource::collection($features));
     }
 

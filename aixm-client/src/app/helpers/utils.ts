@@ -17,6 +17,20 @@ export function handleErrorMissingFeatureImage(event: Event) {
   (event.target as HTMLImageElement).src = 'assets/images/icons/AIXM/default.svg';
 }
 
+export function getByKey(fromItems: any[], keyName: string, keyValue: any): any {
+  const index1  = fromItems.findIndex((element) => {
+    return element[keyName] === keyValue;
+  });
+  if (index1 >= 0 ) {
+    return fromItems[index1];
+  }
+  return null;
+}
+
+export function getById(fromItems: any[], id: any): any {
+  return getByKey(fromItems, 'id', id)
+}
+
 export function hexToRgbA(hex: string, alfa: number): string {
   let c: any;
   if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){

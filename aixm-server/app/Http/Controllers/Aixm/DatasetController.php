@@ -17,7 +17,7 @@ class DatasetController extends Controller
      */
     public function index()
     {
-        $datasets = Dataset::query()->paginate();
+        $datasets = Dataset::search()->paginate();
         return $this->successResponse(DatasetResource::collection($datasets));
     }
 

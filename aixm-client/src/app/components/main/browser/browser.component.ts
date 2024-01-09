@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule }                             from '@angular/common';
+import { FormsModule }                              from '@angular/forms';
 import { MatButtonModule }   from '@angular/material/button';
 import { MatButtonToggleModule }   from '@angular/material/button-toggle';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -11,6 +12,7 @@ import { MatTabsModule }                 from '@angular/material/tabs';
 import { MatToolbarModule }       from '@angular/material/toolbar';
 import { MatTooltipModule }                            from '@angular/material/tooltip';
 import { Network, DataSet, Data, Edge, Node, Options } from 'vis-network';
+import { getById, getByKey }                           from '../../../helpers/utils';
 import { Dataset }                                     from '../../../models/aixm/dataset';
 import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
 import { DatasetFeatureProperty } from '../../../models/aixm/dataset-feature-property';
@@ -31,6 +33,7 @@ import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.compo
   imports: [
     CommonModule, DatasetComponent, MatTabsModule, MatButtonModule, MatIconModule, FeatureComponent, DatasetFeatureComponent,
     AixmIconComponent, MatToolbarModule, MatButtonToggleModule, MatInputModule, MatTooltipModule, MatPaginatorModule, MatProgressBarModule,
+    FormsModule,
   ],
   templateUrl: './browser.component.html',
   styleUrl: './browser.component.scss'
@@ -78,7 +81,8 @@ export class BrowserComponent implements OnInit {
 
   refreshDatasets(): void {
     this.loading = true;
-    this.backendApiService.getData(`${this.url}?${this.getPagingUrl()}`).subscribe((data: ApiResponse): void => {
+    this.backendApiService.getData(`${this.url}?${this.getPagingUrl()}`+ (this.searchText ? '&search=' + this.searchText : ''))
+        .subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
@@ -95,7 +99,7 @@ export class BrowserComponent implements OnInit {
   refreshFeaturesList(dataset: Dataset): void {
     this.loading = true;
     this.backendApiService.getData(`${this.url}/${this.dataset?.id}/features_list?with=datasetfeature.feature&${this.getPagingUrl()
-    }`).subscribe((data: ApiResponse): void => {
+    }` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
@@ -118,7 +122,7 @@ export class BrowserComponent implements OnInit {
     this.clearGraph();
     this.backendApiService.getData(`${this.url}/${this.dataset?.id}/features_list/${feature.id
     }?with=datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property&${this.getPagingUrl()
-    }`).subscribe((data: ApiResponse): void => {
+    }` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
@@ -184,6 +188,56 @@ export class BrowserComponent implements OnInit {
       },
     };
     this.network = new Network(this.graphContainer.nativeElement, data, options);
+
+    // events
+    this.network.on("hoverNode", (params: any): void => {
+      // @ts-ignore
+      this.network.canvas.body.container.style.cursor = 'pointer';
+    });
+
+    this.network.on("blurNode", (params: any): void => {
+      // @ts-ignore
+      this.network.canvas.body.container.style.cursor = 'default';
+    });
+    this.network.on("click", (params: any): void => {
+      params.event = "click";
+      this.onGraphClick(params);
+    });
+    this.network.on("doubleClick", (params: any): void => {
+      params.event = "doubleClick";
+      this.onGraphClick(params);
+    });
+    this.network.on("oncontext", (params: any): void =>{
+      params.event = "oncontext";
+      this.onGraphClick(params);
+    });
+
+  }
+
+  onGraphClick(params: any): void {
+    console.log(params);
+    if (params.nodes.length > 0) {
+      console.log(params.nodes[0]);
+      if (!this.dataset) {
+        this.dataset = getById(this.datasets, params.nodes[0]);
+      } else {
+        if (!this.feature) {
+          console.log(this.dataset.featureLists);
+          this.feature = getByKey(this.dataset.featureLists, 'featureId', params.nodes[0]).feature;
+        }
+      }
+      this.refresh();
+    }
+  }
+
+  goDatasets(): void {
+    this.dataset = undefined;
+    this.feature = undefined;
+    this.edges = [];
+    this.nodes = this.datasets.map((dataset: Dataset): Node => {
+      return {id: dataset.id, label: dataset.name};
+    });
+    this.redrawGraph();
   }
 
   addDataset(): void {

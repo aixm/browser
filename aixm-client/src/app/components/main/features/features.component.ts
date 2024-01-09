@@ -2,8 +2,14 @@ import { CommonModule }                                        from '@angular/co
 import { Component, forwardRef, OnInit, ViewEncapsulation }    from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule }                                     from '@angular/material/button';
+import { MatButtonToggleModule }                               from '@angular/material/button-toggle';
 import { MatCardModule }                        from '@angular/material/card';
+import { MatFormFieldModule }                                  from '@angular/material/form-field';
 import { MatIconModule }                        from '@angular/material/icon';
+import { MatInputModule }                from '@angular/material/input';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatToolbarModule }              from '@angular/material/toolbar';
+import { MatTooltipModule }                                    from '@angular/material/tooltip';
 import { MtxButtonModule }                      from '@ng-matero/extensions/button';
 import { MtxGridColumn, MtxGridModule }         from '@ng-matero/extensions/grid';
 import { ApiResponse }                          from '../../../models/api-response';
@@ -19,7 +25,8 @@ import { AixmIconComponent }                                   from '../../commo
   imports: [
     CommonModule, FeatureComponent, FormsModule, MatIconModule, MtxGridModule, MatCardModule, MtxButtonModule, MatButtonModule,
     ReactiveFormsModule,
-    PipesModule, AixmIconComponent,
+    PipesModule, AixmIconComponent, MatButtonToggleModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatTooltipModule,
+    MatPaginatorModule,
   ],
   templateUrl: './features.component.html',
   styleUrl: './features.component.scss',
@@ -29,7 +36,8 @@ export class FeaturesComponent implements OnInit {
   loading: boolean = false;
   searchText: string = '';
   features: Feature[] = [];
-  rowSelected: any;
+  pageEvent: PageEvent = new PageEvent();
+  pageSizeOptions: number[] = [10, 25, 50, 100];
 
   defaultColumns: MtxGridColumn[] = [
     { header: 'Name', field: 'name', sortable: true },
@@ -97,8 +105,10 @@ export class FeaturesComponent implements OnInit {
 
   refresh(): void {
     this.loading = true;
-    this.backendApiService.getData(this.url).subscribe((data: ApiResponse): void => {
+    this.backendApiService.getData(this.url + this.getPagingUrl()+ (this.searchText ? '&search=' + this.searchText : ''))
+        .subscribe((data: ApiResponse): void => {
       console.log(data);
+      this.storePageState(data);
       if (data.data) {
         this.features = data.data;
       }
@@ -118,6 +128,22 @@ export class FeaturesComponent implements OnInit {
 
   allowEdit(): boolean {
     return true;
+  }
+
+  storePageState(data: ApiResponse): void {
+    this.pageEvent.pageSize = data.meta.pagination.perPage;
+    this.pageEvent.length = data.meta.pagination.total;
+  }
+
+  handlePageEvent(event: PageEvent): void {
+    this.pageEvent = event;
+    console.log(this.pageEvent);
+    this.refresh();
+  }
+
+  getPagingUrl(): string {
+    return `?per_page=${this.pageEvent.pageSize ? this.pageEvent.pageSize : 10}&page=${
+        this.pageEvent.pageIndex ? this.pageEvent.pageIndex + 1: 1}`;
   }
 
 }

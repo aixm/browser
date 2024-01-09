@@ -1,11 +1,11 @@
 # AIXM Browser [![version](https://img.shields.io/badge/version-2.0.0-yellow.svg)](https://semver.org)
 > Visualizing AIXM feature associations
 
-AIXM Browser is a tool which evolves from AIXM Graph that aims at visualizing the various features that can be found in an [AIXM](http://aixm.aero/) 
+AIXM Browser is a tool which evolves from [AIXM Graph](https://github.com/eurocontrol-swim/aixm-graph) that aims at visualizing the various features that can be found in an [AIXM](http://aixm.aero/) 
 dataset along with their associations. The representation is made via an interactive graph where the user can explore 
 the features and how they connect to each other in the specific dataset. 
 
-At this [link](https://http://64.225.111.39:82) you can have a look at a demo of 
+At this [link](https://64.225.111.39:82) you can have a look at a demo of 
 the tool and play around with preloaded AIXM datasets or upload your AIXM XML dataset files.
 
 ## Installation
@@ -21,7 +21,7 @@ The project can get easily up and running in any machine regardless the running 
 ### Get the repository
 
 ```shell script
-git clone https://github.com/aixm/Graph
+git clone https://github.com/aixm/Graph.git
 ```
 
 ### Build server and client images
@@ -35,7 +35,7 @@ In the aixm-client directory:
 make create
 ```
 
-###Run the containers and install backend application
+### Run the containers and install backend application
 
 In the Graph directory:
 ```shell script

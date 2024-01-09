@@ -5,6 +5,7 @@ import { MatButtonModule }              from '@angular/material/button';
 import { MatCardModule }           from '@angular/material/card';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule }           from '@angular/material/icon';
+import { PageEvent }                    from '@angular/material/paginator';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { getTitle }                     from '../../../helpers/utils';
 import { Dataset }                      from '../../../models/aixm/dataset';
@@ -27,7 +28,8 @@ export class DatasetsComponent implements OnInit {
   loading: boolean = false;
   searchText: string = '';
   datasets: Dataset[] = [];
-  rowSelected: any;
+  pageEvent: PageEvent = new PageEvent();
+  pageSizeOptions: number[] = [10, 25, 50, 100];
 
   defaultColumns: MtxGridColumn[] = [
     { header: 'Name', field: 'name', sortable: true },
@@ -110,8 +112,10 @@ export class DatasetsComponent implements OnInit {
 
   refresh(): void {
     this.loading = true;
-    this.backendApiService.getData(this.url).subscribe((data: ApiResponse): void => {
+    this.backendApiService.getData(this.url + this.getPagingUrl() + (this.searchText ? '&search=' + this.searchText : ''))
+        .subscribe((data: ApiResponse): void => {
       console.log(data);
+      this.storePageState(data);
       if (data.data) {
         this.datasets = data.data;
       }
@@ -162,6 +166,22 @@ export class DatasetsComponent implements OnInit {
   }
 
   browse(dataset: Dataset): void {
+  }
+
+  storePageState(data: ApiResponse): void {
+    this.pageEvent.pageSize = data.meta.pagination.perPage;
+    this.pageEvent.length = data.meta.pagination.total;
+  }
+
+  handlePageEvent(event: PageEvent): void {
+    this.pageEvent = event;
+    console.log(this.pageEvent);
+    this.refresh();
+  }
+
+  getPagingUrl(): string {
+    return `?per_page=${this.pageEvent.pageSize ? this.pageEvent.pageSize : 10}&page=${
+        this.pageEvent.pageIndex ? this.pageEvent.pageIndex + 1: 1}`;
   }
 
 }

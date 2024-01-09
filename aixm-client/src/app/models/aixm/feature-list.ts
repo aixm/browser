@@ -4,6 +4,7 @@ import { Feature }                                         from './feature';
 
 export class FeatureList {
   count: number = 0;
+  feature_id!: number;
   feature!: Feature
 
   getNode(): Node {

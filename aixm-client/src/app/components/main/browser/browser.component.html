@@ -11,7 +11,7 @@
             <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="addDataset()" ><mat-icon>add</mat-icon></button>
             <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
             <ng-container *ngIf="dataset">
-                <button mat-button (click)="dataset = undefined;feature = undefined;">
+                <button mat-button (click)="goDatasets()">
                     <mat-icon style="transform: rotate(-90deg)">turn_right</mat-icon>
                     <span>..</span>
                 </button>
@@ -45,7 +45,7 @@
             <div style="width: 1em"></div>
             <mat-form-field style="width: 20%" appearance="outline" subscriptSizing="dynamic" >
                 <mat-icon matPrefix>search</mat-icon>
-                <input matInput type="search" placeholder="search here">
+                <input matInput type="search" placeholder="search here" [(ngModel)]="searchText" (search)="refresh()">
             </mat-form-field>
         </mat-toolbar-row>
     </mat-toolbar>

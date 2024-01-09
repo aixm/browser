@@ -1,35 +1,38 @@
 <div class="page-container">
     <div class="page-title">AIXM Features</div>
     <div class="page-subtitle">Management of AIXM Features and Objects</div>
+<!--    <mat-toolbar>
+        <mat-toolbar-row style="padding: 0">
+            <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
+            <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
+            <mat-form-field style="width: 20%" appearance="outline" subscriptSizing="dynamic" >
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput type="search" placeholder="search here">
+            </mat-form-field>
+        </mat-toolbar-row>
+    </mat-toolbar>-->
     <div>
-        <mtx-grid [data]="features"
+        <mtx-grid class="table-grid" [data]="features"
                   [columns]="defaultColumns"
                   [cellTemplate]="{icon: iconTpl, color: colorTpl}"
                   [showToolbar]="true"
                   [showColumnMenuButton]="false"
+
                   [toolbarTemplate]="toolbarTpl"
-                  [pageSizeOptions]="[5,10,15]"
+                  [pageOnFront]="false"
+                  (page)="handlePageEvent($event)"
+                  [length]="pageEvent.length"
+                  [pageSize]="pageEvent.pageSize"
+                  [showFirstLastButtons]="true"
+                  [pageSizeOptions]= "pageSizeOptions"
+                  [pageIndex]="pageEvent.pageIndex"
                   [loading]="loading">
         </mtx-grid>
-<!--        <mtx-grid [data]="features"
-                  [columns]="defaultColumns"
-                  [cellTemplate]="{}"
-                  [loading]="loading"
-                  [hideRowSelectionCheckbox]="true"
-                  [rowSelectable]="true"
-                  [rowSelected]="rowSelected"
-                  [rowHover]="true"
-                  [showToolbar]="true"
-                  [showColumnMenuButton]="true"
-                  [columnMenuButtonIcon]="'settings'"
-                  [columnMenuButtonText]="' '"
-                  [columnMenuButtonType]="'stroked'"
-                  [toolbarTemplate]="toolbarTpl">
-        </mtx-grid>-->
+
         <ng-template #toolbarTpl>
             <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
             <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
-            <input class="tbr-btn" placeholder="Search" ngDefaultControl [(ngModel)]="searchText" [value]="searchText">
+            <input class="tbr-btn" placeholder="Search" type="search" [(ngModel)]="searchText" (search)="refresh()">
         </ng-template>
         <ng-template #colorTpl let-row let-index="index">
             <div style="border-radius: 5px; width: 3em; height: 3em"
