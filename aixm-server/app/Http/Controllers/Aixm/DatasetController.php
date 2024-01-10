@@ -86,7 +86,7 @@ class DatasetController extends Controller
     {
         $dataset->fill($request->all());
         $dataset->save();
-        return $this->successResponse(DatasetResource::make($datasets));
+        return $this->successResponse(DatasetResource::make($dataset));
     }
 
     /**

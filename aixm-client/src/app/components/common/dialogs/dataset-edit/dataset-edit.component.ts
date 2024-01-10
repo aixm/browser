@@ -67,11 +67,11 @@ export class DatasetEditComponent implements OnInit  {
       return;
     }
     this.loading = true;
-    const formData: FormData = new FormData();
-    formData.append('name', this.name?.value);
-    formData.append('description', this.description?.value);
     if (this.dataset.id === undefined) {
       // new
+      const formData: FormData = new FormData();
+      formData.append('name', this.name?.value);
+      formData.append('description', this.description?.value);
       formData.append('file', this.file?.value);
       this.backendApiService.postItem(this.url, formData, undefined, this.datasetForm)
           .subscribe((data: ApiResponse): void => {
@@ -82,7 +82,9 @@ export class DatasetEditComponent implements OnInit  {
           });
     } else {
       // edit
-      this.backendApiService.putItem(this.url, formData, undefined, this.datasetForm)
+      this.dataset.name = this.name?.value;
+      this.dataset.description = this.description?.value;
+      this.backendApiService.putItem(this.url, this.dataset, undefined, this.datasetForm)
           .subscribe((data: ApiResponse): void => {
             this.loading = false;
             if (!data.error) {
