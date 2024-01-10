@@ -11,6 +11,7 @@ import { MatProgressBarModule }                     from '@angular/material/prog
 import { MatTabsModule }                 from '@angular/material/tabs';
 import { MatToolbarModule }       from '@angular/material/toolbar';
 import { MatTooltipModule }                            from '@angular/material/tooltip';
+import { ActivatedRoute, ActivatedRouteSnapshot }      from '@angular/router';
 import { Network, DataSet, Data, Edge, Node, Options } from 'vis-network';
 import { getById, getByKey }                           from '../../../helpers/utils';
 import { Dataset }                                     from '../../../models/aixm/dataset';
@@ -41,12 +42,14 @@ import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.compo
 export class BrowserComponent implements OnInit {
   @ViewChild('graphContainer', { static: true }) graphContainer!: ElementRef;
   private network: Network | undefined;
-  private url: string = 'aixm/datasets';
+  private urlDatasets: string = 'aixm/datasets';
+  private urlDatasetFeatures: string = 'aixm/dataset_features';
   loading: boolean = false;
   searchText: string = '';
   datasets: Dataset[] = [];
   dataset: Dataset | undefined;
   feature: Feature | undefined;
+  datasetFeature: DatasetFeature | undefined;
   datasetFeatures: DatasetFeature[] = [];
   viewLayout: 'browser' | 'graph' | 'combined' = 'browser';
   pageEvent: PageEvent = new PageEvent();
@@ -58,30 +61,51 @@ export class BrowserComponent implements OnInit {
   constructor(
       private backendApiService: BackendApiService,
       private matDialog: MatDialog,
-      private settingsService: SettingsService
+      private settingsService: SettingsService,
+      private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    // @ts-ignore
-    this.viewLayout = this.settingsService.getValue('BROWSER_LAYOUT', this.viewLayout);
-    this.refreshDatasets();
+    // layout
+    if (this.route.snapshot.queryParamMap.get('layout')) {
+      let layout = this.route.snapshot.queryParamMap.get('layout');
+      if (layout === 'browser' || layout === 'graph' || layout === 'combined') {
+        this.viewLayout = layout;
+        this.settingsService.setValue('BROWSER_LAYOUT', this.viewLayout);
+      }
+    } else {
+      // @ts-ignore
+      this.viewLayout = this.settingsService.getValue('BROWSER_LAYOUT', this.viewLayout);
+    }
+      // dataset
+    if (this.route.snapshot.queryParamMap.get('dataset')) {
+      let dataset: Dataset = new Dataset();
+      dataset.id = Number(this.route.snapshot.queryParamMap.get('dataset'));
+      this.datasetClick(dataset);
+    } else {
+      this.refreshDatasets();
+    }
   }
 
   refresh() {
-    if (this.feature){
-      this.refreshDatasetFeatures(this.feature);
+    if (this.datasetFeature){
+      this.refreshDatasetFeature(this.datasetFeature);
     } else {
-      if (this.dataset) {
-        this.refreshFeaturesList(this.dataset);
+      if (this.feature) {
+        this.refreshDatasetFeatures(this.feature);
       } else {
-        this.refreshDatasets();
+        if (this.dataset) {
+          this.refreshFeaturesList(this.dataset);
+        } else {
+          this.refreshDatasets();
+        }
       }
     }
   }
 
   refreshDatasets(): void {
     this.loading = true;
-    this.backendApiService.getData(`${this.url}?${this.getPagingUrl()}`+ (this.searchText ? '&search=' + this.searchText : ''))
+    this.backendApiService.getData(`${this.urlDatasets}?${this.getPagingUrl()}`+ (this.searchText ? '&search=' + this.searchText : ''))
         .subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
@@ -98,7 +122,7 @@ export class BrowserComponent implements OnInit {
 
   refreshFeaturesList(dataset: Dataset): void {
     this.loading = true;
-    this.backendApiService.getData(`${this.url}/${this.dataset?.id}/features_list?with=datasetfeature.feature&${this.getPagingUrl()
+    this.backendApiService.getData(`${this.urlDatasets}/${this.dataset?.id}/features_list?with=datasetfeature.feature&${this.getPagingUrl()
     }` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
@@ -120,13 +144,12 @@ export class BrowserComponent implements OnInit {
   refreshDatasetFeatures(feature: Feature): void {
     this.loading = true;
     this.clearGraph();
-    this.backendApiService.getData(`${this.url}/${this.dataset?.id}/features_list/${feature.id
+    this.backendApiService.getData(`${this.urlDatasets}/${this.dataset?.id}/features_list/${feature.id
     }?with=datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property&${this.getPagingUrl()
     }` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
-
         this.datasetFeatures = data.data.map((x: DatasetFeature): DatasetFeature => {
           const datasetFeature: DatasetFeature = Object.assign(new DatasetFeature(), x);
           const nodes: Node[] = datasetFeature.getNodes();
@@ -135,7 +158,6 @@ export class BrowserComponent implements OnInit {
               this.nodes.push(node);
             }
           });
-          // this.nodes.push(...datasetFeature.getUniqNodes(this.nodes));
           this.edges.push(...datasetFeature.edges);
           return datasetFeature;
         });
@@ -143,12 +165,37 @@ export class BrowserComponent implements OnInit {
       this.loading = false;
       this.redrawGraph();
     });
+  }
 
+  refreshDatasetFeature(datasetFeature: DatasetFeature): void {
+    this.loading = true;
+    this.clearGraph();
+    this.backendApiService.getData(`${this.urlDatasetFeatures}/${datasetFeature.id
+    }?with=datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property`
+    ).subscribe((data: ApiResponse): void => {
+      console.log(data);
+      this.resetPageState();
+      if (data.data) {
+        const datasetFeature: DatasetFeature = Object.assign(new DatasetFeature(), data.data);
+        this.datasetFeature = datasetFeature;
+        this.datasetFeatures = [ datasetFeature ];
+        const nodes: Node[] = datasetFeature.getNodes();
+        nodes.forEach((node: Node): void => {
+          if (this.nodes.findIndex((n:Node): boolean => n.id === node.id) === -1) {
+            this.nodes.push(node);
+          }
+        });
+        this.edges.push(...datasetFeature.edges);
+      }
+      this.loading = false;
+      this.redrawGraph();
+    });
   }
 
   datasetClick(dataset: Dataset): void {
     this.dataset = dataset;
     this.feature = undefined;
+    this.datasetFeature = undefined;
     this.datasetFeatures = [];
     this.pageEvent = new PageEvent();
     this.refreshFeaturesList(dataset);
@@ -156,8 +203,14 @@ export class BrowserComponent implements OnInit {
 
   featureClick(feature: Feature): void {
     this.feature = feature;
+    this.datasetFeature = undefined;
     this.pageEvent = new PageEvent();
     this.refreshDatasetFeatures(feature);
+  }
+
+  datasetFeatureClick(datasetFeature: DatasetFeature): void {
+    this.datasetFeature = datasetFeature;
+    this.refreshDatasetFeature(datasetFeature);
   }
 
   clearGraph(): void {
@@ -224,6 +277,18 @@ export class BrowserComponent implements OnInit {
         if (!this.feature) {
           console.log(this.dataset.featureLists);
           this.feature = getByKey(this.dataset.featureLists, 'featureId', params.nodes[0]).feature;
+        } else {
+          let id: string = String(params.nodes[0]);
+          const n: number = id.lastIndexOf('_');
+          if (n !== -1) {
+            id = id.substring(0, n);
+          }
+          let datasetFeature: DatasetFeature = getById(this.datasetFeatures, id);
+          if (!datasetFeature) {
+            datasetFeature = new DatasetFeature();
+            datasetFeature.id = Number(id);
+          }
+          this.datasetFeature = datasetFeature;
         }
       }
       this.refresh();
@@ -262,6 +327,11 @@ export class BrowserComponent implements OnInit {
     this.viewLayout=$event;
     this.settingsService.setValue('BROWSER_LAYOUT', this.viewLayout);
 
+  }
+
+  resetPageState(): void {
+    this.pageEvent.pageSize = 0;
+    this.pageEvent.length = 0;
   }
 
   storePageState(data: ApiResponse): void {

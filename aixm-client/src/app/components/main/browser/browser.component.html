@@ -8,8 +8,8 @@
 
     <mat-toolbar>
         <mat-toolbar-row style="padding: 0">
-            <button mat-stroked-button class="tbr-btn" matTooltip="New" (click)="addDataset()" ><mat-icon>add</mat-icon></button>
-            <button mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
+            <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="New" (click)="addDataset()" ><mat-icon>add</mat-icon></button>
+            <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
             <ng-container *ngIf="dataset">
                 <button mat-button (click)="goDatasets()">
                     <mat-icon style="transform: rotate(-90deg)">turn_right</mat-icon>
@@ -28,6 +28,15 @@
                         <app-aixm-icon [feature]="feature" [width]="18"></app-aixm-icon>
                     </mat-icon>
                     <span>{{feature?.name}}</span>
+                </button>
+            </ng-container>
+            <ng-container *ngIf="datasetFeature">
+                <span>/</span>
+                <button mat-button (click)="datasetFeatureClick(datasetFeature)">
+                    <mat-icon>
+                        <app-aixm-icon [feature]="datasetFeature.feature ? datasetFeature.feature : feature" [width]="18"></app-aixm-icon>
+                    </mat-icon>
+                    <span>{{datasetFeature.gmlIdValue}}</span>
                 </button>
             </ng-container>
             <div style="display: flex; flex-grow: 1"></div>
@@ -60,7 +69,11 @@
                 <app-feature style="flex: 0.7;" *ngFor="let f of dataset.featureLists" [featureList]="f" (cardClick)="featureClick($event)"></app-feature>
             </div>
             <div *ngIf="feature" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
-                <app-dataset-feature style="flex: 0.7;" *ngFor="let df of datasetFeatures" [feature]="feature" [datasetFeature]="df"></app-dataset-feature>
+                <app-dataset-feature style="flex: 0.7;" *ngFor="let df of datasetFeatures"
+                                     [feature]="df.feature"
+                                     [datasetFeature]="df"
+                                     (cardClick)="datasetFeatureClick($event)"
+                ></app-dataset-feature>
             </div>
         </div>
         <div #graphContainer class="browser-panel" [ngStyle]="{

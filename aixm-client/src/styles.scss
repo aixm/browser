@@ -2,21 +2,50 @@
 
 // define theme
 @use '@angular/material' as mat;
-$my-primary: mat.define-palette(mat.$indigo-palette, 500);
-$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$my-warn: mat.define-palette(mat.$red-palette);
-$my-theme: mat.define-light-theme((
-        color: (
-                primary: $my-primary,
-                accent: $my-accent,
-                warn: $my-warn,
-        )
-));
-// define theme
 @use '@ng-matero/extensions' as mtx;
-@include mtx.all-component-themes($my-theme);
 
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@include mat.core();
+
+// Define a dark theme
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: mat.define-palette(mat.$pink-palette),
+    accent: mat.define-palette(mat.$blue-grey-palette),
+    warn: mat.define-palette(mat.$red-palette),
+  ),
+  // Only include `typography` and `density` in the default dark theme.
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+// Define a light theme
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: mat.define-palette(mat.$indigo-palette),
+    accent: mat.define-palette(mat.$pink-palette),
+    warn: mat.define-palette(mat.$red-palette),
+  ),
+));
+
+$current-theme: $light-theme;
+//$current-theme: $dark-theme;
+
+// Apply the dark theme by default
+@include mat.all-component-themes($current-theme);
+@include mtx.all-component-themes($current-theme);
+
+/*// Apply the light theme only when the user prefers light themes.
+@media (prefers-color-scheme: light) {
+  // Use the `-color` mixins to only apply color styles without reapplying the same
+  // typography and density styles.
+//  @include mat.all-component-colors($light-theme);
+//  @include mtx.all-component-colors($light-theme);
+  $current-theme: $light-theme;
+  // Apply the dark theme by default
+  @include mat.all-component-colors($current-theme);
+  @include mtx.all-component-colors($current-theme);
+}*/
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -25,22 +54,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   min-height: calc(100% - 100px);
   min-height: -moz-calc(100% - 100px);
   min-height: -webkit-calc(100% - 100px);
-  background: white;
   padding: 1em;
 }
 .page-title {
-  font-size: x-large;
-  font-weight: bold;
+  font-size: large;
 }
 .page-subtitle {
-  font-size: large;
-  color: #2B2A29;
+  font-size: medium;
+  font-style: italic;
+  margin-bottom: 0.5em;
 }
 
 .table-grid {
-  max-height: calc(100vh - 135px);
-  max-height: -moz-calc(100vh - 135px);
-  max-height: -webkit-calc(100vh - 135px);
+  max-height: calc(100vh - 140px);
+  max-height: -moz-calc(100vh - 140px);
+  max-height: -webkit-calc(100vh - 140px);
 }
 
 .tbr-btn {

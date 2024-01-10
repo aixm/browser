@@ -6,6 +6,7 @@ import { MatCardModule }           from '@angular/material/card';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule }           from '@angular/material/icon';
 import { PageEvent }                    from '@angular/material/paginator';
+import { Router }                       from '@angular/router';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { getTitle }                     from '../../../helpers/utils';
 import { Dataset }                      from '../../../models/aixm/dataset';
@@ -104,6 +105,7 @@ export class DatasetsComponent implements OnInit {
   constructor(
       private backendApiService: BackendApiService,
       private matDialog: MatDialog,
+      private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -163,9 +165,11 @@ export class DatasetsComponent implements OnInit {
   }
 
   graph(dataset: Dataset): void {
+    this.router.navigate(['browser'], {queryParams: {layout: 'graph', dataset: dataset.id}});
   }
 
   browse(dataset: Dataset): void {
+    this.router.navigate(['browser'], {queryParams: {layout: 'browser', dataset: dataset.id}});
   }
 
   storePageState(data: ApiResponse): void {

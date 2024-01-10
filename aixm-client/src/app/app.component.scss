@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@import '../styles.scss';
+
 .main-container {
   height: 100%;
   margin: 0px;
@@ -11,7 +14,7 @@
 }
 
 .active-route {
-  background: #3f51b5;
+  background: mat.get-theme-color($current-theme, primary, default);
   color: white;
   mat-icon {
     color: white;

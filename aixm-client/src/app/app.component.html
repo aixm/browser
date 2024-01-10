@@ -48,11 +48,15 @@
     <mat-drawer-content style="overflow-y: hidden">
         <mat-toolbar color="primary" style="z-index: 5001">
             <mat-toolbar-row style="padding-left: 0.3em">
-                <button mat-icon-button style="margin-right: 0.3em" matTooltip="Show Menu" (click)="drawer.open()">
+                <button mat-icon-button style="margin-right: 0.3em" matTooltip="Show menu" (click)="drawer.open()">
                     <mat-icon>menu</mat-icon>
                 </button>
                 <label>{{ title }}</label>
                 <span style="font-size: small">&nbsp;v{{ version }}</span>
+                <div class="flex-full-row"></div>
+                <button mat-icon-button matTooltip="Login">
+                    <mat-icon>login</mat-icon>
+                </button>
             </mat-toolbar-row>
         </mat-toolbar>
         <router-outlet></router-outlet>

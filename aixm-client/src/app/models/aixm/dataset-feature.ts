@@ -19,7 +19,7 @@ export class DatasetFeature {
   getNodes(): Node[] {
     let result: Node[] = [];
     this.addFeatureNode(result, this);
-    this.datasetFeatureProperties.filter((p: DatasetFeatureProperty):boolean => (p.xlinkHref!==''))
+    this.datasetFeatureProperties.filter((p: DatasetFeatureProperty): boolean => (p.xlinkHref!==''))
         .forEach((dfp: DatasetFeatureProperty): void=>{
           const id: string = this.id+'_'+dfp.id;
           result.push({id: id, label: dfp.property?.name, color: '#ff4081'})

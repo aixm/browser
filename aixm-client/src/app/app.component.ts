@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule }                           from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import packageInfo                                    from '../../package.json';
 import { getTitle } from './helpers/utils';
@@ -14,7 +15,7 @@ import { getTitle } from './helpers/utils';
   standalone: true,
   imports: [
     CommonModule, RouterOutlet, MatToolbarModule, MatSidenavModule, MatIconModule, MatButtonModule, RouterLink, RouterLinkActive,
-    MatListModule,
+    MatListModule, MatTooltipModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
