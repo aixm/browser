@@ -54,6 +54,8 @@
                 <label>{{ title }}</label>
                 <span style="font-size: small">&nbsp;v{{ version }}</span>
                 <div class="flex-full-row"></div>
+                <app-theme-switcher [themeOptions]="themeOptions$ | async" (themeChange)="themeChangeHandler($event)">
+                </app-theme-switcher>
                 <button mat-icon-button matTooltip="Login">
                     <mat-icon>login</mat-icon>
                 </button>
