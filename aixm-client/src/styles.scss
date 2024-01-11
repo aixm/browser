@@ -31,8 +31,9 @@ $current-theme: $light-theme;
 //$current-theme: $dark-theme;
 
 // Apply the dark theme by default
-@include mat.all-component-themes($current-theme);
-@include mtx.all-component-themes($current-theme);
+//@include mat.all-component-themes($current-theme);
+//@include mtx.all-component-themes($current-theme);
+//@include mtx.all-component-themes($current-theme);
 
 /*// Apply the light theme only when the user prefers light themes.
 @media (prefers-color-scheme: light) {

@@ -7,7 +7,13 @@
                   [showToolbar]="true"
                   [showColumnMenuButton]="false"
                   [toolbarTemplate]="toolbarTpl"
-                  [pageSizeOptions]="[5,10,15]"
+                  [pageOnFront]="false"
+                  (page)="handlePageEvent($event)"
+                  [length]="pageEvent.length"
+                  [pageSize]="pageEvent.pageSize"
+                  [showFirstLastButtons]="true"
+                  [pageSizeOptions]= "pageSizeOptions"
+                  [pageIndex]="pageEvent.pageIndex"
                   [loading]="loading">
         </mtx-grid>
         <ng-template #toolbarTpl>
