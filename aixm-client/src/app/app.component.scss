@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@import '../styles.scss';
+
 .main-container {
   height: 100%;
   margin: 0px;
@@ -10,11 +13,10 @@
   padding: 0.75rem;
 }
 
-
+/*
 .active-route {
-  // background: mat.get-theme-color($current-theme, primary, default);
-  background: var(--mat-badge-background-color);
-  color: var(--mat-badge-text-color);
+  background: mat.get-theme-color($current-theme, primary, default);
+  color: white;
   mat-icon {
     color: white;
   }
@@ -22,4 +24,4 @@
     color: white;
   }
 }
-
+*/

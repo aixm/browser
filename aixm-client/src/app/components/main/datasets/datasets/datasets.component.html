@@ -2,22 +2,11 @@
     <div class="page-title">Datasets</div>
     <div class="page-subtitle">Management of AIXM Datasets</div>
     <div>
-        <mtx-grid class="table-grid" #grid
-                  [data]="datasets"
-                  [columns]="columns"
-                  [cellTemplate]="{user: userTpl}"
+        <mtx-grid class="table-grid" [data]="datasets"
+                  [columns]="defaultColumns"
                   [showToolbar]="true"
+                  [showColumnMenuButton]="false"
                   [toolbarTemplate]="toolbarTpl"
-                  [showColumnMenuButton]="true"
-                  [columnMenuButtonIcon]="'settings'"
-                  [columnMenuButtonText]="' '"
-                  [columnMenuButtonType]="'stroked'"
-                  [columnMenuButtonColor]="'primary'"
-                  [columnMenuButtonClass]="'tbr-btn'"
-                  [showColumnMenuHeader]="true"
-                  [columnMenuHeaderText]="columnMenuHeaderText"
-                  [showColumnMenuFooter]="true"
-                  [columnMenuFooterTemplate]="menuFooter"
                   [pageOnFront]="false"
                   (page)="handlePageEvent($event)"
                   [length]="pageEvent.length"
@@ -28,21 +17,9 @@
                   [loading]="loading">
         </mtx-grid>
         <ng-template #toolbarTpl>
-            <button *ngIf="authService.User?.role==='admin'" mat-stroked-button color="primary" class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
+            <button mat-stroked-button color="primary" class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
             <button mat-stroked-button color="primary" class="tbr-btn" matTooltip="Refresh" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
             <input class="tbr-btn" placeholder="Search" type="search" [(ngModel)]="searchText" (search)="refresh()">
-        </ng-template>
-        <ng-template #userTpl let-row let-index="index">
-            <ng-container *ngIf="row.user">
-                <div>{{ row.user.firstName + ' ' + row.user.lastName }}</div>
-                <div>{{ row.user.email }}</div>
-            </ng-container>
-        </ng-template>
-        <ng-template #menuFooter>
-            <div style="display: flex; justify-content: flex-end">
-                <button class="tbr-btn" color="accent" mat-stroked-button (click)="closeMenu()"><mat-icon>cancel</mat-icon>Cancel</button>
-                <button class="tbr-btn" color="primary" mat-stroked-button><mat-icon>save</mat-icon>Save</button>
-            </div>
         </ng-template>
     </div>
 </div>

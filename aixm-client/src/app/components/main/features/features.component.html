@@ -2,22 +2,12 @@
     <div class="page-title">AIXM Features</div>
     <div class="page-subtitle">Management of AIXM Features and Objects</div>
     <div>
-        <mtx-grid class="table-grid" #grid
-                  [data]="features"
-                  [columns]="columns"
+        <mtx-grid class="table-grid" [data]="features"
+                  [columns]="defaultColumns"
                   [cellTemplate]="{icon: iconTpl, color: colorTpl}"
                   [showToolbar]="true"
+                  [showColumnMenuButton]="false"
                   [toolbarTemplate]="toolbarTpl"
-                  [showColumnMenuButton]="true"
-                  [columnMenuButtonIcon]="'settings'"
-                  [columnMenuButtonText]="' '"
-                  [columnMenuButtonType]="'stroked'"
-                  [columnMenuButtonColor]="'primary'"
-                  [columnMenuButtonClass]="'tbr-btn'"
-                  [showColumnMenuHeader]="true"
-                  [columnMenuHeaderText]="columnMenuHeaderText"
-                  [showColumnMenuFooter]="true"
-                  [columnMenuFooterTemplate]="menuFooter"
                   [pageOnFront]="false"
                   (page)="handlePageEvent($event)"
                   [length]="pageEvent.length"
@@ -29,15 +19,9 @@
         </mtx-grid>
 
         <ng-template #toolbarTpl>
-            <button *ngIf="authService.User?.role === 'admin'" color="primary" mat-stroked-button class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
+            <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
             <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
             <input class="tbr-btn" placeholder="Search" type="search" [(ngModel)]="searchText" (search)="refresh()">
-        </ng-template>
-        <ng-template #menuFooter>
-            <div style="display: flex; justify-content: flex-end">
-                <button class="tbr-btn" color="accent" mat-stroked-button (click)="closeMenu()"><mat-icon>cancel</mat-icon>Cancel</button>
-                <button class="tbr-btn" color="primary" mat-stroked-button><mat-icon>save</mat-icon>Save</button>
-            </div>
         </ng-template>
         <ng-template #colorTpl let-row let-index="index">
             <div style="border-radius: 5px; width: 3em; height: 3em"
@@ -46,8 +30,6 @@
         </ng-template>
         <ng-template #iconTpl let-row let-index="index">
             <app-aixm-icon [feature]="row"></app-aixm-icon>
-            <!--<mat-icon color="primary" [svgIcon]="row.abbreviation" style="width:64px;height:64px"></mat-icon>-->
-            <!--<mat-icon [svgIcon]="row.abbreviation" style="width:64px;height:64px"></mat-icon>-->
         </ng-template>
     </div>
 </div>
