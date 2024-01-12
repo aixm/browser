@@ -12,6 +12,7 @@ export class FeatureList {
       id: this.feature.id,
       label: `${this.feature?.abbreviation} (${this.count})`,
       shape: 'image',
+      size: 15,
       image: getFeatureImagePath(this.feature),
       brokenImage: getFeatureDefaultImagePath()
     };

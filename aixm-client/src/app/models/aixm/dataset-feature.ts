@@ -37,6 +37,7 @@ export class DatasetFeature {
       id: datasetFeature.id,
       label: datasetFeature.feature?.abbreviation,
       shape: 'image',
+      size: 15,
       image: getFeatureImagePath(datasetFeature.feature),
       brokenImage: getFeatureDefaultImagePath()
     });
