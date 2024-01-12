@@ -1,18 +1,19 @@
-import { CommonModule }                                        from '@angular/common';
-import { Component, forwardRef, OnInit, ViewEncapsulation }    from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule }                                                from '@angular/common';
+import { Component, forwardRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule }         from '@angular/forms';
 import { MatButtonModule }                                     from '@angular/material/button';
 import { MatButtonToggleModule }                               from '@angular/material/button-toggle';
 import { MatCardModule }                        from '@angular/material/card';
+import { MatCheckboxModule }                                           from '@angular/material/checkbox';
 import { MatFormFieldModule }                                  from '@angular/material/form-field';
 import { MatIconModule }                        from '@angular/material/icon';
 import { MatInputModule }                from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatToolbarModule }              from '@angular/material/toolbar';
 import { MatTooltipModule }                                    from '@angular/material/tooltip';
-import { MtxButtonModule }                      from '@ng-matero/extensions/button';
-import { MtxGridColumn, MtxGridModule }         from '@ng-matero/extensions/grid';
-import { ApiResponse }                          from '../../../models/api-response';
+import { MtxButtonModule }                       from '@ng-matero/extensions/button';
+import { MtxGrid, MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
+import { ApiResponse }                           from '../../../models/api-response';
 import { Feature }                              from '../../../models/aixm/feature';
 import { PipesModule }                                         from '../../../pipes/pipes.module';
 import { BackendApiService }                    from '../../../services/backend-api.service';
@@ -22,16 +23,19 @@ import { AixmIconComponent }                                   from '../../commo
 @Component({
   selector: 'app-features',
   standalone: true,
-  imports: [
+  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule,
+    AixmIconComponent],
+/*  imports: [
     CommonModule, FeatureComponent, FormsModule, MatIconModule, MtxGridModule, MatCardModule, MtxButtonModule, MatButtonModule,
     ReactiveFormsModule,
     PipesModule, AixmIconComponent, MatButtonToggleModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatTooltipModule,
-    MatPaginatorModule,
-  ],
+    MatPaginatorModule, MatCheckboxModule
+  ],*/
   templateUrl: './features.component.html',
   styleUrl: './features.component.scss',
 })
 export class FeaturesComponent implements OnInit {
+  @ViewChild('grid') grid!: MtxGrid;
   private url: string = 'aixm/features';
   loading: boolean = false;
   searchText: string = '';
@@ -114,6 +118,10 @@ export class FeaturesComponent implements OnInit {
       }
       this.loading = false;
     });
+  }
+
+  closeMenu() {
+    this.grid.columnMenu.menuTrigger.closeMenu();
   }
 
   add(): void {

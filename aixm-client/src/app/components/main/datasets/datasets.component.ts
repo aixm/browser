@@ -1,4 +1,4 @@
-import { Component, OnInit }            from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule }                 from '@angular/common';
 import { FormsModule }                  from '@angular/forms';
 import { MatButtonModule }              from '@angular/material/button';
@@ -6,9 +6,9 @@ import { MatCardModule }           from '@angular/material/card';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule }           from '@angular/material/icon';
 import { PageEvent }                    from '@angular/material/paginator';
-import { Router }                       from '@angular/router';
-import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
-import { getTitle }                     from '../../../helpers/utils';
+import { Router }                                from '@angular/router';
+import { MtxGrid, MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
+import { getTitle }                              from '../../../helpers/utils';
 import { Dataset }                      from '../../../models/aixm/dataset';
 import { Feature }                      from '../../../models/aixm/feature';
 import { ApiResponse }                  from '../../../models/api-response';
@@ -25,6 +25,7 @@ import { DatasetEditComponent } from '../../common/dialogs/dataset-edit/dataset-
   styleUrl: './datasets.component.scss'
 })
 export class DatasetsComponent implements OnInit {
+  @ViewChild('grid') grid!: MtxGrid;
   private url: string = 'aixm/datasets';
   loading: boolean = false;
   searchText: string = '';
@@ -123,6 +124,10 @@ export class DatasetsComponent implements OnInit {
       }
       this.loading = false;
     });
+  }
+
+  closeMenu() {
+    this.grid.columnMenu.menuTrigger.closeMenu();
   }
 
   add(): void {

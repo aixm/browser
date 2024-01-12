@@ -92,4 +92,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 mat-card-header {
   color: var(--mat-card-subtitle-text-color);
 }
-
+// mtx grid column settings header
+.mat-mdc-menu-content {
+  color: var(--mat-table-header-headline-color);
+}
