@@ -1,11 +1,11 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title>AIXM Dataset {{dataset?.id?(data.disableForm?'View':'Edit'):'Create'}}</mat-card-title>
+        <mat-card-title>AIXM Dataset {{dataset.id ? (data.disableForm?'View':'Edit') : 'Create'}}</mat-card-title>
         <div class="flex-full-row"></div>
         <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
             <mat-icon>close</mat-icon>
         </button>
-        <mat-card-subtitle>AIXM Dataset parameters {{dataset?.id?(data.disableForm?'viewing':'editing'):'creating'}}</mat-card-subtitle>
+        <mat-card-subtitle>AIXM Dataset parameters {{dataset.id ? (data.disableForm?'viewing':'editing') : 'creating'}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <div class="pg-bar">

@@ -18,7 +18,7 @@
                 <span>/</span>
                 <button mat-button (click)="datasetClick(dataset)">
                     <mat-icon>storage</mat-icon>
-                    <span>{{dataset?.name}}</span>
+                    <span>{{dataset.name}}</span>
                 </button>
             </ng-container>
             <ng-container *ngIf="feature">
@@ -27,7 +27,7 @@
                     <mat-icon>
                         <app-aixm-icon [feature]="feature" [width]="18"></app-aixm-icon>
                     </mat-icon>
-                    <span>{{feature?.name}}</span>
+                    <span>{{feature.name}}</span>
                 </button>
             </ng-container>
             <ng-container *ngIf="datasetFeature">
