@@ -10,23 +10,78 @@ export class DatasetFeature {
   gmlIdValue!: string;
   gmlIdentifierValue!: string;
   feature: Feature | undefined;
-  referenceToFeaturesCount!:number;
-  referencedByFeaturesCount!:number;
+ // referenceToFeaturesCount!:number;
+ // referencedByFeaturesCount!:number;
   datasetFeatureProperties: DatasetFeatureProperty[] = [];
+  referenceToFeatures: DatasetFeature[] = [];
   referencedByFeatures: DatasetFeature[] = [];
+  toFeatures: Feature[] | undefined;
+  byFeatures: Feature[] | undefined;
   edges: Edge[] = [];
+  label: string | undefined;
+
+
+  getLabel(): string {
+    if (this.label) {
+      return this.label;
+    } else {
+      let fallbackLabel: string = this.feature?.abbreviation ? this.feature?.abbreviation : '';
+      let label: string = '';
+      this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty):void => {
+        if (dfp.property?.isIdentifying && dfp.value) {
+          label += dfp.value + ' ';
+        }
+      });
+      return label.length>0 ? label : fallbackLabel;
+    }
+  }
+
+  getReferenceToFeaturesCount(): number {
+    return this.referenceToFeatures.length;
+  }
+
+  getReferencedByFeaturesCount(): number {
+    return this.referencedByFeatures.length;
+  }
+
+  getReferenceToFeatures(): Feature[] {
+    if (!this.toFeatures) {
+      this.toFeatures = [];
+      this.referenceToFeatures.forEach((df: DatasetFeature): void => {
+        if (df.feature) {
+          if (this.toFeatures?.findIndex((f: Feature): boolean => f.id === df.feature?.id) === -1) {
+            this.toFeatures.push(df.feature);
+          }
+        }
+      });
+    }
+    return this.toFeatures;
+  }
+
+  getReferencedByFeatures(): Feature[] {
+    if (!this.byFeatures) {
+      this.byFeatures = [];
+      this.referencedByFeatures.forEach((df: DatasetFeature): void => {
+        if (df.feature) {
+          if (this.byFeatures?.findIndex((f: Feature): boolean => f.id === df.feature?.id) === -1) {
+            this.byFeatures.push(df.feature);
+          }
+        }
+      });
+    }
+    return this.byFeatures;
+  }
+
 
   getNodes(): Node[] {
     let result: Node[] = [];
     this.addFeatureNode(result, this);
-    this.datasetFeatureProperties.filter((p: DatasetFeatureProperty): boolean => (p.xlinkHref!==''))
-        .forEach((dfp: DatasetFeatureProperty): void=>{
-          const id: string = this.id+'_'+dfp.id;
-          result.push({id: id, label: dfp.property?.name, color: '#ff4081'})
-          this.edges.push({from: this.id, to: id, title: dfp.xlinkHref, arrows: 'to', color: '#ff4081'});
-        });
+    this.referenceToFeatures.forEach((df: DatasetFeature): void => {
+      result = this.addFeatureNode(result, Object.assign(new DatasetFeature(), df));
+      this.edges.push({from: this.id, to: df.id, arrows: 'to', color: '#ff4081'});
+    });
     this.referencedByFeatures.forEach((df: DatasetFeature): void => {
-      result = this.addFeatureNode(result, df);
+      result = this.addFeatureNode(result, Object.assign(new DatasetFeature(), df));
       this.edges.push({from: this.id, to: df.id, arrows: 'from', color: '#3f51b5'});
     });
     return result;
@@ -35,7 +90,7 @@ export class DatasetFeature {
   addFeatureNode(nodes: Node[], datasetFeature: DatasetFeature): Node[] {
     nodes.push({
       id: datasetFeature.id,
-      label: datasetFeature.feature?.abbreviation,
+      label: datasetFeature.getLabel(),
       shape: 'image',
       size: 15,
       image: getFeatureImagePath(datasetFeature.feature),
@@ -44,5 +99,32 @@ export class DatasetFeature {
     return nodes;
   }
 
+
+
+
+
+
+
+
+
+  // deprecated
+  getReferenceUniqFeatures(): Feature[] {
+    let features: Feature[] = [];
+    this.referenceToFeatures.forEach((df: DatasetFeature):void => {
+      if (df.feature) {
+        if (features.findIndex((f: Feature): boolean => f.id === df.feature?.id) === -1) {
+          features.push(df.feature);
+        }
+      }
+    });
+    this.referencedByFeatures.forEach((df: DatasetFeature):void => {
+      if (df.feature) {
+        if (features.findIndex((f: Feature): boolean => f.id === df.feature?.id) === -1) {
+          features.push(df.feature);
+        }
+      }
+    });
+    return features;
+  }
 }
 

@@ -150,17 +150,8 @@ export class BrowserComponent implements OnInit {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
-        this.datasetFeatures = data.data.map((x: DatasetFeature): DatasetFeature => {
-          const datasetFeature: DatasetFeature = Object.assign(new DatasetFeature(), x);
-          const nodes: Node[] = datasetFeature.getNodes();
-          nodes.forEach((node: Node): void => {
-            if (this.nodes.findIndex((n:Node): boolean => n.id === node.id) === -1) {
-              this.nodes.push(node);
-            }
-          });
-          this.edges.push(...datasetFeature.edges);
-          return datasetFeature;
-        });
+        this.datasetFeatures = data.data.map((x: DatasetFeature): DatasetFeature => Object.assign(new DatasetFeature(), x));
+        this.processNodesAndEdges();
       }
       this.loading = false;
       this.redrawGraph();
@@ -179,13 +170,7 @@ export class BrowserComponent implements OnInit {
         const datasetFeature: DatasetFeature = Object.assign(new DatasetFeature(), data.data);
         this.datasetFeature = datasetFeature;
         this.datasetFeatures = [ datasetFeature ];
-        const nodes: Node[] = datasetFeature.getNodes();
-        nodes.forEach((node: Node): void => {
-          if (this.nodes.findIndex((n:Node): boolean => n.id === node.id) === -1) {
-            this.nodes.push(node);
-          }
-        });
-        this.edges.push(...datasetFeature.edges);
+        this.processNodesAndEdges();
       }
       this.loading = false;
       this.redrawGraph();
@@ -265,6 +250,18 @@ export class BrowserComponent implements OnInit {
       this.onGraphClick(params);
     });
 
+  }
+
+  processNodesAndEdges(): void {
+    this.datasetFeatures.forEach((df: DatasetFeature): void => {
+      const nodes: Node[] = df.getNodes();
+      nodes.forEach((node: Node): void => {
+        if (this.nodes.findIndex((n:Node): boolean => n.id === node.id) === -1) {
+          this.nodes.push(node);
+        }
+      });
+      this.edges.push(...df.edges);
+    });
   }
 
   onGraphClick(params: any): void {

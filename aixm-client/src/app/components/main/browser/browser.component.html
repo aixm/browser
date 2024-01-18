@@ -36,7 +36,7 @@
                     <mat-icon>
                         <app-aixm-icon [feature]="datasetFeature.feature ? datasetFeature.feature : feature" [width]="18"></app-aixm-icon>
                     </mat-icon>
-                    <span>{{datasetFeature.gmlIdValue}}</span>
+                    <span>{{datasetFeature.getLabel()}}</span>
                 </button>
             </ng-container>
             <div style="display: flex; flex-grow: 1"></div>
@@ -74,6 +74,7 @@
                                      [datasetFeature]="df"
                                      (cardClick)="datasetFeatureClick($event)"
                 ></app-dataset-feature>
+                <!--(cardClick)="datasetFeatureClick($event)"-->
             </div>
         </div>
         <div #graphContainer class="browser-panel" [ngStyle]="{

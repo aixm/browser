@@ -1,27 +1,19 @@
-<mat-card class="mat-card-dataset-feature" [ngStyle]="{
+<mat-card class="mat-card-dataset-feature">
+    <mat-card-header [ngStyle]="{
     cursor: (cardClick.observers.length > 0) ? 'pointer' : ''
     }" (click)="click()">
-    <mat-card-header>
         <app-aixm-icon [feature]="feature" [matCardAvatar]="true"></app-aixm-icon>
         <mat-card-title>{{feature?.abbreviation}}</mat-card-title>
-        <mat-card-subtitle>{{datasetFeature?.gmlIdentifierValue}}</mat-card-subtitle>
+        <mat-card-subtitle>{{datasetFeature?.getLabel()}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <div *ngFor="let dfp of datasetFeature?.datasetFeatureProperties">
-            <ng-container *ngIf="dfp.property?.isIdentifying">
-                <a *ngIf="dfp.xlinkHref" href="" (click)="xlink();false;">{{dfp.property?.name}}</a>
-                <span *ngIf="!dfp.xlinkHref">{{dfp.property?.name}} : {{dfp.value}}</span>
-            </ng-container>
+        <div *ngIf="datasetFeature?.getReferenceToFeaturesCount()" style="margin-top: 1em">References to features:</div>
+        <div class="aixm-feature-toggle-container">
+            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferenceToFeatures()" [feature]="f" [checked]="true"></app-aixm-feature-toggle>
+        </div>
+        <div *ngIf="datasetFeature?.getReferencedByFeaturesCount()" style="margin-top: 1em">Referenced by features:</div>
+        <div class="aixm-feature-toggle-container">
+            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferencedByFeatures()" [feature]="f" [checked]="true"></app-aixm-feature-toggle>
         </div>
     </mat-card-content>
-    <mat-card-actions style="justify-content: flex-end">
-        <button mat-stroked-button color="accent" [matBadgeHidden]="datasetFeature ? datasetFeature.referenceToFeaturesCount === 0 : true"
-                [matBadge]="datasetFeature ? datasetFeature.referenceToFeaturesCount : 0"
-                matBadgeColor="accent">
-            <mat-icon>output</mat-icon>Ref.To</button>
-        <button mat-stroked-button color="primary"
-                [matBadgeHidden]="datasetFeature ? datasetFeature.referencedByFeaturesCount === 0 : true"
-                [matBadge]="datasetFeature ? datasetFeature.referencedByFeaturesCount : 0">
-            <mat-icon>input</mat-icon>Ref.By</button>
-    </mat-card-actions>
 </mat-card>

@@ -24,12 +24,12 @@ class DatasetFeatureResource extends JsonResource
             'feature_id' => $this->feature_id,
             'gml_id_value' => $this->gml_id_value,
             'gml_identifier_value' => $this->gml_identifier_value,
-            'reference_to_features_count' => $this->reference_to_features_count,
-            'referenced_by_features_count' => $this->referenced_by_features_count,
+           // 'reference_to_features_count' => $this->reference_to_features_count,
+           // 'referenced_by_features_count' => $this->referenced_by_features_count,
             'dataset_feature_properties' => DatasetFeaturePropertyResource::collection($this->whenLoaded('dataset_feature_properties')),
             'dataset' => DatasetResource::make($this->whenLoaded('dataset')),
             'feature' => FeatureResource::make($this->whenLoaded('feature')),
-            //'reference_to_features' => DatasetFeatureResource::collection($this->reference_to_features),
+            'reference_to_features' => DatasetFeatureReferencesResource::collection($this->reference_to_features),
             'referenced_by_features' => DatasetFeatureReferencesResource::collection($this->referenced_by_features),
         ];
     }

@@ -24,8 +24,8 @@ class DatasetFeatureReferencesResource extends JsonResource
             'feature_id' => $this->feature_id,
             'gml_id_value' => $this->gml_id_value,
             'gml_identifier_value' => $this->gml_identifier_value,
-            'reference_to_features_count' => $this->reference_to_features_count,
-            'referenced_by_features_count' => $this->referenced_by_features_count,
+            //'reference_to_features_count' => $this->reference_to_features_count,
+           // 'referenced_by_features_count' => $this->referenced_by_features_count,
             'feature' => FeatureResource::make($this->whenLoaded('feature')),
             'dataset_feature_properties' => DatasetFeaturePropertyResource::collection($this->whenLoaded('dataset_feature_properties')),
         ];

@@ -11,7 +11,9 @@ class DatasetFeature extends AixmGraphModel
 {
     public $searchable = ['gml_id_value', 'gml_identifier_value'];
     // add additional attributes to the array
-    protected $appends = ['reference_to_features_count', 'reference_by_features_count', 'reference_by_features'];
+    // protected $appends = ['reference_to_features_count', 'reference_by_features_count', 'reference_to_features',
+    // 'reference_by_features'];
+    protected $appends = ['reference_to_features', 'reference_by_features'];
 
     ##################################################################################
     # Relations
@@ -49,6 +51,17 @@ class DatasetFeature extends AixmGraphModel
                     ['xlink_href', '<>',$this->gml_identifier_value]
                 ])->pluck('xlink_href')
             )->get()->count();
+    }
+
+    public function getReferenceToFeaturesAttribute()
+    {
+        return DatasetFeature::where('dataset_id',$this->dataset_id)
+            ->whereIn('gml_identifier_value', $this->dataset_feature_properties()
+                ->where([
+                    ['xlink_href', '<>',''],
+                    ['xlink_href', '<>',$this->gml_identifier_value]
+                ])->pluck('xlink_href')
+            )->get();
     }
 
     public function getReferencedByFeaturesCountAttribute()

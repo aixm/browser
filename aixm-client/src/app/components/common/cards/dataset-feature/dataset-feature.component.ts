@@ -8,15 +8,21 @@ import { MatButtonModule }                                             from '@an
 import { MatCardModule }            from '@angular/material/card';
 import { MatChipsModule }          from '@angular/material/chips';
 import { MatIconModule }           from '@angular/material/icon';
+import { MatSlideToggleModule }                                                  from '@angular/material/slide-toggle';
 import { DatasetFeature }                         from '../../../../models/aixm/dataset-feature';
 import { Feature }                                from '../../../../models/aixm/feature';
 import { PipesModule }              from '../../../../pipes/pipes.module';
+import { AixmFeatureToggleComponent } from '../../shared/aixm-feature-toggle/aixm-feature-toggle.component';
 import { AixmIconComponent }                      from '../../shared/aixm-icon/aixm-icon.component';
 
 @Component({
   selector: 'app-dataset-feature',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatBottomSheetModule,  MatCardModule, MatChipsModule, MatIconModule, PipesModule, MatBadgeModule, AixmIconComponent],
+  imports: [
+    CommonModule, MatButtonModule, MatBottomSheetModule, MatCardModule, MatChipsModule, MatIconModule, PipesModule, MatBadgeModule,
+    AixmIconComponent,
+    MatSlideToggleModule, AixmFeatureToggleComponent,
+  ],
   templateUrl: './dataset-feature.component.html',
   styleUrl: './dataset-feature.component.scss'
 })
