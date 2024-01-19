@@ -1,9 +1,11 @@
+import { NgIf }                                       from '@angular/common';
 import { Component, EventEmitter, Input, Output }     from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule }                           from '@angular/material/tooltip';
-import { Feature }              from '../../../../models/aixm/feature';
-import { FeatureService }                         from '../../../../services/feature.service';
-import { AixmIconComponent } from '../aixm-icon/aixm-icon.component';
+import { handleErrorMissingFeatureImage }             from '../../../../helpers/utils';
+import { Feature }                                    from '../../../../models/aixm/feature';
+import { FeatureService }                             from '../../../../services/feature.service';
+import { AixmIconComponent }                          from '../aixm-icon/aixm-icon.component';
 
 @Component({
   selector: 'app-aixm-feature-toggle',
@@ -12,6 +14,7 @@ import { AixmIconComponent } from '../aixm-icon/aixm-icon.component';
     MatSlideToggleModule,
     AixmIconComponent,
     MatTooltipModule,
+    NgIf,
   ],
   templateUrl: './aixm-feature-toggle.component.html',
   styleUrl: './aixm-feature-toggle.component.scss'
@@ -34,4 +37,6 @@ export class AixmFeatureToggleComponent {
     console.log(this.featureService.hiddenFeatureIds);
     this.featureVisibilityChange.emit();
   }
+
+  protected readonly handleErrorMissingFeatureImage = handleErrorMissingFeatureImage;
 }

@@ -1,8 +1,9 @@
 <div class="aixm-feature-toggle">
     <mat-slide-toggle matTooltip="{{feature?.abbreviation}}"
                       [checked]="!featureService.isFeatureHidden(feature?.id)"
-                      (change)="toggleChange($event)"
-    >
-        <app-aixm-icon style="padding-top: 0.3em" [feature]="feature"></app-aixm-icon>
+                      (change)="toggleChange($event)">
+        <img class="aixm-icon" alt="{{ feature?.abbreviation }}" width="24" [src]="(feature?.icon ? feature?.icon :
+            'assets/images/icons/AIXM/'+ feature?.abbreviation+'/'+feature?.abbreviation+'.svg')"
+             (error)="handleErrorMissingFeatureImage($event)">
     </mat-slide-toggle>
 </div>
