@@ -9,11 +9,17 @@
     <mat-card-content>
         <div *ngIf="datasetFeature?.getReferenceToFeaturesCount()" style="margin-top: 1em">References to features:</div>
         <div class="aixm-feature-toggle-container">
-            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferenceToFeatures()" [feature]="f" [checked]="true"></app-aixm-feature-toggle>
+            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferenceToFeatures()"
+                                     [feature]="f"
+                                     (featureVisibilityChange)="toggleChange()"
+            ></app-aixm-feature-toggle>
         </div>
         <div *ngIf="datasetFeature?.getReferencedByFeaturesCount()" style="margin-top: 1em">Referenced by features:</div>
         <div class="aixm-feature-toggle-container">
-            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferencedByFeatures()" [feature]="f" [checked]="true"></app-aixm-feature-toggle>
+            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferencedByFeatures()"
+                                     [feature]="f"
+                                     (featureVisibilityChange)="toggleChange()"
+            ></app-aixm-feature-toggle>
         </div>
     </mat-card-content>
 </mat-card>

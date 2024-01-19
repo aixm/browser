@@ -7,11 +7,12 @@ import {
 import { MatButtonModule }                                             from '@angular/material/button';
 import { MatCardModule }            from '@angular/material/card';
 import { MatChipsModule }          from '@angular/material/chips';
-import { MatIconModule }           from '@angular/material/icon';
-import { MatSlideToggleModule }                                                  from '@angular/material/slide-toggle';
-import { DatasetFeature }                         from '../../../../models/aixm/dataset-feature';
+import { MatIconModule }                              from '@angular/material/icon';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { DatasetFeature }                             from '../../../../models/aixm/dataset-feature';
 import { Feature }                                from '../../../../models/aixm/feature';
 import { PipesModule }              from '../../../../pipes/pipes.module';
+import { FeatureService } from '../../../../services/feature.service';
 import { AixmFeatureToggleComponent } from '../../shared/aixm-feature-toggle/aixm-feature-toggle.component';
 import { AixmIconComponent }                      from '../../shared/aixm-icon/aixm-icon.component';
 
@@ -30,11 +31,10 @@ export class DatasetFeatureComponent implements OnInit {
   @Input() feature?: Feature;
   @Input() datasetFeature?: DatasetFeature;
   @Output() cardClick: EventEmitter<DatasetFeature> = new EventEmitter<DatasetFeature>();
-  @Output() xlinkClick: EventEmitter<DatasetFeature> = new EventEmitter<DatasetFeature>();
+  @Output() featureVisibilityChange: EventEmitter<Feature> = new EventEmitter<Feature>();
 
 
   constructor(
-      // private bottomSheet: MatBottomSheet,
   ) {}
 
   ngOnInit(): void {
@@ -46,14 +46,8 @@ export class DatasetFeatureComponent implements OnInit {
     }
   }
 
-  xlink(): void {
-    if (this.datasetFeature) {
-      this.xlinkClick.next(this.datasetFeature);
-/*      this.bottomSheet.open(DatasetFeatureComponent, {
-        data: { feature: this.feature },
-      });*/
-    }
+  toggleChange(): void {
+    this.featureVisibilityChange.emit();
   }
-
 
 }

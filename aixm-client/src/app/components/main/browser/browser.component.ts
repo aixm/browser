@@ -21,6 +21,7 @@ import { Feature }           from '../../../models/aixm/feature';
 import { FeatureList } from '../../../models/aixm/feature-list';
 import { ApiResponse } from '../../../models/api-response';
 import { BackendApiService } from '../../../services/backend-api.service';
+import { FeatureService }                              from '../../../services/feature.service';
 import { SettingsService } from '../../../services/settings.service';
 import { DatasetFeatureComponent } from '../../common/cards/dataset-feature/dataset-feature.component';
 import { DatasetComponent }  from '../../common/cards/dataset/dataset.component';
@@ -63,6 +64,7 @@ export class BrowserComponent implements OnInit {
       private matDialog: MatDialog,
       private settingsService: SettingsService,
       private route: ActivatedRoute,
+      private featureService: FeatureService
   ) {}
 
   ngOnInit(): void {
@@ -150,7 +152,7 @@ export class BrowserComponent implements OnInit {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
-        this.datasetFeatures = data.data.map((x: DatasetFeature): DatasetFeature => Object.assign(new DatasetFeature(), x));
+        this.datasetFeatures = data.data.map((x: DatasetFeature): DatasetFeature => Object.assign(new DatasetFeature(this.featureService), x));
         this.processNodesAndEdges();
       }
       this.loading = false;
@@ -167,7 +169,7 @@ export class BrowserComponent implements OnInit {
       console.log(data);
       this.resetPageState();
       if (data.data) {
-        const datasetFeature: DatasetFeature = Object.assign(new DatasetFeature(), data.data);
+        const datasetFeature: DatasetFeature = Object.assign(new DatasetFeature(this.featureService), data.data);
         this.datasetFeature = datasetFeature;
         this.datasetFeatures = [ datasetFeature ];
         this.processNodesAndEdges();
@@ -196,6 +198,14 @@ export class BrowserComponent implements OnInit {
   datasetFeatureClick(datasetFeature: DatasetFeature): void {
     this.datasetFeature = datasetFeature;
     this.refreshDatasetFeature(datasetFeature);
+  }
+
+  featureVisibilityChange(): void {
+    // console.log('feature visibility changed');
+    this.nodes = [];
+    this.edges = [];
+    this.processNodesAndEdges(true);
+    this.redrawGraph();
   }
 
   clearGraph(): void {
@@ -252,8 +262,12 @@ export class BrowserComponent implements OnInit {
 
   }
 
-  processNodesAndEdges(): void {
+  processNodesAndEdges(clearDatasetFeatureEdges?: boolean): void {
     this.datasetFeatures.forEach((df: DatasetFeature): void => {
+      if (clearDatasetFeatureEdges) {
+        // need to clear when redraw graph without data updating
+        df.clearEdges();
+      }
       const nodes: Node[] = df.getNodes();
       nodes.forEach((node: Node): void => {
         if (this.nodes.findIndex((n:Node): boolean => n.id === node.id) === -1) {
@@ -282,7 +296,7 @@ export class BrowserComponent implements OnInit {
           }
           let datasetFeature: DatasetFeature = getById(this.datasetFeatures, id);
           if (!datasetFeature) {
-            datasetFeature = new DatasetFeature();
+            datasetFeature = new DatasetFeature(this.featureService);
             datasetFeature.id = Number(id);
           }
           this.datasetFeature = datasetFeature;

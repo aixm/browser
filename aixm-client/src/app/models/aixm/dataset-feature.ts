@@ -1,4 +1,5 @@
 import { getFeatureDefaultImagePath, getFeatureImagePath } from '../../helpers/utils';
+import { FeatureService }                                  from '../../services/feature.service';
 import { DatasetFeatureProperty }                          from './dataset-feature-property';
 import { Feature }                                         from './feature';
 import { Edge, Node }                                      from 'vis-network';
@@ -20,6 +21,13 @@ export class DatasetFeature {
   edges: Edge[] = [];
   label: string | undefined;
 
+  constructor(
+      private featureService: FeatureService
+  ) {}
+
+  clearEdges(): void {
+    this.edges = [];
+  }
 
   getLabel(): string {
     if (this.label) {
@@ -77,25 +85,27 @@ export class DatasetFeature {
     let result: Node[] = [];
     this.addFeatureNode(result, this);
     this.referenceToFeatures.forEach((df: DatasetFeature): void => {
-      result = this.addFeatureNode(result, Object.assign(new DatasetFeature(), df));
+      result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
       this.edges.push({from: this.id, to: df.id, arrows: 'to', color: '#ff4081'});
     });
     this.referencedByFeatures.forEach((df: DatasetFeature): void => {
-      result = this.addFeatureNode(result, Object.assign(new DatasetFeature(), df));
+      result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
       this.edges.push({from: this.id, to: df.id, arrows: 'from', color: '#3f51b5'});
     });
     return result;
   }
 
   addFeatureNode(nodes: Node[], datasetFeature: DatasetFeature): Node[] {
-    nodes.push({
-      id: datasetFeature.id,
-      label: datasetFeature.getLabel(),
-      shape: 'image',
-      size: 15,
-      image: getFeatureImagePath(datasetFeature.feature),
-      brokenImage: getFeatureDefaultImagePath()
-    });
+    if (!this.featureService.isFeatureHidden(datasetFeature.featureId)) {
+      nodes.push({
+        id: datasetFeature.id,
+        label: datasetFeature.getLabel(),
+        shape: 'image',
+        size: 15,
+        image: getFeatureImagePath(datasetFeature.feature),
+        brokenImage: getFeatureDefaultImagePath()
+      });
+    }
     return nodes;
   }
 
