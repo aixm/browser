@@ -1,5 +1,5 @@
 <div class="aixm-feature-toggle">
-    <mat-slide-toggle matTooltip="{{feature?.abbreviation}}"
+    <mat-slide-toggle color="{{color}}" matTooltip="{{feature?.abbreviation}}"
                       [checked]="!featureService.isFeatureHidden(feature?.id)"
                       (change)="toggleChange($event)">
         <img class="aixm-icon" alt="{{ feature?.abbreviation }}" width="24" [src]="(feature?.icon ? feature?.icon :

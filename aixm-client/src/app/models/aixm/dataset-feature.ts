@@ -86,11 +86,13 @@ export class DatasetFeature {
     this.addFeatureNode(result, this);
     this.referenceToFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      this.edges.push({from: this.id, to: df.id, arrows: 'to', color: '#ff4081'});
+      let accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      this.edges.push({from: this.id, to: df.id, arrows: 'to', color: accentColor});
     });
     this.referencedByFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      this.edges.push({from: this.id, to: df.id, arrows: 'from', color: '#3f51b5'});
+      let primaryColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-badge-background-color');
+      this.edges.push({from: this.id, to: df.id, arrows: 'from', color: primaryColor});
     });
     return result;
   }
@@ -101,6 +103,9 @@ export class DatasetFeature {
         id: datasetFeature.id,
         label: datasetFeature.getLabel(),
         shape: 'image',
+        font: {
+          color: getComputedStyle(document.documentElement).getPropertyValue('--mat-sidenav-content-text-color'),
+        },
         size: 15,
         image: getFeatureImagePath(datasetFeature.feature),
         brokenImage: getFeatureDefaultImagePath()

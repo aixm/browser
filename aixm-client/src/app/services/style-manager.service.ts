@@ -27,7 +27,7 @@ export class StyleManagerService {
     ];
     styles.forEach((style: {property: string, replaceBy: string}): void => {
       const value: string = getComputedStyle(document.documentElement).getPropertyValue(`--${style.replaceBy}`);
-      console.log(value);
+      // console.log(value);
       document.documentElement.style.setProperty(`--${style.property}`, value);
     });
   }

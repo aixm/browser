@@ -3,20 +3,24 @@
     cursor: (cardClick.observers.length > 0) ? 'pointer' : ''
     }" (click)="click()">
         <app-aixm-icon [feature]="feature" [matCardAvatar]="true"></app-aixm-icon>
-        <mat-card-title>{{feature?.abbreviation}}</mat-card-title>
+        <mat-card-title>{{feature?.name}}</mat-card-title>
         <mat-card-subtitle>{{datasetFeature?.getLabel()}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+        <button mat-stroked-button color="primary" [cdkCopyToClipboard]="getUuid()" matTooltip="{{getUuid()}}">
+            <mat-icon>content_copy</mat-icon>
+            Copy UUID to clipboard
+        </button>
         <div *ngIf="datasetFeature?.getReferenceToFeaturesCount()" style="margin-top: 1em">References to features:</div>
         <div class="aixm-feature-toggle-container">
-            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferenceToFeatures()"
+            <app-aixm-feature-toggle [color]="'accent'" *ngFor="let f of datasetFeature?.getReferenceToFeatures()"
                                      [feature]="f"
                                      (featureVisibilityChange)="toggleChange()"
             ></app-aixm-feature-toggle>
         </div>
         <div *ngIf="datasetFeature?.getReferencedByFeaturesCount()" style="margin-top: 1em">Referenced by features:</div>
         <div class="aixm-feature-toggle-container">
-            <app-aixm-feature-toggle *ngFor="let f of datasetFeature?.getReferencedByFeatures()"
+            <app-aixm-feature-toggle [color]="'primary'" *ngFor="let f of datasetFeature?.getReferencedByFeatures()"
                                      [feature]="f"
                                      (featureVisibilityChange)="toggleChange()"
             ></app-aixm-feature-toggle>

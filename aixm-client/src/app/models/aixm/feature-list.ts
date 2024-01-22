@@ -12,6 +12,9 @@ export class FeatureList {
       id: this.feature.id,
       label: `${this.feature?.abbreviation} (${this.count})`,
       shape: 'image',
+      font: {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--mat-sidenav-content-text-color'),
+      },
       size: 15,
       image: getFeatureImagePath(this.feature),
       brokenImage: getFeatureDefaultImagePath()

@@ -1,14 +1,16 @@
+import { ClipboardModule }                                                       from '@angular/cdk/clipboard';
 import { AfterViewInit, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { CommonModule }                                                          from '@angular/common';
-import { MatBadgeModule }                                              from '@angular/material/badge';
+import { MatBadgeModule }                                                        from '@angular/material/badge';
 import {
   MAT_BOTTOM_SHEET_DATA, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, MatBottomSheet, MatBottomSheetModule,
-} from '@angular/material/bottom-sheet';
-import { MatButtonModule }                                             from '@angular/material/button';
-import { MatCardModule }            from '@angular/material/card';
-import { MatChipsModule }          from '@angular/material/chips';
-import { MatIconModule }                              from '@angular/material/icon';
+}                                                                                from '@angular/material/bottom-sheet';
+import { MatButtonModule }                                                       from '@angular/material/button';
+import { MatCardModule }                                                         from '@angular/material/card';
+import { MatChipsModule }                                                        from '@angular/material/chips';
+import { MatIconModule }                                                         from '@angular/material/icon';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule }                                                      from '@angular/material/tooltip';
 import { DatasetFeature }                             from '../../../../models/aixm/dataset-feature';
 import { Feature }                                from '../../../../models/aixm/feature';
 import { PipesModule }              from '../../../../pipes/pipes.module';
@@ -22,7 +24,7 @@ import { AixmIconComponent }                      from '../../shared/aixm-icon/a
   imports: [
     CommonModule, MatButtonModule, MatBottomSheetModule, MatCardModule, MatChipsModule, MatIconModule, PipesModule, MatBadgeModule,
     AixmIconComponent,
-    MatSlideToggleModule, AixmFeatureToggleComponent,
+    MatSlideToggleModule, AixmFeatureToggleComponent, ClipboardModule, MatTooltipModule,
   ],
   templateUrl: './dataset-feature.component.html',
   styleUrl: './dataset-feature.component.scss'
@@ -48,6 +50,11 @@ export class DatasetFeatureComponent implements OnInit {
 
   toggleChange(): void {
     this.featureVisibilityChange.emit();
+    //console.log(getComputedStyle(document.documentElement).getPropertyValue(`--mat-badge-background-color`));
+    //console.log(getComputedStyle(document.documentElement).getPropertyValue(`--mdc-checkbox-selected-icon-color`));
   }
 
+  getUuid(): string {
+    return this.datasetFeature?.gmlIdentifierValue ? this.datasetFeature.gmlIdentifierValue : '';
+  }
 }

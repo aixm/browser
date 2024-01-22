@@ -21,6 +21,7 @@ import { AixmIconComponent }                          from '../aixm-icon/aixm-ic
 })
 export class AixmFeatureToggleComponent {
   @Input() feature?: Feature;
+  @Input() color: string = 'primary';
   @Output() featureVisibilityChange: EventEmitter<Feature> = new EventEmitter<Feature>();
 
   constructor(
@@ -34,7 +35,7 @@ export class AixmFeatureToggleComponent {
     } else {
       this.featureService.hideFeature(this.feature?.id);
     }
-    console.log(this.featureService.hiddenFeatureIds);
+    // console.log(this.featureService.hiddenFeatureIds);
     this.featureVisibilityChange.emit();
   }
 
