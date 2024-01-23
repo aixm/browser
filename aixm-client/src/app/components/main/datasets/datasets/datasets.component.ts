@@ -1,21 +1,22 @@
-import { HttpHeaders }                             from '@angular/common/http';
-import { Component } from '@angular/core';
-import { CommonModule }                            from '@angular/common';
+import { HttpHeaders }                           from '@angular/common/http';
+import { Component, OnInit, ViewChild }          from '@angular/core';
+import { CommonModule }                          from '@angular/common';
 import { FormsModule }                           from '@angular/forms';
 import { MatButtonModule }                       from '@angular/material/button';
 import { MatCardModule }                         from '@angular/material/card';
 import { MatDialog, MatDialogRef }               from '@angular/material/dialog';
 import { MatIconModule }                         from '@angular/material/icon';
+import { PageEvent }                             from '@angular/material/paginator';
 import { Router }                                from '@angular/router';
-import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
-import { getTitle }                              from '../../../../helpers/utils';
-import { Dataset }                      from '../../../../models/aixm/dataset';
-import { ApiResponse }                  from '../../../../models/api-response';
-import { PipesModule }                  from '../../../../pipes/pipes.module';
-import { BackendApiService }            from '../../../../services/backend-api.service';
-import { BaseGridComponent }                     from '../../../common/base/base-grid.component';
-import { ConfirmComponent }             from '../../../common/dialogs/confirm/confirm.component';
-import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
+import { MtxGrid, MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
+import { getTitle }                              from '../../../helpers/utils';
+import { Dataset }                      from '../../../models/aixm/dataset';
+import { Feature }                      from '../../../models/aixm/feature';
+import { ApiResponse }                  from '../../../models/api-response';
+import { PipesModule }                  from '../../../pipes/pipes.module';
+import { BackendApiService }            from '../../../services/backend-api.service';
+import { ConfirmComponent }             from '../../common/dialogs/confirm/confirm.component';
+import { DatasetEditComponent } from '../../common/dialogs/dataset-edit/dataset-edit.component';
 
 @Component({
   selector: 'app-datasets',
@@ -24,15 +25,19 @@ import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
   templateUrl: './datasets.component.html',
   styleUrl: './datasets.component.scss'
 })
-export class DatasetsComponent extends BaseGridComponent {
-  url: string = 'aixm/datasets';
+export class DatasetsComponent implements OnInit {
+  @ViewChild('grid') grid!: MtxGrid;
+  private url: string = 'aixm/datasets';
+  loading: boolean = false;
+  searchText: string = '';
   datasets: Dataset[] = [];
+  pageEvent: PageEvent = new PageEvent();
+  pageSizeOptions: number[] = [10, 25, 50, 100];
 
-  override defaultColumns: MtxGridColumn[] = [
+  defaultColumns: MtxGridColumn[] = [
     { header: 'Name', field: 'name', sortable: true },
     { header: 'File name', field: 'filename', sortable: true },
     { header: 'Description', field: 'description', sortable: true },
-    { header: 'User', field: 'user', sortable: true },
     {
       header: 'Operations',
       field: 'operation',
@@ -49,7 +54,7 @@ export class DatasetsComponent extends BaseGridComponent {
             this.edit(record, true);
           },
           iif: (record: Dataset): boolean => {
-            return !this.allowEdit(record);
+            return !this.allowEdit();
           },
         },
         {
@@ -60,8 +65,8 @@ export class DatasetsComponent extends BaseGridComponent {
           click: (record: Dataset): void => {
             this.edit(record);
           },
-          iif: (record: Dataset): boolean => {
-            return this.allowEdit(record);
+          iif: (record: Feature): boolean => {
+            return this.allowEdit();
           },
         },
         {
@@ -91,8 +96,8 @@ export class DatasetsComponent extends BaseGridComponent {
           click: (record: Dataset): void => {
             this.delete(record);
           },
-          iif: (record: Dataset): boolean => {
-            return this.allowEdit(record);
+          iif: (record: Feature): boolean => {
+            return this.allowEdit();
           },
         },
       ], sortable: false
@@ -103,11 +108,15 @@ export class DatasetsComponent extends BaseGridComponent {
       private backendApiService: BackendApiService,
       private matDialog: MatDialog,
       private router: Router,
-  ) {super()}
+  ) {}
 
-  override refresh(): void {
+  ngOnInit(): void {
+    this.refresh();
+  }
+
+  refresh(): void {
     this.loading = true;
-    this.backendApiService.getData(this.url + '?with=dataset.user&' + this.getPageSearchUrl())
+    this.backendApiService.getData(this.url + this.getPagingUrl() + (this.searchText ? '&search=' + this.searchText : ''))
         .subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
@@ -118,12 +127,16 @@ export class DatasetsComponent extends BaseGridComponent {
     });
   }
 
+  closeMenu() {
+    this.grid.columnMenu.menuTrigger.closeMenu();
+  }
+
   add(): void {
     this.edit(new Dataset());
   }
 
   edit(dataset: Dataset, disableForm: boolean = false): void {
-    const dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
+    let dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
       autoFocus: true,
       restoreFocus: false,
       disableClose: true,
@@ -137,7 +150,7 @@ export class DatasetsComponent extends BaseGridComponent {
   }
 
   delete(dataset: Dataset): void {
-    const dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
+    let dialogRef = this.matDialog.open(ConfirmComponent, {
       autoFocus: true,
       restoreFocus: false,
       data: { title: getTitle(), message: 'Delete dataset \''+dataset.name+'\'?' }
@@ -146,7 +159,7 @@ export class DatasetsComponent extends BaseGridComponent {
       if (result) {
         this.loading = true;
         this.backendApiService.deleteItem(this.url, dataset.id, {
-          headers: new HttpHeaders({ timeout: `${1200000}` }) }).subscribe((): void=> {
+          headers: new HttpHeaders({ timeout: `${1000000}` }) }).subscribe(data => {
           this.loading = false;
           this.refresh();
         });
@@ -154,9 +167,8 @@ export class DatasetsComponent extends BaseGridComponent {
     });
   }
 
-  allowEdit(dataset: Dataset): boolean {
-    return this.authService.User?.role === 'admin' ||
-        ((dataset.user?.id === this.authService.User?.id) && (dataset.user!==null));
+  allowEdit(): boolean {
+    return true;
   }
 
   graph(dataset: Dataset): void {
@@ -165,6 +177,22 @@ export class DatasetsComponent extends BaseGridComponent {
 
   browse(dataset: Dataset): void {
     this.router.navigate(['browser'], {queryParams: {layout: 'browser', dataset: dataset.id}});
+  }
+
+  storePageState(data: ApiResponse): void {
+    this.pageEvent.pageSize = data.meta.pagination.perPage;
+    this.pageEvent.length = data.meta.pagination.total;
+  }
+
+  handlePageEvent(event: PageEvent): void {
+    this.pageEvent = event;
+    console.log(this.pageEvent);
+    this.refresh();
+  }
+
+  getPagingUrl(): string {
+    return `?per_page=${this.pageEvent.pageSize ? this.pageEvent.pageSize : 10}&page=${
+        this.pageEvent.pageIndex ? this.pageEvent.pageIndex + 1: 1}`;
   }
 
 }
