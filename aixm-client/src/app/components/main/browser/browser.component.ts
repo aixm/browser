@@ -68,6 +68,9 @@ export class BrowserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // graph
+    this.createGraph();
+
     // layout
     if (this.route.snapshot.queryParamMap.get('layout')) {
       let layout = this.route.snapshot.queryParamMap.get('layout');
@@ -118,7 +121,7 @@ export class BrowserComponent implements OnInit {
         });
       }
       this.loading = false;
-      this.redrawGraph();
+      this.updateGraph();
     });
   }
 
@@ -138,7 +141,7 @@ export class BrowserComponent implements OnInit {
         });
       }
       this.loading = false;
-      this.redrawGraph();
+      this.updateGraph();
     });
 
   }
@@ -156,7 +159,7 @@ export class BrowserComponent implements OnInit {
         this.processNodesAndEdges();
       }
       this.loading = false;
-      this.redrawGraph();
+      this.updateGraph();
     });
   }
 
@@ -175,7 +178,7 @@ export class BrowserComponent implements OnInit {
         this.processNodesAndEdges();
       }
       this.loading = false;
-      this.redrawGraph();
+      this.updateGraph();
     });
   }
 
@@ -205,16 +208,24 @@ export class BrowserComponent implements OnInit {
     this.nodes = [];
     this.edges = [];
     this.processNodesAndEdges(true);
-    this.redrawGraph();
+    this.updateGraph();
   }
 
   clearGraph(): void {
     this.nodes = [];
     this.edges = [];
-    this.redrawGraph();
+    this.updateGraph();
   }
 
-  redrawGraph(): void {
+  updateGraph(): void {
+    let data: Data = {
+      nodes: this.nodes,
+      edges: this.edges,
+    };
+    this.network?.setData(data);
+  }
+
+  createGraph(): void {
     let data: Data = {
       nodes: this.nodes,
       edges: this.edges,
@@ -313,7 +324,7 @@ export class BrowserComponent implements OnInit {
     this.nodes = this.datasets.map((dataset: Dataset): Node => {
       return {id: dataset.id, label: dataset.name};
     });
-    this.redrawGraph();
+    this.updateGraph();
   }
 
   addDataset(): void {
