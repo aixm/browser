@@ -42,6 +42,9 @@ RUN docker-php-ext-install sockets
 # PHP ini
 ADD ./docker/php-fpm/php.ini /usr/local/etc/php/php.ini
 
+# www conf
+ADD ./docker/php-fpm/www-custom.conf /usr/local/etc/php-fpm.d/www-custom.conf
+
 # sources
 COPY . /var/www
 

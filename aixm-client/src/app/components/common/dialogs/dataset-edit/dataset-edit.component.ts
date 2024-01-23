@@ -75,7 +75,7 @@ export class DatasetEditComponent implements OnInit  {
       formData.append('description', this.description?.value);
       formData.append('file', this.file?.value);
       this.backendApiService.postItem(this.url, formData, {
-        headers: new HttpHeaders({ timeout: `${1000000}` }) }, this.datasetForm)
+        headers: new HttpHeaders({ timeout: `${1200000}` }) }, this.datasetForm)
           .subscribe((data: ApiResponse): void => {
             this.loading = false;
             if (!data.error) {

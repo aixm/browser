@@ -159,7 +159,7 @@ export class DatasetsComponent implements OnInit {
       if (result) {
         this.loading = true;
         this.backendApiService.deleteItem(this.url, dataset.id, {
-          headers: new HttpHeaders({ timeout: `${1000000}` }) }).subscribe(data => {
+          headers: new HttpHeaders({ timeout: `${1200000}` }) }).subscribe(data => {
           this.loading = false;
           this.refresh();
         });

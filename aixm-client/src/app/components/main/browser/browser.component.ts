@@ -54,7 +54,7 @@ export class BrowserComponent implements OnInit {
   datasetFeatures: DatasetFeature[] = [];
   viewLayout: 'browser' | 'graph' | 'combined' = 'browser';
   pageEvent: PageEvent = new PageEvent();
-  pageSizeOptions: number[] = [10, 25, 50, 100];
+  pageSizeOptions: number[] = [10, 25, 50, 100, 1000];
   nodes: Node[] = [];
   edges: Edge[] = [];
 
