@@ -66,7 +66,8 @@ class DatasetFeatureController extends Controller
         $fields = $f->searchable;
 
         $features = DatasetFeature::query()
-            ->select(['feature_id', DB::raw('COUNT(feature_id) AS count')])
+            ->select(['feature_id', DB::raw('features.order AS order'), DB::raw('COUNT(feature_id) AS count')])
+            ->leftJoin('features', 'features.id', '=', 'dataset_features.feature_id')
             ->whereHas('feature', function ($query) use ($request, $fields) {
                 if ($request->search) {
                     $search = Str::of($request->search);
@@ -81,7 +82,9 @@ class DatasetFeatureController extends Controller
                 }
             })
             ->where('dataset_id', $request->dataset)
-            ->groupBy(['feature_id'])->paginate();
+            ->groupBy(['feature_id', 'order'])
+            ->orderBy('order')
+            ->paginate();
 
         return $this->successResponse(DatasetFeatureListResource::collection($features));
     }

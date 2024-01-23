@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('features', function (Blueprint $table) {
             $table->id();
+            $table->integer('order')->nullable();
             $table->string('name')->unique();
             $table->enum('type', ['feature', 'object', 'choice'])->default('feature');
             $table->string('abbreviation');
