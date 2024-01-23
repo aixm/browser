@@ -1,16 +1,13 @@
 .mat-card-dataset-feature {
   height: 100%;
   min-width: 15em;
-  max-width: 27em;
+  max-width: 28em;
 }
 
 .aixm-feature-toggle-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  //margin-top: 1em;
-  //max-height: 6em;
-  //overflow-y: scroll;
 }
 
 app-aixm-feature-toggle {

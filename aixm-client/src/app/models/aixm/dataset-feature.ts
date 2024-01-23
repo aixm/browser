@@ -20,6 +20,7 @@ export class DatasetFeature {
   byFeatures: Feature[] | undefined;
   edges: Edge[] = [];
   label: string | undefined;
+  tooltip: HTMLDivElement | undefined;
 
   constructor(
       private featureService: FeatureService
@@ -40,7 +41,25 @@ export class DatasetFeature {
           label += dfp.value + ' ';
         }
       });
-      return label.length>0 ? label : fallbackLabel;
+      // return label.length>0 ? label : fallbackLabel;
+      return fallbackLabel;
+    }
+  }
+
+  getTooltip(): HTMLDivElement {
+    if (this.tooltip) {
+      return this.tooltip;
+    } else {
+      let fallbackTooltip: string = `<p>${this.feature?.name}</p>`;
+      let tooltip: string = '';
+      this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty):void => {
+        if (dfp.property?.isIdentifying && dfp.value.trim().length>0) {
+          tooltip += `<tr><td><i>${dfp.property.name}:</i></td><td>${dfp.value}</td></tr>`;
+        }
+      });
+      const container: HTMLDivElement = document.createElement("div");
+      container.innerHTML = tooltip.length>0 ? `${fallbackTooltip}<table>${tooltip}</table>` : fallbackTooltip;
+      return container;
     }
   }
 
@@ -102,6 +121,7 @@ export class DatasetFeature {
       nodes.push({
         id: datasetFeature.id,
         label: datasetFeature.getLabel(),
+        title: datasetFeature.getTooltip(),
         shape: 'image',
         font: {
           color: getComputedStyle(document.documentElement).getPropertyValue('--mat-sidenav-content-text-color'),

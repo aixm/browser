@@ -32,6 +32,7 @@
             "styles": [
               "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "./node_modules/leaflet/dist/leaflet.css",
+              "./node_modules/vis-network/styles/vis-network.css",
               "src/styles.scss"
             ],
             "scripts": []

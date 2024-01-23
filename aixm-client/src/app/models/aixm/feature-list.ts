@@ -11,6 +11,7 @@ export class FeatureList {
     return {
       id: this.feature.id,
       label: `${this.feature?.abbreviation} (${this.count})`,
+      title: `${this.feature?.name}`,
       shape: 'image',
       font: {
         color: getComputedStyle(document.documentElement).getPropertyValue('--mat-sidenav-content-text-color'),
