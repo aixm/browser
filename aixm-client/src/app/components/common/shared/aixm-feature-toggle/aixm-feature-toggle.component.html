@@ -1,9 +1,10 @@
-<div class="aixm-feature-toggle">
-    <mat-slide-toggle color="{{color}}" matTooltip="{{feature?.abbreviation}}"
+    <mat-slide-toggle class="aixm-feature-toggle" color="{{color}}" matTooltip="{{feature?.name}}"
                       [checked]="!featureService.isFeatureHidden(feature?.id)"
                       (change)="toggleChange($event)">
-        <img class="aixm-icon" alt="{{ feature?.abbreviation }}" width="24" [src]="(feature?.icon ? feature?.icon :
-            'assets/images/icons/AIXM/'+ feature?.abbreviation+'/'+feature?.abbreviation+'.svg')"
-             (error)="handleErrorMissingFeatureImage($event)">
+        <div style="display: flex; align-items: center">
+            <span>{{feature?.abbreviation}}</span>
+            <img class="aixm-icon" alt="{{ feature?.abbreviation }}" width="24" [src]="(feature?.icon ? feature?.icon :
+                'assets/images/icons/AIXM/'+ feature?.abbreviation+'/'+feature?.abbreviation+'.svg')"
+                 (error)="handleErrorMissingFeatureImage($event)">
+        </div>
     </mat-slide-toggle>
-</div>

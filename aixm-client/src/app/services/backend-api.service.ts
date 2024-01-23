@@ -83,11 +83,11 @@ export class BackendApiService {
    * @param apiPath
    * @param id
    */
-  deleteItem(apiPath: string, id: any): Observable<ApiResponse> {
+  deleteItem(apiPath: string, id: any, params?: any): Observable<ApiResponse> {
     const url: string = `${this.getBackendUrlValue()}/${apiPath}/${id}`;
     // console.log('DELETE', url);
-    return this.httpClient.delete<ApiResponse>(url).pipe(
-        map((x: ApiResponse) => toCamel(x)),
+    return this.httpClient.delete<ApiResponse>(url, params).pipe(
+        map((x: HttpEvent<ApiResponse>) => toCamel(x)),
         // tap(_ => console.log('DELETE Response', _)),
         catchError(this.handleError<ApiResponse>(`deleteItem id=${id}`))
     );

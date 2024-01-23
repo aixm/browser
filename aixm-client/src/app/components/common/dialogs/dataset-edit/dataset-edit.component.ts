@@ -1,13 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { HttpHeaders }                                             from '@angular/common/http';
+import { Component, Inject, OnInit }                               from '@angular/core';
 import { CommonModule }                                            from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }                                           from '@angular/material/card';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef }                from '@angular/material/dialog';
+import { MatIconModule }                                           from '@angular/material/icon';
+import { MatInputModule }                                          from '@angular/material/input';
+import { MatProgressBarModule }                                    from '@angular/material/progress-bar';
+import { MatTooltipModule }                                        from '@angular/material/tooltip';
 import { Dataset }                                  from '../../../../models/aixm/dataset';
 import { ApiResponse } from '../../../../models/api-response';
 import { BackendApiService } from '../../../../services/backend-api.service';
@@ -73,7 +74,8 @@ export class DatasetEditComponent implements OnInit  {
       formData.append('name', this.name?.value);
       formData.append('description', this.description?.value);
       formData.append('file', this.file?.value);
-      this.backendApiService.postItem(this.url, formData, undefined, this.datasetForm)
+      this.backendApiService.postItem(this.url, formData, {
+        headers: new HttpHeaders({ timeout: `${1000000}` }) }, this.datasetForm)
           .subscribe((data: ApiResponse): void => {
             this.loading = false;
             if (!data.error) {

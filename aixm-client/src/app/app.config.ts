@@ -1,10 +1,9 @@
-import { HttpClientModule }                       from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule }    from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS }       from '@angular/material/bottom-sheet';
 import { provideRouter }                          from '@angular/router';
-
 import { routes } from './app.routes';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimations }                       from '@angular/platform-browser/animations';
+import { DEFAULT_TIMEOUT, HttpRequestInterceptor } from './interceptors/http.request.interceptor';
 
 export const appConfig: ApplicationConfig = {
 
@@ -12,5 +11,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimations(),
     importProvidersFrom(HttpClientModule),
+    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
+      // default timeout 2min other can be specified in header in ms like:
+      // { headers: new HttpHeaders({ timeout: `${20000}` }) }
+    { provide: DEFAULT_TIMEOUT, useValue: 120000 },
   ]
 };

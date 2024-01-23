@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule }                 from '@angular/common';
-import { FormsModule }                  from '@angular/forms';
-import { MatButtonModule }              from '@angular/material/button';
-import { MatCardModule }           from '@angular/material/card';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule }           from '@angular/material/icon';
-import { PageEvent }                    from '@angular/material/paginator';
+import { HttpHeaders }                           from '@angular/common/http';
+import { Component, OnInit, ViewChild }          from '@angular/core';
+import { CommonModule }                          from '@angular/common';
+import { FormsModule }                           from '@angular/forms';
+import { MatButtonModule }                       from '@angular/material/button';
+import { MatCardModule }                         from '@angular/material/card';
+import { MatDialog, MatDialogRef }               from '@angular/material/dialog';
+import { MatIconModule }                         from '@angular/material/icon';
+import { PageEvent }                             from '@angular/material/paginator';
 import { Router }                                from '@angular/router';
 import { MtxGrid, MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { getTitle }                              from '../../../helpers/utils';
@@ -157,7 +158,8 @@ export class DatasetsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loading = true;
-        this.backendApiService.deleteItem(this.url, dataset.id).subscribe(data => {
+        this.backendApiService.deleteItem(this.url, dataset.id, {
+          headers: new HttpHeaders({ timeout: `${1000000}` }) }).subscribe(data => {
           this.loading = false;
           this.refresh();
         });
