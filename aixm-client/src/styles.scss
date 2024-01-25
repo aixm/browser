@@ -1,7 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
 
-// import themes
-@import "themes";
+// define theme
+@use '@angular/material' as mat;
+@use '@ng-matero/extensions' as mtx;
+
+@include mat.core();
+
+// Define a dark theme
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: mat.define-palette(mat.$pink-palette),
+    accent: mat.define-palette(mat.$blue-grey-palette),
+    warn: mat.define-palette(mat.$red-palette),
+  ),
+  // Only include `typography` and `density` in the default dark theme.
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+// Define a light theme
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: mat.define-palette(mat.$indigo-palette),
+    accent: mat.define-palette(mat.$pink-palette),
+    warn: mat.define-palette(mat.$red-palette),
+  ),
+));
+
+$current-theme: $light-theme;
+//$current-theme: $dark-theme;
+
+// Apply the dark theme by default
+//@include mat.all-component-themes($current-theme);
+//@include mtx.all-component-themes($current-theme);
+//@include mtx.all-component-themes($current-theme);
+
+/*// Apply the light theme only when the user prefers light themes.
+@media (prefers-color-scheme: light) {
+  // Use the `-color` mixins to only apply color styles without reapplying the same
+  // typography and density styles.
+//  @include mat.all-component-colors($light-theme);
+//  @include mtx.all-component-colors($light-theme);
+  $current-theme: $light-theme;
+  // Apply the dark theme by default
+  @include mat.all-component-colors($current-theme);
+  @include mtx.all-component-colors($current-theme);
+}*/
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -27,17 +72,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   max-height: -webkit-calc(100vh - 140px);
 }
 
-.special-page-container {
-  min-height: calc(100vh - 150px);
-  min-height: -moz-calc(100vh - 150px);
-  min-height: -webkit-calc(100vh - 150px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
 .tbr-btn {
   margin-left: 0.3em!important;
   .mat-icon {
@@ -46,24 +80,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
-.pg-bar {
-  min-height: 0.3em;
-  width: 100%;
-}
-
 .flex-full-row {
   display: flex;
   flex: 1 1 0%;
   box-sizing: border-box;
-}
-
-.flex-row {
-  display: flex;
-  flex-flow: row;
-}
-
-.mtx-grid-toolbar {
-  padding: 0.7em 0.7em 0.7em 0em!important;
 }
 
 /**
@@ -83,19 +103,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /**
   Theming fixes
  */
-mat-card-header, mat-card-content, .ng-input>input {
-  color: var(--mat-card-subtitle-text-color)!important;
-}
-/*
-
-.mat-mdc-paginator {
-  font-size: 12px;
-}
-.ng-input>input, .ng-value {
-  color: var(--mdc-outlined-text-field-input-text-color)!important;
+mat-card-header, mat-card-content {
+  color: var(--mat-card-subtitle-text-color);
 }
 // mtx grid column settings header
 .mat-mdc-menu-content {
   color: var(--mat-table-header-headline-color);
 }
-*/

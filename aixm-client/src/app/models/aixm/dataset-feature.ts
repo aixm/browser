@@ -1,6 +1,5 @@
 import { getFeatureBrokenImagePath, getFeatureDefaultImagePath, getFeatureImagePath } from '../../helpers/utils';
 import { FeatureService }                                                             from '../../services/feature.service';
-import { Dataset }                                                                    from './dataset';
 import { DatasetFeatureProperty }                          from './dataset-feature-property';
 import { Feature }                                         from './feature';
 import { Edge, Node }                                      from 'vis-network';
@@ -11,7 +10,6 @@ export class DatasetFeature {
   featureId!: number;
   gmlIdValue!: string;
   gmlIdentifierValue!: string;
-  dataset: Dataset | undefined;
   feature: Feature | undefined;
   datasetFeatureProperties: DatasetFeatureProperty[] = [];
   referenceToFeatures: DatasetFeature[] = [];
@@ -35,7 +33,7 @@ export class DatasetFeature {
     if (this.label) {
       return this.label;
     } else {
-      const fallbackLabel: string = this.feature?.abbreviation ? this.feature?.abbreviation : '';
+      let fallbackLabel: string = this.feature?.abbreviation ? this.feature?.abbreviation : '';
       let label: string = '';
       this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty):void => {
         if (dfp.property?.isIdentifying && dfp.value) {
@@ -51,7 +49,7 @@ export class DatasetFeature {
     if (this.tooltip) {
       return this.tooltip;
     } else {
-      const fallbackTooltip: string = `<p>${this.feature?.name}</p>`;
+      let fallbackTooltip: string = `<p>${this.feature?.name}</p>`;
       let tooltip: string = '';
       this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty):void => {
         if (dfp.property?.isIdentifying && dfp.value.trim().length>0) {
@@ -106,10 +104,11 @@ export class DatasetFeature {
       this.brokenFeatures = [];
       this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty): void => {
         if (dfp.isBroken) {
-          const df: DatasetFeature = new DatasetFeature(this.featureService);
+          let df: DatasetFeature = new DatasetFeature(this.featureService);
           df.featureId = dfp.id;
           df.gmlIdentifierValue = dfp.xlinkHref;
-          this.brokenFeatures?.push(df);
+          // @ts-ignore
+          this.brokenFeatures.push(df);
         }
       });
     }
@@ -123,19 +122,19 @@ export class DatasetFeature {
     // ref to
     this.referenceToFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      let accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
       this.edges.push({from: this.id, to: df.id, arrows: 'to', color: accentColor});
     });
     // ref by
     this.referencedByFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      const primaryColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-badge-background-color');
+      let primaryColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-badge-background-color');
       this.edges.push({from: this.id, to: df.id, arrows: 'from', color: primaryColor});
     });
     // broken
     this.getBrokenFeatures().forEach((df: DatasetFeature): void => {
       result = this.addBrokenFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      let accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
       this.edges.push({from: this.id, to: df.gmlIdentifierValue, arrows: 'to', color: accentColor});
     });
     return result;
@@ -185,7 +184,7 @@ export class DatasetFeature {
 
   // deprecated
   getReferenceUniqFeatures(): Feature[] {
-    const features: Feature[] = [];
+    let features: Feature[] = [];
     this.referenceToFeatures.forEach((df: DatasetFeature):void => {
       if (df.feature) {
         if (features.findIndex((f: Feature): boolean => f.id === df.feature?.id) === -1) {

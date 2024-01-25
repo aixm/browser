@@ -15,13 +15,6 @@
                         (click)="click()">
                     <mat-icon>hub</mat-icon>
                 </button>
-                <div class="flex-full-row"></div>
-                <button mat-stroked-button class="tbr-btn" style="margin-right: 0.3em" color="primary"
-                        matTooltip="{{datasetFeature?.dataset?.name}}"
-                        (click)="goToDataset(datasetFeature?.dataset)">
-                    <mat-icon>storage</mat-icon>
-                    {{datasetFeature?.dataset?.name | limitTo: 15}}
-                </button>
             </mat-toolbar-row>
         </mat-toolbar>
 

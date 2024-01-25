@@ -3,11 +3,11 @@ import { Feature }     from '../models/aixm/feature';
 
 
 export function isValidUUID(str: string): boolean {
-  const regexExp: RegExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+  const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
   return regexExp.test(str);
 }
 
-export function copyToClipboard(val: string): void{
+export function copyToClipboard(val: string){
   const selBox: HTMLTextAreaElement = document.createElement('textarea');
   selBox.style.position = 'fixed';
   selBox.style.left = '0';
@@ -42,11 +42,11 @@ export function handleErrorMissingFeatureImage(event: Event) {
 }
 
 export function getByKey(fromItems: any[], keyName: string, keyValue: any): any {
-  const index: number  = fromItems.findIndex((element): boolean => {
+  const index1  = fromItems.findIndex((element) => {
     return element[keyName] === keyValue;
   });
-  if (index >= 0 ) {
-    return fromItems[index];
+  if (index1 >= 0 ) {
+    return fromItems[index1];
   }
   return null;
 }
@@ -91,8 +91,8 @@ export function toCamel(o: any): any {
   } else {
     newO = {};
     for (origKey in o) {
-      if (Object.prototype.hasOwnProperty.call(o, origKey)) {
-        newKey = origKey.replace(/(_\w)/g, (m: string) => {
+      if (o.hasOwnProperty(origKey)) {
+        newKey = origKey.replace(/(\_\w)/g, (m) => {
           return m[1].toUpperCase();
         });
       }
