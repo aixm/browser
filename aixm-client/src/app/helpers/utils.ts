@@ -1,12 +1,36 @@
 import { environment } from '../../environments/environment';
 import { Feature }     from '../models/aixm/feature';
 
+
+export function isValidUUID(str: string): boolean {
+  const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+  return regexExp.test(str);
+}
+
+export function copyToClipboard(val: string){
+  const selBox: HTMLTextAreaElement = document.createElement('textarea');
+  selBox.style.position = 'fixed';
+  selBox.style.left = '0';
+  selBox.style.top = '0';
+  selBox.style.opacity = '0';
+  selBox.value = val;
+  document.body.appendChild(selBox);
+  selBox.focus();
+  selBox.select();
+  document.execCommand('copy');
+  document.body.removeChild(selBox);
+}
+
 export function getFeatureImagePath(feature: Feature | undefined): string {
   return `assets/images/icons/AIXM/${feature?.abbreviation}/${feature?.abbreviation}.svg`;
 }
 
 export function getFeatureDefaultImagePath(): string {
   return `assets/images/icons/AIXM/default.svg`;
+}
+
+export function getFeatureBrokenImagePath(): string {
+  return `assets/images/icons/AIXM/broken.svg`;
 }
 
 export function getTitle(): string {

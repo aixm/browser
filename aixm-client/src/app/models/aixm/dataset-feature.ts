@@ -1,5 +1,5 @@
-import { getFeatureDefaultImagePath, getFeatureImagePath } from '../../helpers/utils';
-import { FeatureService }                                  from '../../services/feature.service';
+import { getFeatureBrokenImagePath, getFeatureDefaultImagePath, getFeatureImagePath } from '../../helpers/utils';
+import { FeatureService }                                                             from '../../services/feature.service';
 import { DatasetFeatureProperty }                          from './dataset-feature-property';
 import { Feature }                                         from './feature';
 import { Edge, Node }                                      from 'vis-network';
@@ -11,13 +11,12 @@ export class DatasetFeature {
   gmlIdValue!: string;
   gmlIdentifierValue!: string;
   feature: Feature | undefined;
- // referenceToFeaturesCount!:number;
- // referencedByFeaturesCount!:number;
   datasetFeatureProperties: DatasetFeatureProperty[] = [];
   referenceToFeatures: DatasetFeature[] = [];
   referencedByFeatures: DatasetFeature[] = [];
   toFeatures: Feature[] | undefined;
   byFeatures: Feature[] | undefined;
+  brokenFeatures: DatasetFeature[] | undefined;
   edges: Edge[] = [];
   label: string | undefined;
   tooltip: HTMLDivElement | undefined;
@@ -41,8 +40,8 @@ export class DatasetFeature {
           label += dfp.value + ' ';
         }
       });
-      // return label.length>0 ? label : fallbackLabel;
-      return fallbackLabel;
+      return label.length>0 ? label : fallbackLabel;
+      // return fallbackLabel;
     }
   }
 
@@ -100,18 +99,43 @@ export class DatasetFeature {
   }
 
 
+  getBrokenFeatures(): DatasetFeature[] {
+    if (!this.brokenFeatures) {
+      this.brokenFeatures = [];
+      this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty): void => {
+        if (dfp.isBroken) {
+          let df: DatasetFeature = new DatasetFeature(this.featureService);
+          df.featureId = dfp.id;
+          df.gmlIdentifierValue = dfp.xlinkHref;
+          // @ts-ignore
+          this.brokenFeatures.push(df);
+        }
+      });
+    }
+    return this.brokenFeatures;
+  }
+
+
   getNodes(): Node[] {
     let result: Node[] = [];
     this.addFeatureNode(result, this);
+    // ref to
     this.referenceToFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
       let accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
       this.edges.push({from: this.id, to: df.id, arrows: 'to', color: accentColor});
     });
+    // ref by
     this.referencedByFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
       let primaryColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-badge-background-color');
       this.edges.push({from: this.id, to: df.id, arrows: 'from', color: primaryColor});
+    });
+    // broken
+    this.getBrokenFeatures().forEach((df: DatasetFeature): void => {
+      result = this.addBrokenFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
+      let accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      this.edges.push({from: this.id, to: df.gmlIdentifierValue, arrows: 'to', color: accentColor});
     });
     return result;
   }
@@ -122,7 +146,7 @@ export class DatasetFeature {
         id: datasetFeature.id,
         label: datasetFeature.getLabel(),
         title: datasetFeature.getTooltip(),
-        shape: 'image',
+        shape: 'image', //circularImage
         font: {
           color: getComputedStyle(document.documentElement).getPropertyValue('--mat-sidenav-content-text-color'),
         },
@@ -131,6 +155,22 @@ export class DatasetFeature {
         brokenImage: getFeatureDefaultImagePath()
       });
     }
+    return nodes;
+  }
+
+  addBrokenFeatureNode(nodes: Node[], datasetFeature: DatasetFeature): Node[] {
+    nodes.push({
+      id: datasetFeature.id,
+      label: 'Unknown',
+      title: datasetFeature.gmlIdValue,
+      shape: 'image', //circularImage
+      font: {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--mat-sidenav-content-text-color'),
+      },
+      size: 15,
+      image: getFeatureBrokenImagePath(),
+      brokenImage: getFeatureDefaultImagePath()
+    });
     return nodes;
   }
 

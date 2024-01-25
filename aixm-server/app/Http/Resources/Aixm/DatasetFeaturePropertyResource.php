@@ -23,6 +23,7 @@ class DatasetFeaturePropertyResource extends JsonResource
             'value' => $this->value,
             'xlink_href_type' => $this->xlink_href_type,
             'xlink_href' => $this->xlink_href,
+            'is_broken' => $this->is_broken,
             'dataset_feature' => DatasetFeatureResource::make($this->whenLoaded('dataset_feature')),
             'property' => PropertyResource::make($this->whenLoaded('property'))
         ];

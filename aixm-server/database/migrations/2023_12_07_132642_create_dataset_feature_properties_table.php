@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('gml_id_value')->nullable();
             $table->string('xlink_href_type')->nullable();
             $table->string('xlink_href')->nullable();
+            $table->boolean('is_broken')->default(false);
             $table->text('value')->nullable();
             $table->timestamp('created_at')->nullable()->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrent()->useCurrentOnUpdate();

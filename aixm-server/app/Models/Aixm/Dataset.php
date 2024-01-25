@@ -7,6 +7,7 @@ use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use XMLReader;
@@ -77,6 +78,8 @@ class Dataset extends AixmGraphModel
             unset($element);
         }
         $reader->close();
+        // update broken references
+        $this->updateBrokenReferences();
         Log::channel('stderr')->info('Parsed ' . $this->dataset_features()->count() .
             ' features in ' . intval(round(1000 * (microtime(true) - $start))) . ' ms');
     }
@@ -133,5 +136,20 @@ class Dataset extends AixmGraphModel
                 }
             }
         }
+    }
+
+    private function updateBrokenReferences() {
+        /**
+         * UPDATE dataset_feature_properties SET is_broken=true
+         * WHERE dataset_feature_id IN (SELECT id FROM dataset_features WHERE dataset_id=2)
+         * AND xlink_href<>''
+         * AND xlink_href NOT IN (SELECT gml_identifier_value FROM dataset_features WHERE dataset_id=2);
+         */
+        DB::statement("
+        UPDATE dataset_feature_properties SET is_broken=true
+            WHERE dataset_feature_id IN (SELECT id FROM dataset_features WHERE dataset_id=?)
+              AND xlink_href<>''
+              AND xlink_href NOT IN (SELECT gml_identifier_value FROM dataset_features WHERE dataset_id=?);
+        ", [$this->id, $this->id]);
     }
 }

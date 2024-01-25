@@ -96,7 +96,7 @@ export class DatasetEditComponent implements OnInit  {
     }
   }
 
-  onFileSelected($event: Event) {
+  onFileSelected($event: Event): void {
     const file: File | null | undefined = ($event.target as HTMLInputElement).files?.item(0);
     if (file) {
       this.datasetForm.patchValue({ fileName: file.name});

@@ -45,14 +45,25 @@
                 <button mat-icon-button style="margin-right: 0.3em" matTooltip="Show menu" (click)="drawer.open()">
                     <mat-icon>menu</mat-icon>
                 </button>
+                <img alt="Eurocontrol logo" style="margin-top: 0.3em" width="36px" src="assets/images/icons/ectl_logo_short.svg">
                 <label>{{ title }}</label>
                 <span style="font-size: small">&nbsp;v{{ version }}</span>
-                <div class="flex-full-row"></div>
-                <app-theme-switcher [themeOptions]="themeOptions$ | async" (themeChange)="themeChangeHandler($event)">
+
+                <app-theme-switcher style="margin-left: 1em" [themeOptions]="themeOptions$ | async" (themeChange)="themeChangeHandler($event)">
                 </app-theme-switcher>
-                <button mat-icon-button matTooltip="Login">
-                    <mat-icon>login</mat-icon>
-                </button>
+
+                <div class="flex-full-row"></div>
+
+                <ng-container *ngIf="!authService.User">
+                    <button mat-icon-button class="tbr-btn" matTooltip="Login" (click)="authService.showLogin()"><mat-icon>login</mat-icon></button>
+                </ng-container>
+                <ng-container *ngIf="authService.User">
+                    <mat-icon>person</mat-icon>
+                    <span>{{authService.User.email}}</span>
+                    <button  mat-icon-button class="main-tbr-btn" matTooltip="{{authService.getUserTitle()}} Logout" (click)="authService.logout()">
+                        <mat-icon>logout</mat-icon></button>
+                </ng-container>
+
             </mat-toolbar-row>
         </mat-toolbar>
         <router-outlet></router-outlet>

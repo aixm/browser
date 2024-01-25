@@ -9,6 +9,7 @@ export class DatasetFeatureProperty {
   value!: string;
   xlinkHrefType!: string
   xlinkHref!: string;
+  isBroken!: boolean;
   datasetFeature!: DatasetFeature | undefined;
   property: Property | undefined;
 }

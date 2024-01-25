@@ -1,25 +1,41 @@
 <mat-card class="mat-card-dataset-feature">
-    <mat-card-header [ngStyle]="{
-    cursor: (cardClick.observers.length > 0) ? 'pointer' : ''
-    }" (click)="click()">
+    <mat-card-header>
         <app-aixm-icon [feature]="feature" [matCardAvatar]="true"></app-aixm-icon>
         <mat-card-title>{{feature?.name}}</mat-card-title>
         <mat-card-subtitle>{{datasetFeature?.getLabel()}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <button mat-stroked-button color="primary" [cdkCopyToClipboard]="getUuid()" matTooltip="{{getUuid()}}">
-            <mat-icon>content_copy</mat-icon>
-            Copy UUID to clipboard
-        </button>
+        <mat-toolbar>
+            <mat-toolbar-row style="padding: 0px">
+                <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Copy UUID"
+                        (click)="copyToClipboard(datasetFeature?.gmlIdentifierValue)">
+                    <mat-icon>content_copy</mat-icon>
+                </button>
+                <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Focus"
+                        (click)="click()">
+                    <mat-icon>hub</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
         <div *ngIf="datasetFeature?.getReferenceToFeaturesCount()" style="margin-top: 1em">References to features:</div>
-        <div class="aixm-feature-toggle-container">
+        <div class="aixm-features-container">
             <app-aixm-feature-toggle [color]="'accent'" *ngFor="let f of datasetFeature?.getReferenceToFeatures()"
                                      [feature]="f"
                                      (featureVisibilityChange)="toggleChange()"
             ></app-aixm-feature-toggle>
+
+        </div>
+        <div *ngIf="datasetFeature?.getBrokenFeatures()?.length" style="margin-top: 1em">Broker references:</div>
+        <div class="aixm-features-container">
+            <button *ngFor="let df of datasetFeature?.getBrokenFeatures()" mat-icon-button color="accent"
+                    matTooltip="Copy UUID"
+                    (click)="copyToClipboard(df.gmlIdentifierValue)">
+                <mat-icon><img src="{{getFeatureBrokenImagePath()}}" alt="Unknown"></mat-icon>
+            </button>
         </div>
         <div *ngIf="datasetFeature?.getReferencedByFeaturesCount()" style="margin-top: 1em">Referenced by features:</div>
-        <div class="aixm-feature-toggle-container">
+        <div class="aixm-features-container">
             <app-aixm-feature-toggle [color]="'primary'" *ngFor="let f of datasetFeature?.getReferencedByFeatures()"
                                      [feature]="f"
                                      (featureVisibilityChange)="toggleChange()"

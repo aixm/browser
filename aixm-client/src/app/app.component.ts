@@ -12,6 +12,7 @@ import packageInfo                                    from '../../package.json';
 import { ThemeSwitcherComponent } from './components/common/shared/theme-switcher/theme-switcher.component';
 import { getTitle } from './helpers/utils';
 import { ThemeOption } from './models/theme-option';
+import { AuthService } from './services/auth.service';
 import { ThemeService } from './services/theme.service';
 
 @Component({
@@ -30,7 +31,8 @@ export class AppComponent {
   themeOptions$: Observable<ThemeOption[]> = this.themeService.getThemeOptions();
 
   constructor(
-      private readonly themeService: ThemeService
+      private readonly themeService: ThemeService,
+      public authService: AuthService
   ) {
     this.themeService.setTheme();
   }

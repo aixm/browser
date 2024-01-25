@@ -12,9 +12,9 @@ import { MatTabsModule }                 from '@angular/material/tabs';
 import { MatToolbarModule }       from '@angular/material/toolbar';
 import { MatTooltipModule }                            from '@angular/material/tooltip';
 import { ActivatedRoute, ActivatedRouteSnapshot }      from '@angular/router';
-import { Network, DataSet, Data, Edge, Node, Options } from 'vis-network';
-import { getById, getByKey }                           from '../../../helpers/utils';
-import { Dataset }                                     from '../../../models/aixm/dataset';
+import { Network, DataSet, Data, Edge, Node, Options }     from 'vis-network';
+import { copyToClipboard, getById, getByKey, isValidUUID } from '../../../helpers/utils';
+import { Dataset }                                         from '../../../models/aixm/dataset';
 import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
 import { DatasetFeatureProperty } from '../../../models/aixm/dataset-feature-property';
 import { Feature }           from '../../../models/aixm/feature';
@@ -22,6 +22,7 @@ import { FeatureList } from '../../../models/aixm/feature-list';
 import { ApiResponse } from '../../../models/api-response';
 import { BackendApiService } from '../../../services/backend-api.service';
 import { FeatureService }                              from '../../../services/feature.service';
+import { NotificationService }                         from '../../../services/notification.service';
 import { SettingsService } from '../../../services/settings.service';
 import { DatasetFeatureComponent } from '../../common/cards/dataset-feature/dataset-feature.component';
 import { DatasetComponent }  from '../../common/cards/dataset/dataset.component';
@@ -64,7 +65,8 @@ export class BrowserComponent implements OnInit {
       private matDialog: MatDialog,
       private settingsService: SettingsService,
       private route: ActivatedRoute,
-      private featureService: FeatureService
+      private featureService: FeatureService,
+      private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -295,25 +297,37 @@ export class BrowserComponent implements OnInit {
       console.log(params.nodes[0]);
       if (!this.dataset) {
         this.dataset = getById(this.datasets, params.nodes[0]);
+        this.refresh();
       } else {
         if (!this.feature) {
           console.log(this.dataset.featureLists);
           this.feature = getByKey(this.dataset.featureLists, 'featureId', params.nodes[0]).feature;
+          this.refresh();
         } else {
-          let id: string = String(params.nodes[0]);
-          const n: number = id.lastIndexOf('_');
-          if (n !== -1) {
-            id = id.substring(0, n);
+          if (params.nodes[0]) {
+            let id: string = String(params.nodes[0]);
+
+            /*          const n: number = id.lastIndexOf('_');
+             if (n !== -1) {
+             id = id.substring(0, n);
+             }*/
+
+            if (!isValidUUID(id)) {
+              let datasetFeature: DatasetFeature = getById(this.datasetFeatures, id);
+              if (!datasetFeature) {
+                datasetFeature = new DatasetFeature(this.featureService);
+                datasetFeature.id = Number(id);
+              }
+              this.datasetFeature = datasetFeature;
+              this.refresh();
+            } else {
+              console.log('copy');
+              // broken dataset feature
+              this.copyToCb(id);
+            }
           }
-          let datasetFeature: DatasetFeature = getById(this.datasetFeatures, id);
-          if (!datasetFeature) {
-            datasetFeature = new DatasetFeature(this.featureService);
-            datasetFeature.id = Number(id);
-          }
-          this.datasetFeature = datasetFeature;
         }
       }
-      this.refresh();
     }
   }
 
@@ -371,4 +385,12 @@ export class BrowserComponent implements OnInit {
     return `per_page=${this.pageEvent.pageSize ? this.pageEvent.pageSize : 10}&page=${
       this.pageEvent.pageIndex ? this.pageEvent.pageIndex + 1: 1}`;
   }
+
+  copyToCb(text?: string): void {
+    if (text) {
+      copyToClipboard(text);
+      this.notificationService.notify('Copied to clipboard: ' + text);
+    }
+  }
+
 }

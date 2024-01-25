@@ -4,12 +4,13 @@ import { MatButtonModule }                                  from '@angular/mater
 import { MatCardModule }                                    from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA }                    from '@angular/material/dialog';
 import { MatIconModule }                                    from '@angular/material/icon';
+import { MatTooltipModule }                                 from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-confirm',
   standalone: true,
   imports: [
-    CommonModule, MatCardModule, MatButtonModule, MatIconModule
+    CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule,
   ],
   templateUrl: './confirm.component.html',
   styleUrls: ['./confirm.component.scss']
