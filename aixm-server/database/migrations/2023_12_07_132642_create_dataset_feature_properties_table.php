@@ -30,7 +30,6 @@ return new class extends Migration
 
             // add FK
             $table->foreign('dataset_feature_id')->references('id')->on('dataset_features')->onDelete('cascade');
-            // $table->foreign('parent_id')->references('id')->on('dataset_feature_properties')->onDelete('cascade');
 
         });
 

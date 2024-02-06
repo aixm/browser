@@ -81,7 +81,12 @@ class DatasetFeatureController extends Controller
                     }
                 }
             })
-            ->where('dataset_id', $request->dataset)
+            ->where(function ($query) use ($request) {
+                $query->where('dataset_id', $request->dataset);
+                if ($request->datasets) {
+                    $query->orWhereIn('dataset_id', explode(',',$request->datasets));
+                }
+            })
             ->groupBy(['feature_id', 'order'])
             ->orderBy('order')
             ->paginate();
@@ -91,8 +96,14 @@ class DatasetFeatureController extends Controller
 
     public function features(Request $request)
     {
-        $features = DatasetFeature::search()->where([
-                ['dataset_id', '=', $request->dataset],
+        $features = DatasetFeature::search()
+            ->where(function ($query) use ($request) {
+                $query->where('dataset_id', $request->dataset);
+                if ($request->datasets) {
+                    $query->orWhereIn('dataset_id', explode(',',$request->datasets));
+                }
+            })
+            ->where([
                 ['feature_id', '=', $request->feature]
             ])->paginate();
         return $this->successResponse(DatasetFeatureResource::collection($features));

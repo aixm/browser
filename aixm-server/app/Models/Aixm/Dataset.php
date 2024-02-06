@@ -17,8 +17,8 @@ class Dataset extends AixmGraphModel
 {
     public $searchable = ['name', 'filename', 'description'];
     protected $withCount = ['dataset_features'];
-    private $xmlFilesFolder = 'datasets';
-    private $featureParentTagName = 'hasMember';
+    public static $XmlFilesFolder = 'datasets';
+    public static $FeatureParentTagName = 'hasMember';
 
 
     ##################################################################################
@@ -42,11 +42,11 @@ class Dataset extends AixmGraphModel
     # Functions
     ##################################################################################
     public function getPath() {
-        return $this->xmlFilesFolder . DIRECTORY_SEPARATOR . $this->path;
+        return self::$XmlFilesFolder . DIRECTORY_SEPARATOR . $this->path;
     }
 
     public function getPathWithFileName() {
-        return $this->xmlFilesFolder . DIRECTORY_SEPARATOR . $this->path . DIRECTORY_SEPARATOR . $this->filename;
+        return self::$XmlFilesFolder . DIRECTORY_SEPARATOR . $this->path . DIRECTORY_SEPARATOR . $this->filename;
     }
 
     public static function getNewFileSubFolder() {
@@ -56,7 +56,7 @@ class Dataset extends AixmGraphModel
             $now->format('d');
     }
 
-    public function parse() {
+    public function parse(bool $validate = false) {
         $start = microtime(true);
         Log::channel('stderr')->info('Start parsing dataset ' . $this->name);
         $this->dataset_features()->delete();
@@ -64,20 +64,31 @@ class Dataset extends AixmGraphModel
         $reader = new XMLReader();
         $reader->open(Storage::disk('private')->path($this->getPathWithFileName()));
 
-        // reach first feature
-        while($reader->read() && $reader->localName != $this->featureParentTagName){;}
-        // loop features
-        while($reader->localName == $this->featureParentTagName){
-            $element = new SimpleXMLElement($reader->readInnerXml());
-            $feature = Feature::getFeature($element->getName());
-            if ($feature?->type === 'feature') {
-                // Log::channel('stderr')->info('Read feature: ' . $name);
-                $this->parseDatasetFeature($this, $feature, $element);
-            }
-            $reader->next('hasMember');
-            unset($element);
+        if ($validate) {
+            Log::channel('stderr')->info('Validating dataset ' . $this->name);
+            $schema = $reader->setSchema(Storage::disk('private')->path('xsd/aixm_5_1_1_xsd/message/AIXM_BasicMessage.xsd'));
         }
-        $reader->close();
+
+        try {
+            // reach first feature
+            while ($reader->read() && $reader->localName != self::$FeatureParentTagName) {;}
+            // loop features
+            while ($reader->localName == self::$FeatureParentTagName) {
+                $element = new SimpleXMLElement($reader->readInnerXml());
+                $feature = Feature::getFeature($element->getName());
+                if ($feature?->type === 'feature') {
+                    // Log::channel('stderr')->info('Read feature: ' . $name);
+                    $this->parseDatasetFeature($this, $feature, $element);
+                }
+                $reader->next(self::$FeatureParentTagName);
+                unset($element);
+            }
+            $reader->close();
+        } catch (\Exception $exception) {
+            Log::channel('stderr')->error('Error parsing dataset ' . $this->name);
+            Log::channel('stderr')->error($exception->getMessage());
+        }
+
         // update broken references
         $this->updateBrokenReferences();
         Log::channel('stderr')->info('Parsed ' . $this->dataset_features()->count() .
@@ -85,7 +96,7 @@ class Dataset extends AixmGraphModel
     }
 
     private function parseDatasetFeature($dataset, $feature, $element) {
-        // Log::channel('stderr')->info('Feature: ' . $feature->name . ': ' . strval($element));
+        //Log::channel('stderr')->info('Feature: ' . $feature->name . ': ' . strval($element));
         $ns = array_keys($element->getNameSpaces())[0];
         $dataset_feature = $dataset->dataset_features()->create([
             'feature_id' => $feature->id,
@@ -98,16 +109,23 @@ class Dataset extends AixmGraphModel
             $feature_node = $timeSlices[0];
             // save properties
             foreach ($feature->properties as $property) {
-                $p = $feature_node->xpath($ns . ':' . $property->name);
-                if (sizeof($p) > 0) {
-                    $this->parseDatasetFeatureProperty($dataset_feature, $property, $p[0], $ns);
+                if ($property->ref_feature?->type === 'choice') {
+                    // properties with partly name equality
+                    // choices -> property name from the beginning to "_"
+                    $props = $feature_node->xpath('//' . $ns . ':*[starts-with(local-name(), "' . $property->name . '_")]');
+                } else {
+                    // properties with exact name equality
+                    $props = $feature_node->xpath($ns . ':' . $property->name);
+                }
+                foreach ($props as $p) {
+                    $this->parseDatasetFeatureProperty($dataset_feature, $property, $p, $ns);
                 }
             }
         }
     }
 
     private function parseDatasetFeatureProperty($dataset_feature, $property, $node, $ns, $parent_dataset_feature_property_id=0) {
-        // Log::channel('stderr')->info('Property: ' . $property->name . ': ' . strval($node));
+        //Log::channel('stderr')->info('Property: ' .$node->getName() . ': ' . strval($node));
         $value = strval($node);
         $xlink_href = '';
         $xlink_href_type = '';
@@ -130,9 +148,15 @@ class Dataset extends AixmGraphModel
         if ($property->ref_feature_id) {
             $feature = Feature::find($property->ref_feature_id);
             foreach ($feature->properties as $prop) {
-                $p = $node->xpath('.//' . $ns . ':' . $prop->name);
-                if (sizeof($p) > 0) {
-                    $this->parseDatasetFeatureProperty($dataset_feature, $prop, $p[0], $ns, $dataset_feature_property->id);
+                if ($prop->ref_feature?->type === 'choice') {
+                    // properties with partly name equality
+                    $pr = $node->xpath('.//' . $ns . ':*[starts-with(local-name(), "' . $prop->name . '_")]');
+                } else {
+                    // properties with exact name equality
+                    $pr = $node->xpath('.//' . $ns . ':' . $prop->name);
+                }
+                foreach ($pr as $p) {
+                    $this->parseDatasetFeatureProperty($dataset_feature, $prop, $p, $ns, $dataset_feature_property->id);
                 }
             }
         }
