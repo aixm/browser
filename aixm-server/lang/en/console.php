@@ -12,9 +12,9 @@ return [
     |
     */
 
-    'asm' => [
+    'aixm' => [
         'install' => [
-            'description' => 'Install ASM Backend System',
+            'description' => 'Install AIXM Backend System',
             'info' => [
                 'database' => 'Create database structure',
             ],
@@ -27,9 +27,24 @@ return [
             ],
         ],
         'update' => [
-            'description' => 'Update ASM Backend System',
+            'description' => 'Update AIXM Backend System',
             'info' => [
-                'done' => 'Update ASM is completed',
+                'done' => 'Update AIXM is completed',
+            ],
+        ],
+        'parse' => [
+            'description' => 'Parse AIXM XML dataset file',
+            'info' => [
+                'done' => 'Parse AIXM XML dataset file is completed',
+            ],
+            'error' => [
+                'file_not_exists' => 'XML dataset file is not exist',
+            ],
+            'input' => [
+                'file' => [
+                    'prompt' => 'Input file name with path to be parsed',
+                    'example' => 'E.g. samples\2024-01-25\Route.xml'
+                ]
             ],
         ],
     ],
