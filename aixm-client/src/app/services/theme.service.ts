@@ -3,18 +3,17 @@ import { Injectable }          from "@angular/core";
 import { Observable }          from 'rxjs';
 import { ThemeOption }         from '../models/theme-option';
 import { SettingsService }     from './settings.service';
-import { StyleManagerService } from './style-manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  url: string = 'assets/css/themes/theme-options.json';
-  defaultTheme: string = 'deeppurple-amber';
+  url: string = 'assets/theme-options.json';
+  defaultTheme: string = 'light-app-theme';
+  themes: string[] = ['dark-app-theme', 'light-app-theme'];
 
   constructor(
       private httpClient: HttpClient,
-      private styleManager: StyleManagerService,
       private settingsService: SettingsService,
   ) {}
 
@@ -23,17 +22,19 @@ export class ThemeService {
   }
 
   getTheme(): string {
-    return this.settingsService.getValue('THEME', this.defaultTheme);
+    return this.settingsService.getValue('APP_THEME', this.defaultTheme);
   }
 
   setTheme(themeToSet?: string): void {
     if (!themeToSet) {
       themeToSet = this.getTheme();
     }
-    this.styleManager.setStyle(
-        'theme',
-        `assets/css/themes/${themeToSet}.css`
-    );
-    this.settingsService.setValue('THEME', themeToSet);
+    // clear styles
+    document.documentElement.classList.remove(... this.themes);
+    // set styles
+    document.documentElement.classList.add(themeToSet);
+    // save settings
+    this.settingsService.setValue('APP_THEME', themeToSet);
   }
+
 }

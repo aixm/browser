@@ -13,6 +13,7 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
 import { MatToolbarModule }                                                      from '@angular/material/toolbar';
 import { MatTooltipModule }                           from '@angular/material/tooltip';
 import { copyToClipboard, getFeatureBrokenImagePath } from '../../../../helpers/utils';
+import { Dataset }                                                               from '../../../../models/aixm/dataset';
 import { DatasetFeature }                             from '../../../../models/aixm/dataset-feature';
 import { Feature }                                from '../../../../models/aixm/feature';
 import { PipesModule }              from '../../../../pipes/pipes.module';
@@ -38,6 +39,7 @@ export class DatasetFeatureComponent implements OnInit {
   @Output() cardClick: EventEmitter<DatasetFeature> = new EventEmitter<DatasetFeature>();
   @Output() featureVisibilityChange: EventEmitter<Feature> = new EventEmitter<Feature>();
   @Output() copyToClipboardClick: EventEmitter<string> = new EventEmitter<string>();
+  @Output() goToDatasetClick: EventEmitter<Dataset> = new EventEmitter<Dataset>();
 
 
   constructor(
@@ -60,6 +62,10 @@ export class DatasetFeatureComponent implements OnInit {
 
   copyToClipboard(text?: string): void {
     this.copyToClipboardClick.emit(text);
+  }
+
+  goToDataset(dataset?: Dataset): void {
+    this.goToDatasetClick.emit(dataset);
   }
 
   protected readonly getFeatureBrokenImagePath = getFeatureBrokenImagePath;

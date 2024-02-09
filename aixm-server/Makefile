@@ -94,6 +94,12 @@ install: ## Install aixm Application
 update: dump-autoload ## Update aixm Application
 	$(docker_compose_bin) exec $(CONTAINER_NAME1) php artisan aixm:update
 
+backup-db: ## Backup DB
+	@$(docker_bin)  exec -i -t  $(CONTAINER_NAME3) pg_dump -U aixm -Fc -b -v aixm -f "/tmp/data/aixm.backup"
+
+restore-db: ## Backup DB
+	@$(docker_bin)  exec -i -t  $(CONTAINER_NAME3) pg_restore -U aixm -d aixm --clean -v "/tmp/data/aixm.backup"
+
 --------------------: ## ------------------------------
 --------------------: ## *** ENTER CONTAINERS ***
 --------------------: ## ------------------------------

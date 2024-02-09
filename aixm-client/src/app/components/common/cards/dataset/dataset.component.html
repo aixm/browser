@@ -1,19 +1,18 @@
 <mat-card class="mat-card-dataset" [ngStyle]="{
+    backgroundColor: dataset.checked ? '#c4ccfa' : '',
     cursor: (cardClick.observers.length > 0) ? 'pointer' : ''
     }" (click)="click()">
     <mat-card-header>
-        <mat-icon mat-card-avatar style="width: 36px;
-  height: 36px;
-  font-size: 36px;">storage</mat-icon>
-        <mat-card-title>{{dataset?.name}}</mat-card-title>
-        <mat-card-subtitle>{{dataset?.description}}</mat-card-subtitle>
+        <mat-icon mat-card-avatar style="width: 36px;height: 36px;font-size: 36px">storage</mat-icon>
+        <mat-card-title>{{dataset.name}}</mat-card-title>
+        <mat-card-subtitle>{{dataset.description}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <div>
-            {{dataset?.filename}}
+            {{dataset.filename}}
         </div>
         <div>
-            Dataset features count: <mat-chip color="primary">{{dataset?.datasetFeaturesCount}}</mat-chip>
+            Dataset features count: <mat-chip color="primary">{{dataset.datasetFeaturesCount}}</mat-chip>
         </div>
     </mat-card-content>
 </mat-card>

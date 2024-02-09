@@ -7,7 +7,7 @@ export function isValidUUID(str: string): boolean {
   return regexExp.test(str);
 }
 
-export function copyToClipboard(val: string){
+export function copyToClipboard(val: string): void{
   const selBox: HTMLTextAreaElement = document.createElement('textarea');
   selBox.style.position = 'fixed';
   selBox.style.left = '0';

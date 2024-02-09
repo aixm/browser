@@ -12,9 +12,14 @@ class FeatureController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $features = Feature::search()->paginate();
+        $features = Feature::search();
+        if ($request->page) {
+            $features = $features->paginate();
+        } else {
+            $features = $features->get();
+        }
         return $this->successResponse(FeatureResource::collection($features));
     }
 

@@ -1,0 +1,122 @@
+<mat-card style="max-width: 30em">
+    <mat-card-header>
+        <mat-card-title>{{user.id?'Edit':'Create'}} user</mat-card-title>
+        <div  class="flex-full-row"></div>
+        <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="pg-bar">
+            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <div>
+            <form [formGroup]="userForm">
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="flex-grow: 1">
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="User's email" formControlName="email">
+                        <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+                            <mat-hint *ngIf="email?.errors?.['required']">Email is required</mat-hint>
+                            <mat-hint *ngIf="email?.errors?.['email']">Email format required</mat-hint>
+                            <mat-hint *ngIf="email?.errors?.['serverError']">{{ email?.errors?.['serverError'] }}</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                    <section style="width: 7em;margin-left: 0.1em">
+                        <mat-checkbox formControlName="active" [value]="active?.value" [labelPosition]="'after'">Active</mat-checkbox>
+                    </section>
+                </div>
+
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="flex-grow: 1">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="{{showPassword ? 'text' : 'password'}}" placeholder="User's password" formControlName="password">
+                        <button mat-icon-button matSuffix color="primary" [matTooltip]="showPassword ? 'Hide' : 'Show'" [disabled]="password?.disabled"
+                                (click)="showPassword=!showPassword;">
+                            <mat-icon>{{showPassword ? 'key_off' : 'key'}}</mat-icon>
+                        </button>
+                        <button mat-icon-button matSuffix color="primary" [matTooltip]="'Generate'" [disabled]="password?.disabled"
+                                (click)="password?.setValue(Math.random().toString(36).slice(-8));">
+                            <mat-icon>keyboard</mat-icon>
+                        </button>
+                        <mat-error *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+                            <mat-hint *ngIf="password?.errors?.['required']">Password is required</mat-hint>
+                            <mat-hint *ngIf="password?.errors?.['serverError']">{{ password?.errors?.['serverError'] }}</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                    <section *ngIf="user?.id" style="width: 7em;margin-left: 0.1em">
+                        <mat-checkbox formControlName="changePassword" [value]="changePassword?.value" [labelPosition]="'after'">Change</mat-checkbox>
+                    </section>
+                </div>
+
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="flex-grow: 1">
+                        <mat-label>Role</mat-label>
+                        <mtx-select class="short-select"  [items]="authService.roles"  placeholder="User's role" formControlName="role"
+                                    bindLabel="name" bindValue="id" [value]="role">
+                        </mtx-select>
+                        <mat-error *ngIf="role?.invalid && (role?.dirty || role?.touched)">
+                            <mat-hint *ngIf="role?.errors?.['required']">Role is required</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="flex-grow: 1">
+                        <mat-label>First name</mat-label>
+                        <input matInput placeholder="User's first name" formControlName="firstName">
+                        <mat-error *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)">
+                            <mat-hint *ngIf="firstName?.errors?.['required']">First name is required</mat-hint>
+                            <mat-hint *ngIf="firstName?.errors?.['minlength']">At least 2 characters</mat-hint>
+                            <mat-hint *ngIf="firstName?.errors?.['maxlength']">No longer than 50 characters</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="flex-grow: 1; margin-left: 0.1em">
+                        <mat-label>Last name</mat-label>
+                        <input matInput placeholder="User's last name" formControlName="lastName">
+                        <mat-error *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)">
+                            <mat-hint *ngIf="lastName?.errors?.['required']">Last name is required</mat-hint>
+                            <mat-hint *ngIf="lastName?.errors?.['minlength']">At least 2 characters</mat-hint>
+                            <mat-hint *ngIf="lastName?.errors?.['maxlength']">No longer than 50 characters</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="flex-grow: 1">
+                        <mat-label>Company</mat-label>
+                        <input matInput placeholder="User's company" formControlName="company">
+                        <mat-error *ngIf="company?.invalid && (company?.dirty || company?.touched)">
+                            <mat-hint *ngIf="company?.errors?.['required']">Company is required</mat-hint>
+                            <mat-hint *ngIf="company?.errors?.['minlength']">At least 2 characters</mat-hint>
+                            <mat-hint *ngIf="company?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="flex-grow: 1">
+                        <mat-label>Position</mat-label>
+                        <input matInput placeholder="User's position" formControlName="position">
+                        <mat-error *ngIf="position?.invalid && (position?.dirty || position?.touched)">
+                            <mat-hint *ngIf="position?.errors?.['required']">Position is required</mat-hint>
+                            <mat-hint *ngIf="position?.errors?.['minlength']">At least 2 characters</mat-hint>
+                            <mat-hint *ngIf="position?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+            </form>
+        </div>
+
+    </mat-card-content>
+
+    <mat-card-actions style="justify-content: flex-end">
+        <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
+        <button *ngIf="!data.disableForm" mat-stroked-button class="tbr-btn" color="primary" (click)="save()">
+            <mat-icon>save</mat-icon>Save</button>
+    </mat-card-actions>
+
+</mat-card>
+

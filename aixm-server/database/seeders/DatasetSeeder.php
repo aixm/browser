@@ -30,11 +30,11 @@ class DatasetSeeder extends Seeder
         ]);
 
         Dataset::create([
-            'name' => 'BD 2023-03-20 AIXM 5',
-            'filename' => 'BD_2023-03-20.aixm5.xml',
+            'name' => 'Latvian AIP 21 MAR 24',
+            'filename' => 'EV_AIP_DS_FULL_20240321_AIRAC.xml',
             'content_type' => 'application/xml',
             'path' => 'samples',
-            'description' => '30Mb sample AIXM 5 xml file'
+            'description' => '~50Mb LGS AIXM xml real data'
         ]);
 
 

@@ -23,7 +23,25 @@ class UserSeeder extends Seeder
             'role' => 'user'
         ]);
 
-        $userCount = 30;
+        User::factory()->create([
+            'first_name'=>'Eduard',
+            'last_name'=>'POROSNICU',
+            'email' => 'eduard.porosnicu@eurocontrol.int',
+            'role' => 'admin',
+            'company' => 'Eurocontrol',
+            'position' =>'Senior Technical/Administrativ'
+        ]);
+
+        User::factory()->create([
+            'first_name'=>'Teodors',
+            'last_name'=>'Polurezovs',
+            'email' => 'teodors.polurezovs@lgs.lv',
+            'role' => 'user',
+            'company' => 'Aeronautical Information Service of Latvia',
+            'position' =>'Senior AIM environment administrator'
+        ]);
+
+        $userCount = 0;
 
         // other users
         User::factory()->count($userCount)->create();

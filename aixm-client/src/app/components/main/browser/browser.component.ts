@@ -1,22 +1,24 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule }                             from '@angular/common';
 import { FormsModule }                              from '@angular/forms';
-import { MatButtonModule }   from '@angular/material/button';
-import { MatButtonToggleModule }   from '@angular/material/button-toggle';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule }           from '@angular/material/icon';
-import { MatInputModule }                from '@angular/material/input';
+import { MatBadgeModule }                           from '@angular/material/badge';
+import { MatButtonModule }                          from '@angular/material/button';
+import { MatButtonToggleModule }                    from '@angular/material/button-toggle';
+import { MatCheckboxModule }                        from '@angular/material/checkbox';
+import { MatDialog, MatDialogRef }                  from '@angular/material/dialog';
+import { MatIconModule }                            from '@angular/material/icon';
+import { MatInputModule }                           from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule }                     from '@angular/material/progress-bar';
+import { MatSlideToggleModule }                     from '@angular/material/slide-toggle';
 import { MatTabsModule }                 from '@angular/material/tabs';
 import { MatToolbarModule }       from '@angular/material/toolbar';
 import { MatTooltipModule }                            from '@angular/material/tooltip';
-import { ActivatedRoute, ActivatedRouteSnapshot }      from '@angular/router';
+import { ActivatedRoute }      from '@angular/router';
 import { Network, DataSet, Data, Edge, Node, Options }     from 'vis-network';
 import { copyToClipboard, getById, getByKey, isValidUUID } from '../../../helpers/utils';
 import { Dataset }                                         from '../../../models/aixm/dataset';
 import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
-import { DatasetFeatureProperty } from '../../../models/aixm/dataset-feature-property';
 import { Feature }           from '../../../models/aixm/feature';
 import { FeatureList } from '../../../models/aixm/feature-list';
 import { ApiResponse } from '../../../models/api-response';
@@ -27,7 +29,7 @@ import { SettingsService } from '../../../services/settings.service';
 import { DatasetFeatureComponent } from '../../common/cards/dataset-feature/dataset-feature.component';
 import { DatasetComponent }  from '../../common/cards/dataset/dataset.component';
 import { FeatureComponent }  from '../../common/cards/feature/feature.component';
-import { DatasetEditComponent } from '../../common/dialogs/dataset-edit/dataset-edit.component';
+import { DatasetEditComponent } from '../datasets/dataset-edit/dataset-edit.component';
 import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.component';
 
 @Component({
@@ -36,7 +38,7 @@ import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.compo
   imports: [
     CommonModule, DatasetComponent, MatTabsModule, MatButtonModule, MatIconModule, FeatureComponent, DatasetFeatureComponent,
     AixmIconComponent, MatToolbarModule, MatButtonToggleModule, MatInputModule, MatTooltipModule, MatPaginatorModule, MatProgressBarModule,
-    FormsModule,
+    FormsModule, MatCheckboxModule, MatBadgeModule, MatSlideToggleModule,
   ],
   templateUrl: './browser.component.html',
   styleUrl: './browser.component.scss'
@@ -50,14 +52,16 @@ export class BrowserComponent implements OnInit {
   searchText: string = '';
   datasets: Dataset[] = [];
   dataset: Dataset | undefined;
+  featureLists: FeatureList[] | undefined;
   feature: Feature | undefined;
   datasetFeature: DatasetFeature | undefined;
   datasetFeatures: DatasetFeature[] = [];
   viewLayout: 'browser' | 'graph' | 'combined' = 'browser';
   pageEvent: PageEvent = new PageEvent();
-  pageSizeOptions: number[] = [10, 25, 50, 100, 1000];
+  pageSizeOptions: number[] = [10, 25, 50, 100];
   nodes: Node[] = [];
   edges: Edge[] = [];
+  multiMode: boolean = false;
 
 
   constructor(
@@ -75,7 +79,7 @@ export class BrowserComponent implements OnInit {
 
     // layout
     if (this.route.snapshot.queryParamMap.get('layout')) {
-      let layout = this.route.snapshot.queryParamMap.get('layout');
+      let layout: string | null = this.route.snapshot.queryParamMap.get('layout');
       if (layout === 'browser' || layout === 'graph' || layout === 'combined') {
         this.viewLayout = layout;
         this.settingsService.setValue('BROWSER_LAYOUT', this.viewLayout);
@@ -86,22 +90,64 @@ export class BrowserComponent implements OnInit {
     }
       // dataset
     if (this.route.snapshot.queryParamMap.get('dataset')) {
-      let dataset: Dataset = new Dataset();
-      dataset.id = Number(this.route.snapshot.queryParamMap.get('dataset'));
-      this.datasetClick(dataset);
+      this.refreshDatasets((): void => {this.datasetClick(getById(
+          this.datasets, Number(this.route.snapshot.queryParamMap.get('dataset'))))});
     } else {
       this.refreshDatasets();
     }
   }
 
-  refresh() {
+
+  goDatasets(): void {
+    this.pageEvent = new PageEvent();
+    this.dataset = undefined;
+    this.featureLists = undefined;
+    this.feature = undefined;
+    this.datasetFeature = undefined;
+    this.refreshDatasets();
+  }
+
+  goFeatureLists(dataset?: Dataset): void {
+    if (dataset) {
+      this.dataset = dataset;
+    }
+    this.featureLists = undefined;
+    this.feature = undefined;
+    this.datasetFeature = undefined;
+    this.refreshFeaturesList();
+  }
+
+  goDatasetFeatures(feature: Feature, dataset?: Dataset): void {
+    if (dataset) {
+      this.dataset = dataset;
+    }
+    if (feature) {
+      this.feature = feature;
+    }
+    this.datasetFeature = undefined;
+    this.refreshDatasetFeatures();
+  }
+
+  goDatasetFeature(datasetFeature: DatasetFeature, feature?: Feature, dataset?: Dataset): void {
+    if (dataset) {
+      this.dataset = dataset;
+    }
+    if (feature) {
+      this.feature = feature;
+    }
+    this.datasetFeature = datasetFeature;
+    this.refreshDatasetFeature();
+  }
+
+  refresh(): void {
     if (this.datasetFeature){
-      this.refreshDatasetFeature(this.datasetFeature);
+      this.refreshDatasetFeature();
     } else {
       if (this.feature) {
-        this.refreshDatasetFeatures(this.feature);
+        this.refreshDatasetFeatures();
       } else {
-        if (this.dataset) {
+        if ((this.dataset && !this.multiMode) || (this.multiMode && this.getSelectedDatasets().length>0)) {
+          // @ts-ignore
           this.refreshFeaturesList(this.dataset);
         } else {
           this.refreshDatasets();
@@ -110,7 +156,7 @@ export class BrowserComponent implements OnInit {
     }
   }
 
-  refreshDatasets(): void {
+  refreshDatasets(callback?: Function): void {
     this.loading = true;
     this.backendApiService.getData(`${this.urlDatasets}?${this.getPagingUrl()}`+ (this.searchText ? '&search=' + this.searchText : ''))
         .subscribe((data: ApiResponse): void => {
@@ -124,19 +170,21 @@ export class BrowserComponent implements OnInit {
       }
       this.loading = false;
       this.updateGraph();
+      callback?.call(this);
     });
   }
 
-  refreshFeaturesList(dataset: Dataset): void {
+  refreshFeaturesList(): void {
     this.loading = true;
-    this.backendApiService.getData(`${this.urlDatasets}/${this.dataset?.id}/features_list?with=datasetfeature.feature&${this.getPagingUrl()
-    }` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
+    this.backendApiService.getData(`${this.urlDatasets}/${
+      this.dataset?.id ? this.dataset?.id : 0}/features_list?with=datasetfeature.feature${
+      this.getDatasetsUrl()}&${this.getPagingUrl()}` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
         this.nodes = [];
         this.edges = [];
-        dataset.featureLists = data.data.map((x: FeatureList): FeatureList => {
+        this.featureLists = data.data.map((x: FeatureList): FeatureList => {
           const featureList: FeatureList = Object.assign(new FeatureList(), x);
           this.nodes.push(featureList.getNode());
           return featureList;
@@ -148,12 +196,13 @@ export class BrowserComponent implements OnInit {
 
   }
 
-  refreshDatasetFeatures(feature: Feature): void {
+  refreshDatasetFeatures(): void {
     this.loading = true;
+    this.datasetFeatures = [];
     this.clearGraph();
-    this.backendApiService.getData(`${this.urlDatasets}/${this.dataset?.id}/features_list/${feature.id
-    }?with=datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property&${this.getPagingUrl()
-    }` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
+    this.backendApiService.getData(`${this.urlDatasets}/${this.dataset?.id? this.dataset.id : 0}/features_list/${this.feature?.id
+    }?with=datasetfeature.dataset,datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property${
+      this.getDatasetsUrl()}&${this.getPagingUrl()}` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
       if (data.data) {
@@ -165,11 +214,11 @@ export class BrowserComponent implements OnInit {
     });
   }
 
-  refreshDatasetFeature(datasetFeature: DatasetFeature): void {
+  refreshDatasetFeature(): void {
     this.loading = true;
     this.clearGraph();
-    this.backendApiService.getData(`${this.urlDatasetFeatures}/${datasetFeature.id
-    }?with=datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property`
+    this.backendApiService.getData(`${this.urlDatasetFeatures}/${this.datasetFeature?.id
+    }?with=datasetfeature.dataset,datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property`
     ).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.resetPageState();
@@ -184,25 +233,18 @@ export class BrowserComponent implements OnInit {
     });
   }
 
-  datasetClick(dataset: Dataset): void {
-    this.dataset = dataset;
-    this.feature = undefined;
-    this.datasetFeature = undefined;
-    this.datasetFeatures = [];
-    this.pageEvent = new PageEvent();
-    this.refreshFeaturesList(dataset);
+  datasetClick(dataset?: Dataset): void {
+    if (!this.multiMode) {
+      this.goFeatureLists(dataset);
+    } else {
+      if (dataset) {
+        dataset.checked = !dataset.checked;
+      }
+    }
   }
 
-  featureClick(feature: Feature): void {
-    this.feature = feature;
-    this.datasetFeature = undefined;
-    this.pageEvent = new PageEvent();
-    this.refreshDatasetFeatures(feature);
-  }
-
-  datasetFeatureClick(datasetFeature: DatasetFeature): void {
-    this.datasetFeature = datasetFeature;
-    this.refreshDatasetFeature(datasetFeature);
+  getSelectedDatasets(): Dataset[] {
+    return this.datasets.filter((ds: Dataset) => ds.checked);
   }
 
   featureVisibilityChange(): void {
@@ -295,23 +337,21 @@ export class BrowserComponent implements OnInit {
     console.log(params);
     if (params.nodes.length > 0) {
       console.log(params.nodes[0]);
-      if (!this.dataset) {
+      if (!this.dataset || (this.multiMode && this.getSelectedDatasets().length===0)) {
+        this.multiMode = false;
+        this.multiModeToggle();
         this.dataset = getById(this.datasets, params.nodes[0]);
         this.refresh();
       } else {
         if (!this.feature) {
-          console.log(this.dataset.featureLists);
-          this.feature = getByKey(this.dataset.featureLists, 'featureId', params.nodes[0]).feature;
+          // console.log(this.featureLists);
+          if (this.featureLists) {
+            this.feature = getByKey(this.featureLists, 'featureId', params.nodes[0]).feature;
+          }
           this.refresh();
         } else {
           if (params.nodes[0]) {
             let id: string = String(params.nodes[0]);
-
-            /*          const n: number = id.lastIndexOf('_');
-             if (n !== -1) {
-             id = id.substring(0, n);
-             }*/
-
             if (!isValidUUID(id)) {
               let datasetFeature: DatasetFeature = getById(this.datasetFeatures, id);
               if (!datasetFeature) {
@@ -321,7 +361,7 @@ export class BrowserComponent implements OnInit {
               this.datasetFeature = datasetFeature;
               this.refresh();
             } else {
-              console.log('copy');
+              // console.log('copy');
               // broken dataset feature
               this.copyToCb(id);
             }
@@ -329,16 +369,6 @@ export class BrowserComponent implements OnInit {
         }
       }
     }
-  }
-
-  goDatasets(): void {
-    this.dataset = undefined;
-    this.feature = undefined;
-    this.edges = [];
-    this.nodes = this.datasets.map((dataset: Dataset): Node => {
-      return {id: dataset.id, label: dataset.name};
-    });
-    this.updateGraph();
   }
 
   addDataset(): void {
@@ -384,6 +414,24 @@ export class BrowserComponent implements OnInit {
   getPagingUrl(): string {
     return `per_page=${this.pageEvent.pageSize ? this.pageEvent.pageSize : 10}&page=${
       this.pageEvent.pageIndex ? this.pageEvent.pageIndex + 1: 1}`;
+  }
+
+  getDatasetsUrl(): string {
+    if (this.getSelectedDatasets().length>0) {
+      return `&datasets=${this.getSelectedDatasets().map((ds:Dataset)=>ds.id).join(',')}`;
+    } else {
+      return '';
+    }
+  }
+
+  multiModeToggle(): void {
+    if (!this.multiMode) {
+      // clear selected datasets
+      this.datasets.forEach((ds: Dataset): void => {
+        ds.checked = false;
+      })
+    }
+    this.goDatasets();
   }
 
   copyToCb(text?: string): void {

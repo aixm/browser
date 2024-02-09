@@ -18,6 +18,7 @@ import { ThemeService }                           from '../../../../services/the
 export class ThemeSwitcherComponent {
   @Input() themeOptions: ThemeOption[] | null | undefined;
   @Output() themeChange: EventEmitter<string> = new EventEmitter<string>();
+  selectedTheme: string = this.themeService.getTheme();
 
   constructor(
       public themeService: ThemeService
@@ -25,6 +26,7 @@ export class ThemeSwitcherComponent {
 
   changeTheme(themeToSet: string): void {
     this.themeChange.emit(themeToSet);
+    this.selectedTheme = this.themeService.getTheme();
   }
 
 }

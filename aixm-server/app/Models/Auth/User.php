@@ -6,6 +6,7 @@ namespace App\Models\Auth;
 use App\Models\Aixm\Dataset;
 use App\Traits\Paginatable;
 use App\Traits\ProcessRelations;
+use App\Traits\Searchable;
 use App\Traits\WithRequests;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, WithRequests, Paginatable, ProcessRelations;
+    use HasApiTokens, HasFactory, Notifiable, WithRequests, Paginatable, ProcessRelations, Searchable;
 
     protected $fillable = [
         'active',
@@ -22,6 +23,18 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'role',
+        'company',
+        'position'
+    ];
+
+    public $searchable = [
+        'active',
+        'email',
+        'first_name',
+        'last_name',
+        'role',
+        'company',
+        'position'
     ];
 
     protected $hidden = [

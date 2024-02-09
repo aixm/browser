@@ -4,6 +4,7 @@
 
 <mat-menu #menu="matMenu">
     <button *ngFor="let option of themeOptions" mat-menu-item
+            [ngClass]="option.value===selectedTheme ? 'selected-item' : ''"
             (click)="changeTheme(option.value)">
         <mat-icon
                 role="img"

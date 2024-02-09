@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Aixm\DatasetResource;
 use App\Models\Aixm\Dataset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -17,7 +18,7 @@ class DatasetController extends Controller
      */
     public function index()
     {
-        $datasets = Dataset::search()->paginate();
+        $datasets = Dataset::byUser()->search()->paginate();
         return $this->successResponse(DatasetResource::collection($datasets));
     }
 
@@ -26,6 +27,9 @@ class DatasetController extends Controller
      */
     public function store(Request $request)
     {
+        // get user this way for public routes
+        $user = Auth::guard('api')->user();
+
         $uploaded_file = $request->file('file');
         try {
             $validator = Validator::make($request->all(), [
@@ -49,6 +53,10 @@ class DatasetController extends Controller
                 $n++;
             }
             if ($uploaded_file->storeAs($dataset->getPath(), $dataset->filename, 'private')) {
+                // only admin can set user_id
+                if (!$user->isAdmin()) {
+                    $place->user_id = $user ? $user->id : 0;
+                }
                 $dataset->save();
                 $dataset->parse();
                 return $this->successResponse($dataset, null, 201);
@@ -84,9 +92,17 @@ class DatasetController extends Controller
      */
     public function update(Request $request, Dataset $dataset)
     {
-        $dataset->fill($request->all());
-        $dataset->save();
-        return $this->successResponse(DatasetResource::make($dataset));
+        // get user this way for public routes
+        $user = Auth::guard('api')->user();
+        // update own record or admin
+        if ($user->isAdmin() || $user->id === $dataset->user_id) {
+            $dataset->fill($request->all());
+            $dataset->save();
+            return $this->successResponse(DatasetResource::make($dataset));
+        } else {
+            return $this->errorResponse(trans('auth.not_enough_privileges'), 403);
+        }
+
     }
 
     /**
@@ -94,15 +110,37 @@ class DatasetController extends Controller
      */
     public function destroy(Dataset $dataset)
     {
+        // get user this way for public routes
+        $user = Auth::guard('api')->user();
+
         try {
-            $file_name = $dataset->getPathWithFileName();
-            if (Storage::disk('private')->exists($file_name)) {
-                Storage::disk('private')->delete($file_name);
+            if ($user) {
+                // delete own record or admin
+                if ($user->isAdmin() ||  $user->id === $dataset->user_id) {
+                    $this->deleteDataset($dataset);
+                    return $this->successResponse(null, null, 204);
+                } else {
+                    return $this->errorResponse(trans('auth.not_enough_privileges'), 403);
+                }
+            } else {
+                // delete public record ?
+                if ($dataset->user_id === 0) {
+                    $this->deleteDataset($dataset);
+                    return $this->successResponse(null, null, 204);
+                } else {
+                    return $this->errorResponse(trans('auth.not_enough_privileges'), 403);
+                }
             }
-            $dataset->delete();
-            return $this->successResponse(null, null, 204);
         } catch (Exception $error) {
             return $this->errorResponse($error, 500);
         }
+    }
+
+    private function deleteDataset(Dataset $dataset) {
+        $file_name = $dataset->getPathWithFileName();
+        if (Storage::disk('private')->exists($file_name)) {
+            Storage::disk('private')->delete($file_name);
+        }
+        $dataset->delete();
     }
 }

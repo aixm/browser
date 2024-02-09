@@ -1,12 +1,13 @@
-import { FeatureList } from './feature-list';
+import { User } from '../auth/user';
 
 export class Dataset {
   id: number | undefined;
-  user_id: number | undefined;
+  userId: number | undefined;
   name: string | undefined;
   filename: string | undefined;
   description: string = "";
   createdAt: string | undefined;
   datasetFeaturesCount!: number;
-  featureLists: FeatureList[] = [];
+  user: User | undefined;
+  checked: boolean = false;
 }

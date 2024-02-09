@@ -1,11 +1,10 @@
-<mat-card>
+<mat-card style="max-width: 30em">
     <mat-card-header>
-        <mat-card-title>AIXM Dataset {{dataset.id ? (data.disableForm?'View':'Edit') : 'Create'}}</mat-card-title>
+        <mat-card-title>{{dataset.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM dataset</mat-card-title>
         <div class="flex-full-row"></div>
         <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
             <mat-icon>close</mat-icon>
         </button>
-        <mat-card-subtitle>AIXM Dataset parameters {{dataset.id ? (data.disableForm?'viewing':'editing') : 'creating'}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <div class="pg-bar">
@@ -13,6 +12,7 @@
         </div>
         <div>
             <form [formGroup]="datasetForm">
+
                 <mat-form-field style="width: 100%" appearance="outline">
                     <mat-label>Name of the Dataset</mat-label>
                     <input matInput placeholder="Name of the Dataset" formControlName="name">
@@ -23,16 +23,36 @@
                         <mat-hint *ngIf="name?.errors?.['serverError']">{{ name?.errors?.['serverError'] }}</mat-hint>
                     </mat-error>
                 </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="authService.User?.role==='admin'" style="width: 100%">
+                    <mat-label>User</mat-label>
+                    <mtx-select [items]="users"  placeholder="Dataset's user" formControlName="userId"
+                                bindLabel="id" bindValue="id" [value]="userId" [searchFn]="userSearchFn">
+                        <ng-template ng-label-tmp let-item="item">
+                            {{ item.firstName + ' ' + item.lastName }}
+                        </ng-template>
+                        <ng-template ng-option-tmp  let-item="item" let-index="index" let-search="searchTerm">
+                            <div>{{ item.firstName + ' ' + item.lastName }}</div>
+                            <div>{{ item.email }}</div>
+                        </ng-template>
+                    </mtx-select>
+                    <mat-error *ngIf="userId?.invalid && (userId?.dirty || userId?.touched)">
+                        <mat-hint *ngIf="userId?.errors?.['required']">User is required</mat-hint>
+                        <mat-hint *ngIf="userId?.errors?.['serverError']">{{ userId?.errors?.['serverError'] }}</mat-hint>
+                    </mat-error>
+                </mat-form-field>
+
                 <mat-form-field style="width: 100%" appearance="outline">
                     <mat-label>Description of the Dataset</mat-label>
-                    <input matInput type="text" placeholder="Description of the Dataset" formControlName="description">
+                    <input matInput placeholder="Description of the Dataset" formControlName="description">
                     <mat-error *ngIf="description?.invalid && (description?.dirty || description?.touched)">
                         <mat-hint *ngIf="description?.errors?.['minlength']">At least 2 characters</mat-hint>
                         <mat-hint *ngIf="description?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
                     </mat-error>
                 </mat-form-field>
 
-                <input #fileUpload type="file" accept="text/xml" (change)="onFileSelected($event)" [multiple]="false" style="display:none;" />
+                <input #fileUpload type="file" accept="text/xml" (change)="onFileSelected($event)"
+                       [multiple]="false" style="display:none;" [disabled]="data.disableForm || dataset.id" />
                 <mat-form-field style="width: 100%; cursor: pointer" (click)="fileUpload.click()" appearance="outline">
                     <mat-icon matSuffix color="accent">upload</mat-icon>
                     <input matInput type="text" placeholder="Select AIXM XML file" formControlName="fileName" [readonly]="true">
@@ -45,7 +65,7 @@
     </mat-card-content>
     <mat-card-actions style="justify-content: flex-end">
         <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
-        <button *ngIf="!data.disableForm" mat-stroked-button class="tbr-btn" color="primary" matTooltip="Save" (click)="save()">
+        <button *ngIf="!data.disableForm" mat-stroked-button class="tbr-btn" color="primary" (click)="save()">
             <mat-icon>save</mat-icon>Save</button>
     </mat-card-actions>
 </mat-card>

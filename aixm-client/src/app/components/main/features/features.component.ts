@@ -1,23 +1,15 @@
-import { CommonModule }                                                from '@angular/common';
-import { Component, forwardRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule }         from '@angular/forms';
+import { CommonModule }                                                           from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule }                    from '@angular/forms';
 import { MatButtonModule }                                     from '@angular/material/button';
-import { MatButtonToggleModule }                               from '@angular/material/button-toggle';
 import { MatCardModule }                        from '@angular/material/card';
-import { MatCheckboxModule }                                           from '@angular/material/checkbox';
-import { MatFormFieldModule }                                  from '@angular/material/form-field';
 import { MatIconModule }                        from '@angular/material/icon';
-import { MatInputModule }                from '@angular/material/input';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatToolbarModule }              from '@angular/material/toolbar';
-import { MatTooltipModule }                                    from '@angular/material/tooltip';
-import { MtxButtonModule }                       from '@ng-matero/extensions/button';
-import { MtxGrid, MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
+import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { ApiResponse }                           from '../../../models/api-response';
 import { Feature }                              from '../../../models/aixm/feature';
 import { PipesModule }                                         from '../../../pipes/pipes.module';
 import { BackendApiService }                    from '../../../services/backend-api.service';
-import { FeatureComponent }                     from '../../common/cards/feature/feature.component';
+import { BaseGridComponent } from '../../common/base/base-grid.component';
 import { AixmIconComponent }                                   from '../../common/shared/aixm-icon/aixm-icon.component';
 
 @Component({
@@ -25,25 +17,13 @@ import { AixmIconComponent }                                   from '../../commo
   standalone: true,
   imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule,
     AixmIconComponent],
-/*  imports: [
-    CommonModule, FeatureComponent, FormsModule, MatIconModule, MtxGridModule, MatCardModule, MtxButtonModule, MatButtonModule,
-    ReactiveFormsModule,
-    PipesModule, AixmIconComponent, MatButtonToggleModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatTooltipModule,
-    MatPaginatorModule, MatCheckboxModule
-  ],*/
   templateUrl: './features.component.html',
   styleUrl: './features.component.scss',
 })
-export class FeaturesComponent implements OnInit {
-  @ViewChild('grid') grid!: MtxGrid;
-  private url: string = 'aixm/features';
-  loading: boolean = false;
-  searchText: string = '';
+export class FeaturesComponent extends BaseGridComponent {
+  url: string = 'aixm/features';
   features: Feature[] = [];
-  pageEvent: PageEvent = new PageEvent();
-  pageSizeOptions: number[] = [10, 25, 50, 100];
-
-  defaultColumns: MtxGridColumn[] = [
+  override defaultColumns: MtxGridColumn[] = [
     { header: 'Name', field: 'name', sortable: true },
     { header: 'Type', field: 'type', sortable: true },
     { header: 'Abbreviation', field: 'abbreviation', sortable: true },
@@ -66,7 +46,7 @@ export class FeaturesComponent implements OnInit {
             this.edit(record, true);
           },
           iif: (record: Feature): boolean => {
-            return !this.allowEdit();
+            return !this.allowEdit(record);
           },
         },
         {
@@ -78,7 +58,7 @@ export class FeaturesComponent implements OnInit {
             this.edit(record);
           },
           iif: (record: Feature): boolean => {
-            return this.allowEdit();
+            return this.allowEdit(record);
           },
         },
         {
@@ -91,7 +71,7 @@ export class FeaturesComponent implements OnInit {
             this.delete(record);
           },
           iif: (record: Feature): boolean => {
-            return this.allowEdit();
+            return this.allowEdit(record);
           },
         },
       ], sortable: false
@@ -100,28 +80,18 @@ export class FeaturesComponent implements OnInit {
 
   constructor(
       private backendApiService: BackendApiService,
-  ) {}
+  ) {super()}
 
-
-  ngOnInit(): void {
-    this.refresh();
-  }
-
-  refresh(): void {
+  override refresh(): void {
     this.loading = true;
-    this.backendApiService.getData(this.url + this.getPagingUrl()+ (this.searchText ? '&search=' + this.searchText : ''))
+    this.backendApiService.getData(this.url + '?' + this.getPageSearchUrl())
         .subscribe((data: ApiResponse): void => {
-      console.log(data);
       this.storePageState(data);
       if (data.data) {
         this.features = data.data;
       }
       this.loading = false;
     });
-  }
-
-  closeMenu() {
-    this.grid.columnMenu.menuTrigger.closeMenu();
   }
 
   add(): void {
@@ -134,24 +104,9 @@ export class FeaturesComponent implements OnInit {
   delete(feature: Feature): void {
   }
 
-  allowEdit(): boolean {
-    return true;
+  allowEdit(feature: Feature): boolean {
+    return this.authService.User?.role === 'admin';
   }
 
-  storePageState(data: ApiResponse): void {
-    this.pageEvent.pageSize = data.meta.pagination.perPage;
-    this.pageEvent.length = data.meta.pagination.total;
-  }
-
-  handlePageEvent(event: PageEvent): void {
-    this.pageEvent = event;
-    console.log(this.pageEvent);
-    this.refresh();
-  }
-
-  getPagingUrl(): string {
-    return `?per_page=${this.pageEvent.pageSize ? this.pageEvent.pageSize : 10}&page=${
-        this.pageEvent.pageIndex ? this.pageEvent.pageIndex + 1: 1}`;
-  }
 
 }

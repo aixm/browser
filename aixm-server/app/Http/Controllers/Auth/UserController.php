@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         if (Auth::user()->isAdmin()) {
-            $users = User::all();
+            $users = User::search()->paginate();
             return $this->successResponse(UserResource::collection($users));
         } else {
             return $this->errorResponse(trans('auth.not_enough_privileges'), 403);

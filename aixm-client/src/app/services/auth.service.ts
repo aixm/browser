@@ -6,7 +6,8 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { LoginComponent }                   from '../components/common/dialogs/login/login.component';
 import { getById, toCamel }                 from '../helpers/utils';
 import { ApiResponse }                      from '../models/api-response';
-import { User }                             from '../models/user';
+import { Role }                             from '../models/auth/role';
+import { User }                             from '../models/auth/user';
 import { BackendApiService }                from './backend-api.service';
 import { SettingsService }                  from './settings.service';
 
@@ -15,10 +16,9 @@ import { SettingsService }                  from './settings.service';
 })
 export class AuthService {
   public currentUser!: BehaviorSubject<User | null>;
-  roles: {id: string, name: string}[] = [
+  roles: Role[] = [
     {id: 'admin', name: 'Administrator'},
     {id: 'user', name: 'User'},
-    {id: 'guest', name: 'Guest'}
   ];
 
   constructor(
