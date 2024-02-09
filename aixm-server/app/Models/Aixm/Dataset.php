@@ -4,8 +4,11 @@ namespace App\Models\Aixm;
 
 use App\Models\AixmGraphModel;
 use App\Models\Auth\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -37,6 +40,25 @@ class Dataset extends AixmGraphModel
     ##################################################################################
     # Scopes
     ##################################################################################
+    protected function scopeByUser(Builder $builder)
+    {
+        // get user this way for public routes
+        $user = Auth::guard('api')->user();
+        if ($user) {
+            if ($user->isAdmin()) {
+                // all datasets
+                return $builder;
+            } else {
+                // user's and public datasets
+                return $builder
+                    ->where('user_id', '=', $user->id)
+                    ->orWhere('user_id', '=', 0);
+            }
+        } else {
+            // public datasets
+            return $builder->where('user_id', '=', 0);
+        }
+    }
 
     ##################################################################################
     # Functions

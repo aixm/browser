@@ -7,12 +7,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule }                           from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs';
+import { async, Observable }                          from 'rxjs';
 import packageInfo                                    from '../../package.json';
 import { ThemeSwitcherComponent } from './components/common/shared/theme-switcher/theme-switcher.component';
 import { getTitle } from './helpers/utils';
 import { ThemeOption } from './models/theme-option';
 import { AuthService } from './services/auth.service';
+import { IconService } from './services/icon.service';
 import { ThemeService } from './services/theme.service';
 
 @Component({
@@ -29,20 +30,27 @@ export class AppComponent {
   title: string = getTitle();
   version: string = packageInfo.version;
   themeOptions$: Observable<ThemeOption[]> = this.themeService.getThemeOptions();
-
+  show: boolean = false;
   constructor(
       private readonly themeService: ThemeService,
-      public authService: AuthService
+      public authService: AuthService,
+      private iconService: IconService
   ) {
+    //this.iconService.initIcons();
     this.themeService.setTheme();
   }
 
   ngOnInit(): void {
 
+
+    setTimeout((): void => {
+      this.show=true;
+    }, 3000);
   }
 
   themeChangeHandler(themeToSet: string): void {
     this.themeService.setTheme(themeToSet);
   }
 
+  protected readonly async = async;
 }

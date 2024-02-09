@@ -92,7 +92,7 @@ export class DatasetEditComponent implements OnInit  {
       }
       formData.append('file', this.file?.value);
       this.backendApiService.postItem(this.url, formData, {
-        headers: new HttpHeaders({ timeout: `${1200000}` }) }, this.datasetForm)
+        headers: new HttpHeaders({ timeout: `${1000000}` }) }, this.datasetForm)
           .subscribe((data: ApiResponse): void => {
             this.loading = false;
             if (!data.error) {
@@ -129,7 +129,7 @@ export class DatasetEditComponent implements OnInit  {
     this.backendApiService.getData(this.urlUsers).subscribe((data: ApiResponse): void => {
       if (data.data) {
         this.users = data.data;
-        const u: User = new User();
+        let u: User = new User();
         u.id=0;
         u.firstName='Public';
         u.lastName='(all users)';
@@ -140,7 +140,7 @@ export class DatasetEditComponent implements OnInit  {
   }
 
   userSearchFn (term: string, item: User): boolean {
-    const userPipe: FilterUsersPipe = new FilterUsersPipe();
+    let userPipe: FilterUsersPipe = new FilterUsersPipe();
     return userPipe.transform([item],term).length>0 ? true : false;
   }
 }

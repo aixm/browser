@@ -10,18 +10,23 @@
                 </span>
             </a>
             <mat-divider></mat-divider>
-<!--            <a mat-list-item [routerLink]="'graph'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+            <ng-container *ngIf="authService.User?.role === 'admin'">
+                <a mat-list-item [routerLink]="'users'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
                 <span class="entry">
-                  <mat-icon>spoke</mat-icon>
-                  <span>Graph</span>
+                  <mat-icon>people</mat-icon>
+                  <span>Users</span>
                 </span>
-            </a>-->
-            <a mat-list-item [routerLink]="'map'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
-                <span class="entry">
-                  <mat-icon>map</mat-icon>
-                  <span>Map</span>
-                </span>
-            </a>
+                </a>
+                <mat-divider></mat-divider>
+            </ng-container>
+            <ng-container *ngIf="authService.User">
+                <a mat-list-item [routerLink]="'map'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                    <span class="entry">
+                      <mat-icon>map</mat-icon>
+                      <span>Map</span>
+                    </span>
+                </a>
+            </ng-container>
             <a mat-list-item [routerLink]="'browser'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
                 <span class="entry">
                   <mat-icon>web</mat-icon>
@@ -42,6 +47,13 @@
                 </span>
             </a>
             <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="'about'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>info</mat-icon>
+                  <span>About</span>
+                </span>
+            </a>
+            <mat-divider></mat-divider>
         </mat-nav-list>
         <label style="position: fixed; bottom: 1.5em; left: 0.5em; font-size: small">{{ title }}&nbsp;v{{ version }}</label>
     </mat-drawer>
@@ -59,13 +71,13 @@
                 </app-theme-switcher>
 
                 <div class="flex-full-row"></div>
-
+<!--<mat-icon svgIcon="ARF" color="accent"></mat-icon>-->
                 <ng-container *ngIf="!authService.User">
                     <button mat-icon-button class="tbr-btn" matTooltip="Login" (click)="authService.showLogin()"><mat-icon>login</mat-icon></button>
                 </ng-container>
                 <ng-container *ngIf="authService.User">
                     <mat-icon>person</mat-icon>
-                    <span>{{authService.User.email}}</span>
+                    <span style="font-size: medium">{{authService.User.email}}</span>
                     <button  mat-icon-button class="main-tbr-btn" matTooltip="{{authService.getUserTitle()}} Logout" (click)="authService.logout()">
                         <mat-icon>logout</mat-icon></button>
                 </ng-container>

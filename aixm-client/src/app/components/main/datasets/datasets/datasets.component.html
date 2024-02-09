@@ -4,7 +4,8 @@
     <div>
         <mtx-grid class="table-grid" #grid
                   [data]="datasets"
-                  [columns]="defaultColumns"
+                  [columns]="columns"
+                  [cellTemplate]="{user: userTpl}"
                   [showToolbar]="true"
                   [toolbarTemplate]="toolbarTpl"
                   [showColumnMenuButton]="true"
@@ -14,7 +15,7 @@
                   [columnMenuButtonColor]="'primary'"
                   [columnMenuButtonClass]="'tbr-btn'"
                   [showColumnMenuHeader]="true"
-                  [columnMenuHeaderText]="'Change columns order, position and visibility:'"
+                  [columnMenuHeaderText]="columnMenuHeaderText"
                   [showColumnMenuFooter]="true"
                   [columnMenuFooterTemplate]="menuFooter"
                   [pageOnFront]="false"
@@ -27,9 +28,15 @@
                   [loading]="loading">
         </mtx-grid>
         <ng-template #toolbarTpl>
-            <button mat-stroked-button color="primary" class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
+            <button *ngIf="authService.User" mat-stroked-button color="primary" class="tbr-btn" matTooltip="New" (click)="add()" ><mat-icon>add</mat-icon></button>
             <button mat-stroked-button color="primary" class="tbr-btn" matTooltip="Refresh" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
             <input class="tbr-btn" placeholder="Search" type="search" [(ngModel)]="searchText" (search)="refresh()">
+        </ng-template>
+        <ng-template #userTpl let-row let-index="index">
+            <ng-container *ngIf="row.user">
+                <div>{{ row.user.firstName + ' ' + row.user.lastName }}</div>
+                <div>{{ row.user.email }}</div>
+            </ng-container>
         </ng-template>
         <ng-template #menuFooter>
             <div style="display: flex; justify-content: flex-end">

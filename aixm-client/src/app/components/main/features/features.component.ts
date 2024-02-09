@@ -98,15 +98,12 @@ export class FeaturesComponent extends BaseGridComponent {
     this.edit(new Feature());
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   edit(feature: Feature, disableForm: boolean = false): void {
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   delete(feature: Feature): void {
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   allowEdit(feature: Feature): boolean {
     return this.authService.User?.role === 'admin';
   }

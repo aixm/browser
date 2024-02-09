@@ -1,5 +1,6 @@
 import { getFeatureBrokenImagePath, getFeatureDefaultImagePath, getFeatureImagePath } from '../../helpers/utils';
 import { FeatureService }                                                             from '../../services/feature.service';
+import { Dataset }                                                                    from './dataset';
 import { DatasetFeatureProperty }                          from './dataset-feature-property';
 import { Feature }                                         from './feature';
 import { Edge, Node }                                      from 'vis-network';
@@ -10,6 +11,7 @@ export class DatasetFeature {
   featureId!: number;
   gmlIdValue!: string;
   gmlIdentifierValue!: string;
+  dataset: Dataset | undefined;
   feature: Feature | undefined;
   datasetFeatureProperties: DatasetFeatureProperty[] = [];
   referenceToFeatures: DatasetFeature[] = [];

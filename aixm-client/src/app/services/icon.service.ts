@@ -2,7 +2,7 @@ import { HttpClient }        from '@angular/common/http';
 import { Injectable }        from '@angular/core';
 import { MatIconRegistry, IconResolver }   from '@angular/material/icon';
 import { DomSanitizer }                             from '@angular/platform-browser';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, timeout } from 'rxjs';
 import { Feature }                                  from '../models/aixm/feature';
 import { ApiResponse }       from '../models/api-response';
 import { BackendApiService } from './backend-api.service';
@@ -37,7 +37,7 @@ export class IconService {
       if (data.data) {
         this.features = data.data;
         this.features.forEach((feature: Feature): void => {
-          const url: string = `assets/images/icons/AIXM/${feature.abbreviation}/${feature.abbreviation}.svg`;
+          let url: string = `assets/images/icons/AIXM/${feature.abbreviation}/${feature.abbreviation}.svg`;
           // this.matIconRegistry.addSvgIcon(feature.abbreviation, this.domSanitizer.bypassSecurityTrustResourceUrl(url));
           this.fileExists(url).subscribe((exists: boolean): void => {
             if (exists) {

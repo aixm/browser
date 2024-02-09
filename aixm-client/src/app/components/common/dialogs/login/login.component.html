@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card style="width: 20em">
     <mat-card-header>
         <mat-card-title>Login</mat-card-title>
         <div class="flex-full-row"></div>
@@ -24,7 +24,7 @@
                 <mat-form-field appearance="outline" (keyup.enter)="login()">
                     <mat-label>Password</mat-label>
                     <input type="{{showPassword ? 'text' : 'password'}}" matInput placeholder="Password" formControlName="password" required>
-                    <button mat-icon-button matSuffix [matTooltip]="showPassword ? 'Hide' : 'Show'" (click)="showPassword=!showPassword;">
+                    <button mat-icon-button matSuffix color="primary" [matTooltip]="showPassword ? 'Hide' : 'Show'" (click)="showPassword=!showPassword;">
                         <mat-icon>{{showPassword ? 'key_off' : 'key'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="password?.invalid && (password?.dirty || password?.touched)">
@@ -35,7 +35,7 @@
         </form>
     </mat-card-content>
     <mat-card-actions style="justify-content: flex-end">
-        <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
+        <!--<button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>-->
         <button mat-stroked-button class="tbr-btn" color="primary" type="submit" (click)="login()"><mat-icon>login</mat-icon>Login</button>
     </mat-card-actions>
 </mat-card>
