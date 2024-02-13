@@ -129,7 +129,7 @@ export class DatasetEditComponent implements OnInit  {
     this.backendApiService.getData(this.urlUsers).subscribe((data: ApiResponse): void => {
       if (data.data) {
         this.users = data.data;
-        let u: User = new User();
+        const u: User = new User();
         u.id=0;
         u.firstName='Public';
         u.lastName='(all users)';
@@ -140,7 +140,7 @@ export class DatasetEditComponent implements OnInit  {
   }
 
   userSearchFn (term: string, item: User): boolean {
-    let userPipe: FilterUsersPipe = new FilterUsersPipe();
+    const userPipe: FilterUsersPipe = new FilterUsersPipe();
     return userPipe.transform([item],term).length>0 ? true : false;
   }
 }

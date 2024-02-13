@@ -8,7 +8,8 @@
 
     <mat-toolbar>
         <mat-toolbar-row style="padding: 0">
-            <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="New" (click)="addDataset()" ><mat-icon>add</mat-icon></button>
+            <button *ngIf="authService.User?.role==='admin'" color="primary" mat-stroked-button class="tbr-btn"
+                    matTooltip="New" (click)="addDataset()"><mat-icon>add</mat-icon></button>
             <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
             <div style="margin-left: 2em"></div>
             <mat-slide-toggle class="tbr-btn" color="primary"

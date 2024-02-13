@@ -3,7 +3,7 @@ import { Feature }     from '../models/aixm/feature';
 
 
 export function isValidUUID(str: string): boolean {
-  const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+  const regexExp: RegExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
   return regexExp.test(str);
 }
 
@@ -42,11 +42,11 @@ export function handleErrorMissingFeatureImage(event: Event) {
 }
 
 export function getByKey(fromItems: any[], keyName: string, keyValue: any): any {
-  const index1  = fromItems.findIndex((element) => {
+  const index: number  = fromItems.findIndex((element): boolean => {
     return element[keyName] === keyValue;
   });
-  if (index1 >= 0 ) {
-    return fromItems[index1];
+  if (index >= 0 ) {
+    return fromItems[index];
   }
   return null;
 }

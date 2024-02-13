@@ -114,9 +114,19 @@ ng serve
 
     
 ## Contributing
+If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
 
-If you'd like to contribute, please fork the repository and use a feature
-branch. Pull requests are warmly welcome.
+### Angular Linting
+Linting is a crucial aspect of software development, ensuring code quality, consistency, and reliability. In the world of Angular, ESLint has become the go-to tool for enforcing coding standards and catching potential errors.
+
+Before pushing source code to the main branch, please do the following in the aixm-client directory:
+```shell script
+npm lint
+```
+or
+```shell script
+npm lint:fix
+```
 
 
 ## Links

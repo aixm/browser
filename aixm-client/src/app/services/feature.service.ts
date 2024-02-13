@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Feature }    from '../models/aixm/feature';
 
 @Injectable({
   providedIn: 'root'

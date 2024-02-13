@@ -11,7 +11,7 @@ export class SettingsService {
   }
 
   getValue(code: string, defaultValue: string): string {
-    let val: string | null = localStorage.getItem(code);
+    const val: string | null = localStorage.getItem(code);
     return val ? val : defaultValue;
   }
 

@@ -1,7 +1,7 @@
 import { HttpClient }                       from '@angular/common/http';
-import { Injectable }                       from '@angular/core';
-import { MatDialog }                        from '@angular/material/dialog';
-import { Router }                           from '@angular/router';
+import { Injectable }              from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router }                  from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { LoginComponent }                   from '../components/common/dialogs/login/login.component';
 import { getById, toCamel }                 from '../helpers/utils';
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   get User(): User | null {
-    let u: string = this.settingsService.getValue('USER', '');
+    const u: string = this.settingsService.getValue('USER', '');
     return u ? JSON.parse(u) : null;
   }
   set User(value: User | null) {
@@ -56,12 +56,11 @@ export class AuthService {
   }
 
    showLogin(): void {
-    let dialogRef = this.matDialog.open(LoginComponent, {
-      panelClass: 'no-spacing-dialog-container',
+    const dialogRef: MatDialogRef<LoginComponent> = this.matDialog.open(LoginComponent, {
       disableClose: true,
       autoFocus: false
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe((): void => {});
   }
 
   resetCredentials(): void {
@@ -70,7 +69,7 @@ export class AuthService {
   }
 
   logout(navigateTo?: string): void {
-    this.backendApiService.getData(`auth/logout`).subscribe(result => {
+    this.backendApiService.getData(`auth/logout`).subscribe((): void => {
       this.resetCredentials();
       if (navigateTo) {
         this.router.navigateByUrl(navigateTo);
@@ -79,9 +78,9 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<ApiResponse> {
-    const url = `${this.backendApiService.backendUrlValue}/auth/login`;
+    const url: string = `${this.backendApiService.backendUrlValue}/auth/login`;
     return this.httpClient.post<ApiResponse>(url, { 'email': email, 'password': password}).pipe(
-        map(x => toCamel(x)),
+        map((x: ApiResponse) => toCamel(x)),
     );
   }
 
@@ -92,7 +91,6 @@ export class AuthService {
   getRoleTitle(): string {
     let role: string = 'unknown';
     if (this.User?.role){
-      // @ts-ignore
       role = getById(this.roles, this.User.role).name;
     }
     return role;

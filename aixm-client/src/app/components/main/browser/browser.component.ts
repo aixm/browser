@@ -15,13 +15,14 @@ import { MatTabsModule }                 from '@angular/material/tabs';
 import { MatToolbarModule }       from '@angular/material/toolbar';
 import { MatTooltipModule }                            from '@angular/material/tooltip';
 import { ActivatedRoute }      from '@angular/router';
-import { Network, DataSet, Data, Edge, Node, Options }     from 'vis-network';
+import { Network, Data, Edge, Node, Options }     from 'vis-network';
 import { copyToClipboard, getById, getByKey, isValidUUID } from '../../../helpers/utils';
 import { Dataset }                                         from '../../../models/aixm/dataset';
 import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
 import { Feature }           from '../../../models/aixm/feature';
 import { FeatureList } from '../../../models/aixm/feature-list';
 import { ApiResponse } from '../../../models/api-response';
+import { AuthService } from '../../../services/auth.service';
 import { BackendApiService } from '../../../services/backend-api.service';
 import { FeatureService }                              from '../../../services/feature.service';
 import { NotificationService }                         from '../../../services/notification.service';
@@ -65,6 +66,7 @@ export class BrowserComponent implements OnInit {
 
 
   constructor(
+      public authService: AuthService,
       private backendApiService: BackendApiService,
       private matDialog: MatDialog,
       private settingsService: SettingsService,
@@ -79,7 +81,7 @@ export class BrowserComponent implements OnInit {
 
     // layout
     if (this.route.snapshot.queryParamMap.get('layout')) {
-      let layout: string | null = this.route.snapshot.queryParamMap.get('layout');
+      const layout: string | null = this.route.snapshot.queryParamMap.get('layout');
       if (layout === 'browser' || layout === 'graph' || layout === 'combined') {
         this.viewLayout = layout;
         this.settingsService.setValue('BROWSER_LAYOUT', this.viewLayout);
@@ -156,7 +158,7 @@ export class BrowserComponent implements OnInit {
     }
   }
 
-  refreshDatasets(callback?: Function): void {
+  refreshDatasets(callback?: (...args: any[]) => void): void {
     this.loading = true;
     this.backendApiService.getData(`${this.urlDatasets}?${this.getPagingUrl()}`+ (this.searchText ? '&search=' + this.searchText : ''))
         .subscribe((data: ApiResponse): void => {
@@ -262,7 +264,7 @@ export class BrowserComponent implements OnInit {
   }
 
   updateGraph(): void {
-    let data: Data = {
+    const data: Data = {
       nodes: this.nodes,
       edges: this.edges,
     };
@@ -270,11 +272,11 @@ export class BrowserComponent implements OnInit {
   }
 
   createGraph(): void {
-    let data: Data = {
+    const data: Data = {
       nodes: this.nodes,
       edges: this.edges,
     };
-    var options: Options = {
+    const options: Options = {
       interaction: {
         hover: true,
       },
@@ -293,11 +295,13 @@ export class BrowserComponent implements OnInit {
     this.network = new Network(this.graphContainer.nativeElement, data, options);
 
     // events
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.network.on("hoverNode", (params: any): void => {
       // @ts-ignore
       this.network.canvas.body.container.style.cursor = 'pointer';
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.network.on("blurNode", (params: any): void => {
       // @ts-ignore
       this.network.canvas.body.container.style.cursor = 'default';
@@ -351,7 +355,7 @@ export class BrowserComponent implements OnInit {
           this.refresh();
         } else {
           if (params.nodes[0]) {
-            let id: string = String(params.nodes[0]);
+            const id: string = String(params.nodes[0]);
             if (!isValidUUID(id)) {
               let datasetFeature: DatasetFeature = getById(this.datasetFeatures, id);
               if (!datasetFeature) {
@@ -376,7 +380,7 @@ export class BrowserComponent implements OnInit {
   }
 
   edit(dataset: Dataset, disableForm: boolean = false): void {
-    let dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
+    const dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
       autoFocus: true,
       restoreFocus: false,
       disableClose: true,

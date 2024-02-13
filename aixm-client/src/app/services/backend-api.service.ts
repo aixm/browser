@@ -1,8 +1,8 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
-import { Inject, Injectable }    from '@angular/core';
+import { Injectable }    from '@angular/core';
 import { FormGroup }                            from '@angular/forms';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { camelize, toCamel }                    from '../helpers/utils';
 import { ApiResponse }                          from '../models/api-response';

@@ -123,7 +123,7 @@ export class DatasetsComponent extends BaseGridComponent {
   }
 
   edit(dataset: Dataset, disableForm: boolean = false): void {
-    let dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
+    const dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
       autoFocus: true,
       restoreFocus: false,
       disableClose: true,
@@ -137,7 +137,7 @@ export class DatasetsComponent extends BaseGridComponent {
   }
 
   delete(dataset: Dataset): void {
-    let dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
+    const dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
       autoFocus: true,
       restoreFocus: false,
       data: { title: getTitle(), message: 'Delete dataset \''+dataset.name+'\'?' }
@@ -146,7 +146,7 @@ export class DatasetsComponent extends BaseGridComponent {
       if (result) {
         this.loading = true;
         this.backendApiService.deleteItem(this.url, dataset.id, {
-          headers: new HttpHeaders({ timeout: `${1200000}` }) }).subscribe((data: ApiResponse): void => {
+          headers: new HttpHeaders({ timeout: `${1200000}` }) }).subscribe((): void=> {
           this.loading = false;
           this.refresh();
         });
