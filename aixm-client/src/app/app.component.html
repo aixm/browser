@@ -55,7 +55,7 @@
             </a>
             <mat-divider></mat-divider>
         </mat-nav-list>
-        <label style="position: fixed; bottom: 1.5em; left: 0.5em; font-size: small">{{ title }}&nbsp;v{{ version }}</label>
+        <mat-label style="position: fixed; bottom: 1.5em; left: 0.5em; font-size: small">{{ title }}&nbsp;v{{ version }}</mat-label>
     </mat-drawer>
     <mat-drawer-content style="overflow-y: hidden">
         <mat-toolbar color="primary" style="z-index: 5001">
@@ -64,7 +64,7 @@
                     <mat-icon>menu</mat-icon>
                 </button>
                 <img alt="Eurocontrol logo" style="margin-top: 0.3em" width="36px" src="assets/images/icons/ectl_logo_short.svg">
-                <label>{{ title }}</label>
+                <mat-label>{{ title }}</mat-label>
                 <span style="font-size: small">&nbsp;v{{ version }}</span>
 
                 <app-theme-switcher style="margin-left: 1em" [themeOptions]="themeOptions$ | async" (themeChange)="themeChangeHandler($event)">

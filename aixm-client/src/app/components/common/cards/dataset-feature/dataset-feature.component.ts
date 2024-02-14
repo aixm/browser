@@ -1,5 +1,5 @@
 import { ClipboardModule }                                                       from '@angular/cdk/clipboard';
-import { Component, EventEmitter, Input, OnInit, Output }                        from '@angular/core';
+import { Component, EventEmitter, Input, Output }                                from '@angular/core';
 import { CommonModule }                                                          from '@angular/common';
 import { MatBadgeModule }                                                        from '@angular/material/badge';
 import { MatBottomSheetModule }                                                  from '@angular/material/bottom-sheet';
@@ -29,7 +29,7 @@ import { AixmIconComponent }                      from '../../shared/aixm-icon/a
   templateUrl: './dataset-feature.component.html',
   styleUrl: './dataset-feature.component.scss'
 })
-export class DatasetFeatureComponent implements OnInit {
+export class DatasetFeatureComponent {
   @Input() feature?: Feature;
   @Input() datasetFeature?: DatasetFeature;
   @Output() cardClick: EventEmitter<DatasetFeature> = new EventEmitter<DatasetFeature>();
@@ -40,9 +40,6 @@ export class DatasetFeatureComponent implements OnInit {
 
   constructor(
   ) {}
-
-  ngOnInit(): void {
-  }
 
   click(): void {
     if (this.datasetFeature) {

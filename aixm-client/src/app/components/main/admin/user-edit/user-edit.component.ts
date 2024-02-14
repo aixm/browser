@@ -1,5 +1,5 @@
 import { CommonModule }                                            from '@angular/common';
-import { Component, Inject }                                       from '@angular/core';
+import { Component, Inject, OnInit }                               from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }                                           from '@angular/material/card';
@@ -23,7 +23,7 @@ import { BackendApiService }                                       from '../../.
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.scss'
 })
-export class UserEditComponent {
+export class UserEditComponent implements OnInit {
   url: string = 'users';
   user!: User;
   loading: boolean = false;
