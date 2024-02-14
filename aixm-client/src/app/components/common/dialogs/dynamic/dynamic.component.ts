@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit }     from '@angular/core';
+import { Component, Inject }     from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -6,14 +6,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './dynamic.component.html',
   styleUrls: ['./dynamic.component.scss']
 })
-export class DynamicComponent implements OnInit {
+export class DynamicComponent {
 
   constructor(
       public dialogRef: MatDialogRef<DynamicComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
-
-  ngOnInit(): void {
-  }
 
 }

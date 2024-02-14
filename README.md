@@ -127,12 +127,15 @@ or
 ```shell script
 npm lint:fix
 ```
+### Updating libraries
+The project does not use any special library except Angular build in libraries. To keep them up to date please follow this guide:
+https://update.angular.io/
 
 
 ## Links
-
 - Repository: https://github.com/aixm/Graph
 - AIXM: http://aixm.aero/
+
 
 ## Licensing
 
