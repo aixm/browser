@@ -128,8 +128,9 @@ or
 npm run lint:fix
 ```
 ### Updating libraries
-The project does not use any special library except Angular build in libraries. To keep them up to date please follow this guide:
-https://update.angular.io/
+The project does not use any special library except Laravel & Angular build in libraries. To keep them up to date please follow this guides:
+- https://update.angular.io/
+- https://laravel.com/docs/master/upgrade
 
 
 ## Links
