@@ -1,4 +1,4 @@
-# AIXM Browser [![version](https://img.shields.io/badge/version-2.0.0-yellow.svg)](https://semver.org)
+# AIXM Browser [![version](https://img.shields.io/badge/version-1.0.0-yellow.svg)](https://semver.org)
 > Visualizing AIXM feature associations
 
 AIXM Browser is a tool which evolves from [AIXM Graph](https://github.com/eurocontrol-swim/aixm-graph) that aims at visualizing the various features that can be found in an [AIXM](http://aixm.aero/) 
