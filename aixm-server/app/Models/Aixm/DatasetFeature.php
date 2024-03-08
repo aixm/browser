@@ -64,6 +64,10 @@ class DatasetFeature extends AixmGraphModel
     {
         return DatasetFeature::whereHas('dataset_feature_properties', function ($query) {
             $query->where('xlink_href', '=', $this->gml_identifier_value);
+            $query->where('dataset_id', $this->dataset_id);
+            if (Request::input('datasets')) {
+                $query->orWhereIn('dataset_id', explode(',', Request::input('datasets')));
+            }
         })->get();
     }
 
