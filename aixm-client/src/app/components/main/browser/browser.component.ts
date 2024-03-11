@@ -22,6 +22,7 @@ import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
 import { Feature }           from '../../../models/aixm/feature';
 import { FeatureList } from '../../../models/aixm/feature-list';
 import { ApiResponse } from '../../../models/api-response';
+import { PipesModule } from '../../../pipes/pipes.module';
 import { BackendApiService } from '../../../services/backend-api.service';
 import { FeatureService }                              from '../../../services/feature.service';
 import { NotificationService }                         from '../../../services/notification.service';
@@ -38,7 +39,7 @@ import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.compo
   imports: [
     CommonModule, DatasetComponent, MatTabsModule, MatButtonModule, MatIconModule, FeatureComponent, DatasetFeatureComponent,
     AixmIconComponent, MatToolbarModule, MatButtonToggleModule, MatInputModule, MatTooltipModule, MatPaginatorModule, MatProgressBarModule,
-    FormsModule, MatCheckboxModule, MatBadgeModule, MatSlideToggleModule,
+    FormsModule, MatCheckboxModule, MatBadgeModule, MatSlideToggleModule, PipesModule,
   ],
   templateUrl: './browser.component.html',
   styleUrl: './browser.component.scss'

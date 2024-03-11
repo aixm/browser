@@ -50,11 +50,11 @@
                 </ng-container>
                 <ng-container *ngIf="datasetFeature">
                     <span>/</span>
-                    <button mat-button (click)="goDatasetFeature(datasetFeature)">
+                    <button mat-button (click)="goDatasetFeature(datasetFeature)" matTooltip="{{datasetFeature.getLabel()}}">
                         <mat-icon>
                             <app-aixm-icon [feature]="datasetFeature.feature ? datasetFeature.feature : feature" [width]="18"></app-aixm-icon>
                         </mat-icon>
-                        <span>{{datasetFeature.getLabel()}}</span>
+                        <span>{{datasetFeature.getLabel() | limitTo: 10}}</span>
                     </button>
                 </ng-container>
             </div>
