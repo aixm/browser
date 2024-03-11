@@ -50,12 +50,12 @@ services:
       - LANG=${DB_LANG}
     networks:
       - aixm
-      
+
   aixm-proxy:
     container_name: aixm-proxy
     image: aixm/aixm-nginx:latest
     restart: on-failure
-    ports: [ "${CLIENT_WEBPORT}:443" ]
+    ports: [ "${CLIENT_WEBPORT}:80" ]
     volumes:
       - ./proxy.conf:/etc/nginx/conf.d/default.conf:ro
     extra_hosts:
