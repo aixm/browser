@@ -19,7 +19,7 @@
                 </a>
                 <mat-divider></mat-divider>
             </ng-container>
-            <ng-container *ngIf="authService.User">
+            <ng-container *ngIf="authService.User?.role === 'admin'">
                 <a mat-list-item [routerLink]="'map'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
                     <span class="entry">
                       <mat-icon>map</mat-icon>

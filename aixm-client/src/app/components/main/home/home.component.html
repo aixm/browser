@@ -30,7 +30,7 @@
         </mat-card-content>
     </mat-card>
 
-    <mat-card *ngIf="authService.User" class="home-card" [routerLink]="'map'">
+    <mat-card *ngIf="authService.User?.role==='admin'" class="home-card" [routerLink]="'map'">
         <mat-card-header>
             <mat-icon mat-card-avatar style="width: 36px; height: 36px; font-size: 36px;">map</mat-icon>
             <mat-card-title>Map</mat-card-title>
