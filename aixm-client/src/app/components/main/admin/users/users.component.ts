@@ -109,7 +109,7 @@ export class UsersComponent extends BaseGridComponent {
   }
 
   edit(user: User, disableForm: boolean = false): void {
-    let dialogRef: MatDialogRef<UserEditComponent> = this.matDialog.open(UserEditComponent, {
+    const dialogRef: MatDialogRef<UserEditComponent> = this.matDialog.open(UserEditComponent, {
       autoFocus: true,
       restoreFocus: false,
       disableClose: true,

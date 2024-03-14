@@ -76,7 +76,7 @@
                     <button mat-icon-button class="tbr-btn" matTooltip="Login" (click)="authService.showLogin()"><mat-icon>login</mat-icon></button>
                 </ng-container>
                 <ng-container *ngIf="authService.User">
-                    <mat-icon>person</mat-icon>
+                    <mat-icon style="cursor: pointer" matTooltip="My profile" (click)="profile()">person</mat-icon>
                     <span style="font-size: medium">{{authService.User.email}}</span>
                     <button  mat-icon-button class="main-tbr-btn" matTooltip="{{authService.getUserTitle()}} Logout" (click)="authService.logout()">
                         <mat-icon>logout</mat-icon></button>

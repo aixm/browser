@@ -94,7 +94,11 @@ export class UserEditComponent {
         } else {
           this.password?.disable();
         }
-        this.password?.setValidators(value ? [Validators.required] : null);
+        this.password?.setValidators(value ? [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(10)
+        ] : null);
         this.password?.updateValueAndValidity();
       });
     } else {
@@ -116,6 +120,7 @@ export class UserEditComponent {
     this.user.position = this.position?.value;
     if (this.changePassword?.value) {
       this.user.password = this.password?.value;
+      this.user.changePassword = true;
     }
     this.loading = true;
     if (this.user.id === undefined) {
@@ -131,6 +136,10 @@ export class UserEditComponent {
       this.backendApiService.putItem(this.url, this.user, undefined, this.userForm).subscribe((data: ApiResponse): void => {
         this.loading = false;
         if (!data.error) {
+          if (this.data.profile) {
+            // save new profile data to browser cache
+            this.authService.User = this.user;
+          }
           this.dialogRef.close(true);
         }
       });

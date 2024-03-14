@@ -36,7 +36,7 @@ class UserController extends Controller
         if (Auth::user()->isAdmin()) {
             $request->validate([
                 'email' => 'required|email|unique:users',
-                'password' => 'required|min:4',
+                'password' => 'required|min:6',
             ]);
             $user = new User();
             $user->fill($request->all());
@@ -73,13 +73,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if (Auth::user()->isAdmin()) {
+        if (Auth::user()->isAdmin() || Auth::user()->id == $user->id) {
             $request->validate([
                 'email' => 'email|unique:users,email,' . $user->id,
             ]);
             if ($request->change_password===true) {
                 $request->validate([
-                    'password' => 'required|min:4',
+                    'password' => 'required|min:6',
                 ]);
             }
             $user->fill($request->all());

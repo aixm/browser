@@ -1,6 +1,6 @@
 <mat-card style="max-width: 30em">
     <mat-card-header>
-        <mat-card-title>{{user.id?'Edit':'Create'}} user</mat-card-title>
+        <mat-card-title>{{data.profile ? 'My profile' : (user.id ? 'Edit user' : 'Create user')}}</mat-card-title>
         <div  class="flex-full-row"></div>
         <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
             <mat-icon>close</mat-icon>
@@ -23,7 +23,7 @@
                             <mat-hint *ngIf="email?.errors?.['serverError']">{{ email?.errors?.['serverError'] }}</mat-hint>
                         </mat-error>
                     </mat-form-field>
-                    <section style="width: 7em;margin-left: 0.1em">
+                    <section *ngIf="!data.profile" style="width: 7em;margin-left: 0.1em">
                         <mat-checkbox formControlName="active" [value]="active?.value" [labelPosition]="'after'">Active</mat-checkbox>
                     </section>
                 </div>
@@ -50,7 +50,7 @@
                     </section>
                 </div>
 
-                <div class="flex-row">
+                <div *ngIf="!data.profile" class="flex-row">
                     <mat-form-field appearance="outline" style="flex-grow: 1">
                         <mat-label>Role</mat-label>
                         <mtx-select class="short-select"  [items]="authService.roles"  placeholder="User's role" formControlName="role"

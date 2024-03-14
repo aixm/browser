@@ -1,7 +1,7 @@
 import { HttpClient }                       from '@angular/common/http';
-import { Injectable }                       from '@angular/core';
-import { MatDialog }                        from '@angular/material/dialog';
-import { Router }                           from '@angular/router';
+import { Injectable }              from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router }                  from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { LoginComponent }                   from '../components/common/dialogs/login/login.component';
 import { getById, toCamel }                 from '../helpers/utils';
@@ -56,7 +56,7 @@ export class AuthService {
   }
 
    showLogin(): void {
-    let dialogRef = this.matDialog.open(LoginComponent, {
+    const dialogRef: MatDialogRef<LoginComponent> = this.matDialog.open(LoginComponent, {
       panelClass: 'no-spacing-dialog-container',
       disableClose: true,
       autoFocus: false
