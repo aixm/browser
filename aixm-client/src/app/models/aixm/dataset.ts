@@ -5,7 +5,7 @@ export class Dataset {
   userId: number | undefined;
   name: string | undefined;
   filename: string | undefined;
-  description: string = "";
+  description: string | undefined;
   createdAt: string | undefined;
   datasetFeaturesCount!: number;
   user: User | undefined;

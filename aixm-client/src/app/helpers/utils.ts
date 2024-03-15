@@ -2,6 +2,16 @@ import { environment } from '../../environments/environment';
 import { Feature }     from '../models/aixm/feature';
 
 
+export function getTooltip (value: string | undefined, maxLength: number): string {
+  let result: string = '';
+  if (value) {
+    if (value.length > maxLength) {
+      result = value;
+    }
+  }
+  return result;
+}
+
 export function isValidUUID(str: string): boolean {
   const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
   return regexExp.test(str);

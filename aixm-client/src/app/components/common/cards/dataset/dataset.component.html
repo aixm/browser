@@ -4,12 +4,16 @@
     }" (click)="click()">
     <mat-card-header>
         <mat-icon mat-card-avatar style="width: 36px;height: 36px;font-size: 36px">storage</mat-icon>
-        <mat-card-title>{{dataset.name}}</mat-card-title>
-        <mat-card-subtitle>{{dataset.description}}</mat-card-subtitle>
+        <mat-card-title [matTooltip]="getTooltip(dataset.name, 15)">
+            {{dataset.name | limitTo: 15}}
+        </mat-card-title>
+        <mat-card-subtitle [matTooltip]="getTooltip(dataset.description, 35)">
+            {{dataset.description | limitTo: 35}}
+        </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        <div>
-            {{dataset.filename}}
+        <div [matTooltip]="getTooltip(dataset.filename, 25)">
+            {{dataset.filename | limitTo: 25}}
         </div>
         <div>
             Dataset features count: <mat-chip color="primary">{{dataset.datasetFeaturesCount}}</mat-chip>

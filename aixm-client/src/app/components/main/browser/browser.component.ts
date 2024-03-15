@@ -15,9 +15,9 @@ import { MatTabsModule }                 from '@angular/material/tabs';
 import { MatToolbarModule }       from '@angular/material/toolbar';
 import { MatTooltipModule }                            from '@angular/material/tooltip';
 import { ActivatedRoute }      from '@angular/router';
-import { Network, DataSet, Data, Edge, Node, Options }     from 'vis-network';
-import { copyToClipboard, getById, getByKey, isValidUUID } from '../../../helpers/utils';
-import { Dataset }                                         from '../../../models/aixm/dataset';
+import { Network, DataSet, Data, Edge, Node, Options }                 from 'vis-network';
+import { copyToClipboard, getById, getByKey, getTooltip, isValidUUID } from '../../../helpers/utils';
+import { Dataset }                                                     from '../../../models/aixm/dataset';
 import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
 import { Feature }           from '../../../models/aixm/feature';
 import { FeatureList } from '../../../models/aixm/feature-list';
@@ -442,4 +442,5 @@ export class BrowserComponent implements OnInit {
     }
   }
 
+  protected readonly getTooltip = getTooltip;
 }

@@ -5,14 +5,19 @@ import { MatButtonModule }                        from '@angular/material/button
 import { MatCardModule }    from '@angular/material/card';
 import { MatCheckboxModule }                      from '@angular/material/checkbox';
 import { MatChipsModule }                         from '@angular/material/chips';
-import { MatIconModule }                          from '@angular/material/icon';
-import { Dataset }          from '../../../../models/aixm/dataset';
+import { MatIconModule }                from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { getTooltip }                             from '../../../../helpers/utils';
+import { Dataset }                      from '../../../../models/aixm/dataset';
 import { PipesModule }      from '../../../../pipes/pipes.module';
 
 @Component({
   selector: 'app-dataset',
   standalone: true,
-  imports: [CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, MatCheckboxModule, FormsModule],
+  imports: [
+    CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, MatCheckboxModule, FormsModule,
+    MatTooltipModule,
+  ],
   templateUrl: './dataset.component.html',
   styleUrl: './dataset.component.scss'
 })
@@ -27,5 +32,6 @@ export class DatasetComponent {
     }
   }
 
+  protected readonly getTooltip = getTooltip;
 }
 

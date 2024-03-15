@@ -34,9 +34,9 @@
                         <span>..</span>
                     </button>
                     <span>/</span>
-                    <button mat-button (click)="goFeatureLists(dataset)">
+                    <button mat-button (click)="goFeatureLists(dataset)" [matTooltip]="getTooltip(dataset?.name,10)">
                         <mat-icon>storage</mat-icon>
-                        <span>{{dataset ? dataset.name : getSelectedDatasets().length + ' Datasets'}}</span>
+                        <span>{{dataset ? (dataset.name | limitTo : 10 ) : getSelectedDatasets().length + ' Datasets'}}</span>
                     </button>
                 </ng-container>
                 <ng-container *ngIf="feature">
