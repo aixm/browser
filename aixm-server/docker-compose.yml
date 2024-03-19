@@ -47,8 +47,6 @@ services:
     ports:
       - "${DOCKER_DBPORT}:5432"
     volumes:
-      - aixm-db-data:/var/lib/postgresql/data
-      - ./docker/postgres/data:/tmp/data
       - ./docker/postgres/postgresql/data:/var/lib/postgresql/data
       - ./docker/postgres/tmp/data:/tmp/data
     environment:
@@ -62,7 +60,4 @@ services:
 networks:
   aixm:
     driver: bridge
-
-volumes:
-  aixm-db-data:
 

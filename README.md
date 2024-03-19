@@ -84,6 +84,14 @@ In the aixm-server directory:
 make update
 ```
 
+### Backup DB data
+If you want to do backup database data with day - week - month rotation, 
+you should add the following job to cron on the host:
+```
+0 3 * * * docker exec -it aixm-postgres /usr/bin/backup.sh aixm -U aixm
+```
+Backups will be rotated and stored inside database container in the 
+`/tmp/data/backups` folder which is mounted to host in docker compose file.
 
 ## For developers
 

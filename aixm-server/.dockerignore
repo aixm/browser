@@ -1,6 +1,7 @@
 /.idea/
 /bootstrap/cache/*
-/docker/postgres/
+/docker/postgres/postgresql
+/docker/postgres/tmp
 /node_modules/
 /storage/*
 /tests/
