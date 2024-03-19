@@ -6,6 +6,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
@@ -58,6 +59,9 @@ class Handler extends ExceptionHandler
                     }
                     if ($exception instanceof ModelNotFoundException) {
                         return $this->errorResponse('Resource Not Found', 404);
+                    }
+                    if($exception instanceof ValidationException) {
+                        return $this->errorResponse('Validation Error.', 422, $exception->validator->getMessageBag()->toArray());
                     }
                     return $this->errorResponse($exception->getMessage(), 500);
                 }
