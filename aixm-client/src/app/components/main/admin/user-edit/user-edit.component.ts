@@ -122,6 +122,9 @@ export class UserEditComponent {
       this.user.password = this.password?.value;
       this.user.changePassword = true;
     }
+    if (!this.data.profile) {
+      this.user.role = this.role?.value;
+    }
     this.loading = true;
     if (this.user.id === undefined) {
       // new
@@ -146,5 +149,5 @@ export class UserEditComponent {
     }
   }
 
-  protected readonly Math = Math;
+  protected readonly Math: Math = Math;
 }
