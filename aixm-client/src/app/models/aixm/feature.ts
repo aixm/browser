@@ -1,9 +1,9 @@
 export class Feature {
-  id!: number;
-  name!: string;
-  type!: string;
-  abbreviation!: string;
-  icon!: string;
-  color!: string;
-  description!: string;
+  id: number | undefined;
+  name: string | undefined;
+  type: string | undefined;
+  abbreviation: string | undefined;
+  icon: string | undefined;
+  color: string | undefined;
+  description: string | undefined;
 }

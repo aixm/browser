@@ -5,6 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class FeatureService {
   hiddenFeatureIds: number[] = [];
+  types: {type: string}[] = [
+    {type: 'feature'},
+    {type: 'object'},
+    {type: 'choice'},
+  ];
   constructor() { }
 
   isFeatureHidden(featureId: number | undefined): boolean {

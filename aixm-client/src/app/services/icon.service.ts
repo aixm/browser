@@ -41,9 +41,9 @@ export class IconService {
           // this.matIconRegistry.addSvgIcon(feature.abbreviation, this.domSanitizer.bypassSecurityTrustResourceUrl(url));
           this.fileExists(url).subscribe((exists: boolean): void => {
             if (exists) {
-              this.matIconRegistry.addSvgIcon(feature.abbreviation, this.domSanitizer.bypassSecurityTrustResourceUrl(url));
+              this.matIconRegistry.addSvgIcon(feature?.abbreviation ? feature?.abbreviation : '', this.domSanitizer.bypassSecurityTrustResourceUrl(url));
             } else {
-              this.matIconRegistry.addSvgIcon(feature.abbreviation, this.domSanitizer.bypassSecurityTrustResourceUrl(this.defaultSvgIcon));
+              this.matIconRegistry.addSvgIcon(feature?.abbreviation ? feature?.abbreviation : '', this.domSanitizer.bypassSecurityTrustResourceUrl(this.defaultSvgIcon));
             }
           });
         });

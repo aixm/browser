@@ -1,0 +1,66 @@
+<mat-card style="max-width: 30em" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-card-header class="dialog-header" cdkDragHandle>
+        <mat-card-title>{{feature.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM feature</mat-card-title>
+        <div class="flex-full-row"></div>
+        <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="pg-bar">
+            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        </div>
+        <div>
+            <form [formGroup]="featureForm">
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Name of the Feature</mat-label>
+                    <input matInput placeholder="Name of the Feature" formControlName="name">
+                    <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+                        <mat-hint *ngIf="name?.errors?.['required']">Name is required</mat-hint>
+                        <mat-hint *ngIf="name?.errors?.['minlength']">At least 2 characters</mat-hint>
+                        <mat-hint *ngIf="name?.errors?.['maxlength']">No longer than 50 characters</mat-hint>
+                        <mat-hint *ngIf="name?.errors?.['serverError']">{{ name?.errors?.['serverError'] }}</mat-hint>
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Type</mat-label>
+                        <mtx-select [items]="featureService.types"  placeholder="Feature's type" formControlName="type"
+                                    bindLabel="type" bindValue="type" [value]="type">
+                        </mtx-select>
+                        <mat-error *ngIf="type?.invalid && (type?.dirty || type?.touched)">
+                            <mat-hint *ngIf="type?.errors?.['required']">Type is required</mat-hint>
+                            <mat-hint *ngIf="type?.errors?.['serverError']">{{ type?.errors?.['serverError'] }}</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 12em; margin-left: 0.1em" appearance="outline">
+                        <mat-label>Abbreviation</mat-label>
+                        <input matInput placeholder="Abbreviation" formControlName="abbreviation">
+                        <mat-error *ngIf="abbreviation?.invalid && (abbreviation?.dirty || abbreviation?.touched)">
+                            <mat-hint *ngIf="abbreviation?.errors?.['required']">Required</mat-hint>
+                            <mat-hint *ngIf="abbreviation?.errors?.['minlength']">3 characters</mat-hint>
+                            <mat-hint *ngIf="abbreviation?.errors?.['maxlength']">3 characters</mat-hint>
+                            <mat-hint *ngIf="abbreviation?.errors?.['serverError']">{{ abbreviation?.errors?.['serverError'] }}</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Description of the Feature</mat-label>
+                    <textarea matInput style="height: 7em" placeholder="Description of the Feature" formControlName="description"></textarea>
+                    <mat-error *ngIf="description?.invalid && (description?.dirty || description?.touched)">
+                        <mat-hint *ngIf="description?.errors?.['minlength']">At least 2 characters</mat-hint>
+                        <mat-hint *ngIf="description?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
+                    </mat-error>
+                </mat-form-field>
+            </form>
+        </div>
+    </mat-card-content>
+    <mat-card-actions style="justify-content: flex-end">
+        <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
+        <button *ngIf="!data.disableForm" mat-stroked-button class="tbr-btn" color="primary" (click)="save()">
+            <mat-icon>save</mat-icon>Save</button>
+    </mat-card-actions>
+</mat-card>
+

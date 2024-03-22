@@ -15,6 +15,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .page-title {
   font-size: large;
 }
+.dialog-header {
+  cursor: move;
+}
 .page-subtitle {
   font-size: medium;
   font-style: italic;

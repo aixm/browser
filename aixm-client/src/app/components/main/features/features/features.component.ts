@@ -1,16 +1,23 @@
 import { CommonModule }                                                           from '@angular/common';
+import { HttpHeaders }                                                            from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule }                    from '@angular/forms';
 import { MatButtonModule }                                     from '@angular/material/button';
-import { MatCardModule }                        from '@angular/material/card';
-import { MatIconModule }                        from '@angular/material/icon';
+import { MatCardModule }           from '@angular/material/card';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule }           from '@angular/material/icon';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
-import { ApiResponse }                           from '../../../models/api-response';
-import { Feature }                              from '../../../models/aixm/feature';
-import { PipesModule }                                         from '../../../pipes/pipes.module';
-import { BackendApiService }                    from '../../../services/backend-api.service';
-import { BaseGridComponent } from '../../common/base/base-grid.component';
-import { AixmIconComponent }                                   from '../../common/shared/aixm-icon/aixm-icon.component';
+import { getTitle }                                                               from '../../../../helpers/utils';
+import { Dataset }                                                                from '../../../../models/aixm/dataset';
+import { ApiResponse }                           from '../../../../models/api-response';
+import { Feature }                              from '../../../../models/aixm/feature';
+import { PipesModule }                                         from '../../../../pipes/pipes.module';
+import { BackendApiService }                    from '../../../../services/backend-api.service';
+import { BaseGridComponent } from '../../../common/base/base-grid.component';
+import { ConfirmComponent }                                                       from '../../../common/dialogs/confirm/confirm.component';
+import { AixmIconComponent }                                   from '../../../common/shared/aixm-icon/aixm-icon.component';
+import { DatasetEditComponent }                                                   from '../../datasets/dataset-edit/dataset-edit.component';
+import { FeatureEditComponent } from '../feature-edit/feature-edit.component';
 
 @Component({
   selector: 'app-features',
@@ -80,6 +87,7 @@ export class FeaturesComponent extends BaseGridComponent {
 
   constructor(
       private backendApiService: BackendApiService,
+      private matDialog: MatDialog,
   ) {super()}
 
   override refresh(): void {
@@ -99,9 +107,36 @@ export class FeaturesComponent extends BaseGridComponent {
   }
 
   edit(feature: Feature, disableForm: boolean = false): void {
+    const dialogRef: MatDialogRef<FeatureEditComponent> = this.matDialog.open(FeatureEditComponent, {
+      autoFocus: true,
+      restoreFocus: false,
+      disableClose: true,
+      data: { feature: feature, disableForm:  disableForm}
+    });
+    dialogRef.afterClosed().subscribe((result: any): void => {
+      if (result) {
+        this.refresh();
+      }
+    });
   }
 
   delete(feature: Feature): void {
+    const dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
+      autoFocus: true,
+      restoreFocus: false,
+      data: { title: getTitle(), message: 'Delete feature \''+feature.name+'\'?' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loading = true;
+        this.backendApiService.deleteItem(this.url, feature.id).subscribe((data: ApiResponse): void => {
+          this.loading = false;
+          if (!data.error) {
+            this.refresh();
+          }
+        });
+      }
+    });
   }
 
   allowEdit(feature: Feature): boolean {
