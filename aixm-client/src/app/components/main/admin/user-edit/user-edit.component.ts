@@ -1,4 +1,5 @@
-import { CommonModule }                                            from '@angular/common';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CommonModule }           from '@angular/common';
 import { Component, Inject }                                       from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
@@ -18,8 +19,10 @@ import { BackendApiService }                                       from '../../.
 @Component({
   selector: 'app-user-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatTooltipModule,
-    MatInputModule, MatCheckboxModule, MtxSelectModule],
+  imports: [
+    CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatTooltipModule,
+    MatInputModule, MatCheckboxModule, MtxSelectModule, CdkDrag, CdkDragHandle,
+  ],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.scss'
 })

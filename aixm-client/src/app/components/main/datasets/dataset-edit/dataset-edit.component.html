@@ -1,6 +1,7 @@
-<mat-card style="max-width: 30em">
-    <mat-card-header>
-        <mat-card-title>{{dataset.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM dataset</mat-card-title>
+<mat-card style="max-width: 30em" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-card-header class="dialog-header" cdkDragHandle>
+        <mat-card-title>
+            {{dataset.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM dataset</mat-card-title>
         <div class="flex-full-row"></div>
         <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
             <mat-icon>close</mat-icon>
