@@ -15,6 +15,7 @@ import { PipesModule }                  from '../../../../pipes/pipes.module';
 import { BackendApiService }            from '../../../../services/backend-api.service';
 import { BaseGridComponent }                     from '../../../common/base/base-grid.component';
 import { ConfirmComponent }             from '../../../common/dialogs/confirm/confirm.component';
+import { InfoComponent }                         from '../../../common/dialogs/info/info.component';
 import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
 
 @Component({
@@ -31,6 +32,7 @@ export class DatasetsComponent extends BaseGridComponent {
   override defaultColumns: MtxGridColumn[] = [
     { header: 'Name', field: 'name', sortable: true },
     { header: 'File name', field: 'filename', sortable: true },
+    { header: 'Status', field: 'datasetStatus', sortable: true },
     { header: 'Description', field: 'description', sortable: true },
     { header: 'User', field: 'user', sortable: true },
     {
@@ -61,7 +63,7 @@ export class DatasetsComponent extends BaseGridComponent {
             this.edit(record);
           },
           iif: (record: Dataset): boolean => {
-            return this.allowEdit(record);
+            return this.allowEdit(record) && !this.isError(record);
           },
         },
         {
@@ -71,7 +73,10 @@ export class DatasetsComponent extends BaseGridComponent {
           tooltip: 'Graph',
           click: (record: Dataset): void => {
             this.graph(record);
-          }
+          },
+          iif: (record: Dataset): boolean => {
+            return !this.isError(record);
+          },
         },
         {
           type: 'icon',
@@ -80,7 +85,10 @@ export class DatasetsComponent extends BaseGridComponent {
           tooltip: 'Browse',
           click: (record: Dataset): void => {
             this.browse(record);
-          }
+          },
+          iif: (record: Dataset): boolean => {
+            return !this.isError(record);
+          },
         },
         {
           type: 'icon',
@@ -92,7 +100,7 @@ export class DatasetsComponent extends BaseGridComponent {
             this.delete(record);
           },
           iif: (record: Dataset): boolean => {
-            return this.allowEdit(record);
+            return this.allowEdit(record) && !this.isParsing(record);
           },
         },
       ], sortable: false
@@ -107,7 +115,7 @@ export class DatasetsComponent extends BaseGridComponent {
 
   override refresh(): void {
     this.loading = true;
-    this.backendApiService.getData(this.url + '?with=dataset.user&' + this.getPageSearchUrl())
+    this.backendApiService.getData(this.url + '?with=dataset.user,dataset.dataset_status&' + this.getPageSearchUrl())
         .subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);
@@ -123,7 +131,7 @@ export class DatasetsComponent extends BaseGridComponent {
   }
 
   edit(dataset: Dataset, disableForm: boolean = false): void {
-    let dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
+    const dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
       autoFocus: true,
       restoreFocus: false,
       disableClose: true,
@@ -132,6 +140,13 @@ export class DatasetsComponent extends BaseGridComponent {
     dialogRef.afterClosed().subscribe((result: any): void => {
       if (result) {
         this.refresh();
+        if (!dataset.id) {
+          this.matDialog.open(InfoComponent, {
+            data: {
+              title: 'Uploading dataset',
+              message: 'It takes several minutes to parse uploaded dataset. Please, check dataset\'s status.'}
+          });
+        }
       }
     });
   }
@@ -157,6 +172,14 @@ export class DatasetsComponent extends BaseGridComponent {
   allowEdit(dataset: Dataset): boolean {
     return this.authService.User?.role === 'admin' ||
         ((dataset.user?.id === this.authService.User?.id) && (dataset.user!==null));
+  }
+
+  isError(dataset: Dataset): boolean {
+    return dataset.datasetStatus?.status === 'Error';
+  }
+
+  isParsing(dataset: Dataset): boolean {
+    return dataset.datasetStatus?.status === 'Parsing';
   }
 
   graph(dataset: Dataset): void {

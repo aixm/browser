@@ -28,7 +28,9 @@ class DatasetResource extends JsonResource
             'created_at' => $this->created_at,
             'dataset_features_count' => $this->dataset_features_count,
             'user' => UserResource::make($this->whenLoaded('user')),
-            'dataset_features' => DatasetFeatureResource::collection($this->whenLoaded('dataset_features'))
+            'dataset_status' => DatasetStatusResource::make($this->whenLoaded('dataset_status')),
+            'dataset_features' => DatasetFeatureResource::collection($this->whenLoaded('dataset_features')),
+            'dataset_statuses' => DatasetStatusResource::collection($this->whenLoaded('dataset_statuses'))
         ];
     }
 }

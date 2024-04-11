@@ -43,7 +43,7 @@ return [
             'input' => [
                 'file' => [
                     'prompt' => 'Input file name with path to be parsed',
-                    'example' => 'E.g. samples\2024-01-25\Route.xml'
+                    'example' => 'E.g. samples/2024-01-25/Route.xml'
                 ]
             ],
         ],

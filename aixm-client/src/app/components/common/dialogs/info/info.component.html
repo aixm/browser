@@ -1,0 +1,12 @@
+<mat-card style="min-width: 15em">
+    <mat-card-header>
+        <mat-card-title>{{data.title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content style="margin-bottom: 1em">
+        <p>{{data.message}}</p>
+    </mat-card-content>
+    <mat-card-actions style="justify-content: flex-end">
+        <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Ok" (click)="dialogRef.close(true)">
+            <mat-icon>done</mat-icon>Ok</button>
+    </mat-card-actions>
+</mat-card>

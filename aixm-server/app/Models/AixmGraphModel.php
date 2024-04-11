@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ParseStatus;
 use App\Traits\Paginatable;
 use App\Traits\Searchable;
 use App\Traits\WithRequests;
@@ -41,7 +42,8 @@ abstract class AixmGraphModel extends Model
         'deleted_at' => 'datetime:Y-m-d H:i:s',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
-        'time' => 'datetime:Y-m-d H:i:s'
+        'time' => 'datetime:Y-m-d H:i:s',
+        'status' => ParseStatus::class
     ];
 
 }

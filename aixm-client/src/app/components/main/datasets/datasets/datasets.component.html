@@ -5,7 +5,7 @@
         <mtx-grid class="table-grid" #grid
                   [data]="datasets"
                   [columns]="columns"
-                  [cellTemplate]="{user: userTpl}"
+                  [cellTemplate]="{user: userTpl, datasetStatus: statusTpl}"
                   [showToolbar]="true"
                   [toolbarTemplate]="toolbarTpl"
                   [showColumnMenuButton]="true"
@@ -36,6 +36,12 @@
             <ng-container *ngIf="row.user">
                 <div>{{ row.user.firstName + ' ' + row.user.lastName }}</div>
                 <div>{{ row.user.email }}</div>
+            </ng-container>
+        </ng-template>
+        <ng-template #statusTpl let-row let-index="index">
+            <ng-container *ngIf="row.datasetStatus">
+                <div>{{ row.datasetStatus.status }}</div>
+                <div *ngIf="row.datasetStatus.message">{{ row.datasetStatus.message }}</div>
             </ng-container>
         </ng-template>
         <ng-template #menuFooter>

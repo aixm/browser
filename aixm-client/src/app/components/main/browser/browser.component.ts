@@ -23,6 +23,7 @@ import { Feature }           from '../../../models/aixm/feature';
 import { FeatureList } from '../../../models/aixm/feature-list';
 import { ApiResponse } from '../../../models/api-response';
 import { PipesModule } from '../../../pipes/pipes.module';
+import { AuthService } from '../../../services/auth.service';
 import { BackendApiService } from '../../../services/backend-api.service';
 import { FeatureService }                              from '../../../services/feature.service';
 import { NotificationService }                         from '../../../services/notification.service';
@@ -57,7 +58,7 @@ export class BrowserComponent implements OnInit {
   feature: Feature | undefined;
   datasetFeature: DatasetFeature | undefined;
   datasetFeatures: DatasetFeature[] = [];
-  viewLayout: 'browser' | 'graph' | 'combined' = 'browser';
+  viewLayout: 'browser' | 'graph' | 'combined' = 'combined';
   pageEvent: PageEvent = new PageEvent();
   pageSizeOptions: number[] = [10, 25, 50, 100];
   nodes: Node[] = [];
@@ -71,7 +72,8 @@ export class BrowserComponent implements OnInit {
       private settingsService: SettingsService,
       private route: ActivatedRoute,
       private featureService: FeatureService,
-      private notificationService: NotificationService
+      private notificationService: NotificationService,
+      public authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -393,6 +395,9 @@ export class BrowserComponent implements OnInit {
   switchLayout($event: 'browser' | 'graph' | 'combined' ) {
     this.viewLayout=$event;
     this.settingsService.setValue('BROWSER_LAYOUT', this.viewLayout);
+    //this.network?.fit();
+    //this.createGraph();
+
 
   }
 

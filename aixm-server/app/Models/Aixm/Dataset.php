@@ -2,6 +2,7 @@
 
 namespace App\Models\Aixm;
 
+use App\Enums\ParseStatus;
 use App\Models\AixmGraphModel;
 use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,6 +36,16 @@ class Dataset extends AixmGraphModel
     public function dataset_features()
     {
         return $this->hasMany(DatasetFeature::class);
+    }
+
+    public function dataset_status()
+    {
+        return $this->hasOne(DatasetStatus::class)->latest();
+    }
+
+    public function dataset_statuses()
+    {
+        return $this->hasMany(DatasetStatus::class);
     }
 
     ##################################################################################
@@ -78,6 +89,13 @@ class Dataset extends AixmGraphModel
             $now->format('d');
     }
 
+    public function setStatus(ParseStatus $status, string $message = '') {
+        $this->dataset_statuses()->create([
+            'status' => $status,
+            'message' => $message
+        ]);
+    }
+
     public function parse(bool $validate = false) {
         $start = microtime(true);
         Log::channel('stderr')->info('Start parsing dataset ' . $this->name);
@@ -87,11 +105,13 @@ class Dataset extends AixmGraphModel
         $reader->open(Storage::disk('private')->path($this->getPathWithFileName()));
 
         if ($validate) {
+            $this->setStatus(ParseStatus::VALIDATING);
             Log::channel('stderr')->info('Validating dataset ' . $this->name);
             $schema = $reader->setSchema(Storage::disk('private')->path('xsd/aixm_5_1_1_xsd/message/AIXM_BasicMessage.xsd'));
         }
 
         try {
+            $this->setStatus(ParseStatus::PARSING);
             // reach first feature
             while ($reader->read() && $reader->localName != self::$FeatureParentTagName) {;}
             // loop features
@@ -109,12 +129,15 @@ class Dataset extends AixmGraphModel
         } catch (\Exception $exception) {
             Log::channel('stderr')->error('Error parsing dataset ' . $this->name);
             Log::channel('stderr')->error($exception->getMessage());
+            $this->setStatus(ParseStatus::ERROR, $exception->getMessage());
         }
 
         // update broken references
         $this->updateBrokenReferences();
         Log::channel('stderr')->info('Parsed ' . $this->dataset_features()->count() .
             ' features in ' . intval(round(1000 * (microtime(true) - $start))) . ' ms');
+        $this->setStatus(ParseStatus::OK);
+
     }
 
     private function parseDatasetFeature($dataset, $feature, $element) {

@@ -15,6 +15,7 @@ php artisan db:seed --class=UserSeeder
 php artisan make:model Aixm/Feature -mfs
 php artisan make:controller Aixm/FeatureController --resource --model=Aixm/Feature
 php artisan make:resource Aixm/FeatureResource
+php artisan make:job ParseDataset
 
 -- after creation in container:
 chown 1000:1000 -R ./

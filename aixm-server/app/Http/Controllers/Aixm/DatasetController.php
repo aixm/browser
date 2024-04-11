@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Aixm;
 
+use App\Enums\ParseStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Aixm\DatasetResource;
+use App\Jobs\ParseDataset;
 use App\Models\Aixm\Dataset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,10 +57,11 @@ class DatasetController extends Controller
             if ($uploaded_file->storeAs($dataset->getPath(), $dataset->filename, 'private')) {
                 // only admin can set user_id
                 if (!$user->isAdmin()) {
-                    $place->user_id = $user ? $user->id : 0;
+                    $dataset->user_id = $user ? $user->id : 0;
                 }
                 $dataset->save();
-                $dataset->parse();
+                $dataset->setStatus(ParseStatus::UPLOADED);
+                ParseDataset::dispatch($dataset);
                 return $this->successResponse($dataset, null, 201);
             } else {
                 return $this->errorResponse('Error uploading dataset', 500);

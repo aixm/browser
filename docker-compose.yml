@@ -25,6 +25,18 @@ services:
     networks:
       - aixm
 
+  aixm-queue:
+    container_name: aixm-queue
+    image: aixm/aixm-server:latest
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - aixm-server
+    command: /bin/bash /opt/bin/queue.sh &>/dev/null &
+    networks:
+      - aixm
+
   aixm-nginx:
     container_name: aixm-nginx
     image: aixm/aixm-nginx:latest
@@ -51,6 +63,18 @@ services:
     networks:
       - aixm
 
+  aixm-redis:
+    container_name: aixm-redis
+    image: aixm/aixm-redis
+    build:
+      context: .
+      dockerfile: docker/redis/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - aixm-redis-data:/data:rw
+    networks:
+      - aixm
+
   aixm-proxy:
     container_name: aixm-proxy
     image: aixm/aixm-nginx:latest
@@ -64,6 +88,9 @@ services:
       - aixm-nginx
     networks:
       - aixm
+
+volumes:
+  aixm-redis-data:
 
 networks:
   aixm:
