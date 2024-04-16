@@ -1,5 +1,3 @@
-version: '3'
-
 services:
 
   aixm-client:
@@ -30,7 +28,8 @@ services:
     image: aixm/aixm-server:latest
     restart: unless-stopped
     volumes:
-      - ./:/var/www
+      - ./.env:/var/www/.env
+      - ./aixm-server/storage:/var/www/storage
     depends_on:
       - aixm-server
     command: /bin/bash /opt/bin/queue.sh &>/dev/null &
@@ -68,7 +67,7 @@ services:
     image: aixm/aixm-redis
     build:
       context: .
-      dockerfile: docker/redis/Dockerfile
+      dockerfile: ./aixm-server/docker/redis/Dockerfile
     restart: unless-stopped
     volumes:
       - aixm-redis-data:/data:rw

@@ -90,14 +90,14 @@ down: ## Stop and remove all images
 --------------------: ## *** INSTALL UPDATE ***
 --------------------: ## ------------------------------
 dump-autoload: ## Composer dump-autoload
-	$(docker_compose_bin) exec -T $(CONTAINER_NAME1) composer dump-autoload
+	@$(docker_bin) exec -i -t $(CONTAINER_NAME1) composer dump-autoload
 
 install: ## Install aixm Application
-	$(docker_compose_bin) exec -T $(CONTAINER_NAME1) composer install
-	$(docker_compose_bin) exec $(CONTAINER_NAME1) php artisan aixm:install
+	@$(docker_bin) exec -i -t $(CONTAINER_NAME1) composer install
+	@$(docker_bin) exec -i -t $(CONTAINER_NAME1) php artisan aixm:install
 
 update: dump-autoload ## Update aixm Application
-	$(docker_compose_bin) exec $(CONTAINER_NAME1) php artisan aixm:update
+	@$(docker_bin) exec -i -t $(CONTAINER_NAME1) php artisan aixm:update
 
 backup-db: ## Backup DB
 	@$(docker_bin)  exec -i -t  $(CONTAINER_NAME3) pg_dump -U aixm -Fc -b -v aixm -f "/tmp/data/aixm.backup"
