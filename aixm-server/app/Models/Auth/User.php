@@ -24,7 +24,8 @@ class User extends Authenticatable
         'last_name',
         'role',
         'company',
-        'position'
+        'position',
+        'active_at'
     ];
 
     public $searchable = [
@@ -58,5 +59,9 @@ class User extends Authenticatable
     ##################################################################################
     public function isAdmin() {
         return $this->role === 'admin';
+    }
+
+    public function updateActivityTimestamp() {
+        $this->update(['active_at' => now(), 'updated_at' => false]);
     }
 }

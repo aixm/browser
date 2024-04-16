@@ -9,4 +9,5 @@ export class User {
     email!: string;
     password: string | undefined;
     changePassword: boolean = false;
+    activeAt: string | undefined;
 }

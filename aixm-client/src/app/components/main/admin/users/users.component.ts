@@ -39,6 +39,7 @@ export class UsersComponent extends BaseGridComponent {
     { header: 'Last Name', field: 'lastName', sortable: true },
     { header: 'Company', field: 'company', sortable: true },
     { header: 'Position', field: 'position', sortable: true },
+    { header: 'Last activity', field: 'activeAt', sortable: true },
     {
       header: 'Operations',
       field: 'operation',

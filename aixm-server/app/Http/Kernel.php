@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\JsonSnake;
+use App\Http\Middleware\UserActivity;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -22,7 +23,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        JsonSnake::class, // convert camel case to snake case in JSON objects
+        JsonSnake::class, // convert camel case to snake case in JSON
+        UserActivity::class, // user activity timestamp
     ];
 
     /**

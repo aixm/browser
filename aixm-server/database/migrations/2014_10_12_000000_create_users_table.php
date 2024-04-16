@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->string('position')->nullable();
             $table->string('password');
+            $table->timestamp('active_at')->nullable();
             $table->timestamp('created_at')->nullable()->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrent()->useCurrentOnUpdate();
         });
