@@ -71,9 +71,11 @@
                 </mat-button-toggle>
             </mat-button-toggle-group>
             <div style="width: 1em"></div>
-            <mat-form-field style="width: 20%" appearance="outline" subscriptSizing="dynamic" >
+            <mat-form-field style="width: 25%" appearance="outline" subscriptSizing="dynamic" >
                 <mat-icon matPrefix>search</mat-icon>
-                <input matInput type="search" placeholder="search here" [(ngModel)]="searchText" (search)="refresh()">
+                <input matInput type="search" placeholder="search {{datasetFeature || feature?'feature UUID or property value':
+                    (dataset?'feature name, abbreviation or description':'dataset attributes')}}"
+                    [(ngModel)]="searchText" (search)="refresh()">
             </mat-form-field>
         </mat-toolbar-row>
     </mat-toolbar>

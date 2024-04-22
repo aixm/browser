@@ -18,12 +18,12 @@ class DatasetFeatureController extends Controller
      */
     public function index(Request $request)
     {
-        $features = DatasetFeature::search();
+        $datasetFeatures = DatasetFeature::search();
         if ($request->dataset) {
-            $features = $features->where('dataset_id', $request->dataset);
+            $datasetFeatures = $datasetFeatures->where('dataset_id', $request->dataset);
         }
-        $features = $features->paginate();
-        return $this->successResponse(DatasetFeatureResource::collection($features));
+        $datasetFeatures = $datasetFeatures->paginate();
+        return $this->successResponse(DatasetFeatureResource::collection($datasetFeatures));
     }
 
 
@@ -96,7 +96,7 @@ class DatasetFeatureController extends Controller
 
     public function features(Request $request)
     {
-        $features = DatasetFeature::search()
+        $datasetFeatures = DatasetFeature::search()
             ->where(function ($query) use ($request) {
                 $query->where('dataset_id', $request->dataset);
                 if ($request->datasets) {
@@ -105,8 +105,24 @@ class DatasetFeatureController extends Controller
             })
             ->where([
                 ['feature_id', '=', $request->feature]
-            ])->paginate();
-        return $this->successResponse(DatasetFeatureResource::collection($features));
+            ])
+            ->orWhereHas('dataset_feature_properties', function ($query) use ($request) {
+                if ($request->search) {
+                    $search = Str::of($request->search);
+                    $query->where('value', 'ilike', "%" . $search . "%");
+                }
+            })
+            ->where(function ($query) use ($request) {
+                $query->where('dataset_id', $request->dataset);
+                if ($request->datasets) {
+                    $query->orWhereIn('dataset_id', explode(',',$request->datasets));
+                }
+            })
+            ->where([
+                ['feature_id', '=', $request->feature]
+            ])
+            ->paginate();
+        return $this->successResponse(DatasetFeatureResource::collection($datasetFeatures));
     }
 
     public function reference_to(DatasetFeature $datasetFeature)

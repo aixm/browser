@@ -31,6 +31,7 @@ import { SettingsService } from '../../../services/settings.service';
 import { DatasetFeatureComponent } from '../../common/cards/dataset-feature/dataset-feature.component';
 import { DatasetComponent }  from '../../common/cards/dataset/dataset.component';
 import { FeatureComponent }  from '../../common/cards/feature/feature.component';
+import { InfoComponent } from '../../common/dialogs/info/info.component';
 import { DatasetEditComponent } from '../datasets/dataset-edit/dataset-edit.component';
 import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.component';
 
@@ -379,7 +380,7 @@ export class BrowserComponent implements OnInit {
   }
 
   edit(dataset: Dataset, disableForm: boolean = false): void {
-    let dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
+    const dialogRef: MatDialogRef<DatasetEditComponent> = this.matDialog.open(DatasetEditComponent, {
       autoFocus: true,
       restoreFocus: false,
       disableClose: true,
@@ -388,6 +389,13 @@ export class BrowserComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any): void => {
       if (result) {
         this.refresh();
+        if (!dataset.id) {
+          this.matDialog.open(InfoComponent, {
+            data: {
+              title: 'Uploading dataset',
+              message: 'It takes several minutes to parse uploaded dataset. Please, check dataset\'s status.'}
+          });
+        }
       }
     });
   }
