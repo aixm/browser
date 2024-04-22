@@ -32,6 +32,7 @@ export class DatasetsComponent extends BaseGridComponent {
   override defaultColumns: MtxGridColumn[] = [
     { header: 'Name', field: 'name', sortable: true },
     { header: 'File name', field: 'filename', sortable: true },
+    { header: 'Features count', field: 'datasetFeaturesCount', sortable: true },
     { header: 'Status', field: 'datasetStatus', sortable: true },
     { header: 'Description', field: 'description', sortable: true },
     { header: 'User', field: 'user', sortable: true },
