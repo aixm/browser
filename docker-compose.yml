@@ -3,7 +3,7 @@ services:
   aixm-client:
     container_name: aixm-client
     image: aixm/aixm-client:latest
-    restart: on-failure
+    restart: unless-stopped
     depends_on:
       - aixm-proxy
     networks:
@@ -12,7 +12,7 @@ services:
   aixm-server:
     container_name: aixm-server
     image: aixm/aixm-server:latest
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - ./.env:/var/www/.env
       - ./aixm-server/storage:/var/www/storage
@@ -39,7 +39,7 @@ services:
   aixm-nginx:
     container_name: aixm-nginx
     image: aixm/aixm-nginx:latest
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - ./aixm-server/storage:/var/www/storage:ro
     depends_on:
@@ -50,7 +50,7 @@ services:
   aixm-postgres:
     container_name: aixm-postgres
     image: aixm/aixm-postgres:latest
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - ./aixm-server/docker/postgres/postgresql/data:/var/lib/postgresql/data
       - ./aixm-server/docker/postgres/tmp/data:/tmp/data
@@ -77,7 +77,7 @@ services:
   aixm-proxy:
     container_name: aixm-proxy
     image: aixm/aixm-nginx:latest
-    restart: on-failure
+    restart: unless-stopped
     ports: [ "${CLIENT_WEBPORT}:80" ]
     volumes:
       - ./proxy.conf:/etc/nginx/conf.d/default.conf:ro
