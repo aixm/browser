@@ -15,7 +15,7 @@ import { MatTabsModule }                 from '@angular/material/tabs';
 import { MatToolbarModule }       from '@angular/material/toolbar';
 import { MatTooltipModule }                            from '@angular/material/tooltip';
 import { ActivatedRoute }      from '@angular/router';
-import { Network, DataSet, Data, Edge, Node, Options }                 from 'vis-network';
+import { Network, Data, Edge, Node, Options }                 from 'vis-network';
 import { copyToClipboard, getById, getByKey, getTooltip, isValidUUID } from '../../../helpers/utils';
 import { Dataset }                                                     from '../../../models/aixm/dataset';
 import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
@@ -83,7 +83,7 @@ export class BrowserComponent implements OnInit {
 
     // layout
     if (this.route.snapshot.queryParamMap.get('layout')) {
-      let layout: string | null = this.route.snapshot.queryParamMap.get('layout');
+      const layout: string | null = this.route.snapshot.queryParamMap.get('layout');
       if (layout === 'browser' || layout === 'graph' || layout === 'combined') {
         this.viewLayout = layout;
         this.settingsService.setValue('BROWSER_LAYOUT', this.viewLayout);
@@ -115,6 +115,7 @@ export class BrowserComponent implements OnInit {
     if (dataset) {
       this.dataset = dataset;
     }
+    this.pageEvent = new PageEvent();
     this.featureLists = undefined;
     this.feature = undefined;
     this.datasetFeature = undefined;
@@ -128,6 +129,7 @@ export class BrowserComponent implements OnInit {
     if (feature) {
       this.feature = feature;
     }
+    this.pageEvent = new PageEvent();
     this.datasetFeature = undefined;
     this.refreshDatasetFeatures();
   }
@@ -266,7 +268,7 @@ export class BrowserComponent implements OnInit {
   }
 
   updateGraph(): void {
-    let data: Data = {
+    const data: Data = {
       nodes: this.nodes,
       edges: this.edges,
     };
@@ -274,11 +276,11 @@ export class BrowserComponent implements OnInit {
   }
 
   createGraph(): void {
-    let data: Data = {
+    const data: Data = {
       nodes: this.nodes,
       edges: this.edges,
     };
-    var options: Options = {
+    const options: Options = {
       interaction: {
         hover: true,
       },
@@ -298,11 +300,13 @@ export class BrowserComponent implements OnInit {
 
     // events
     this.network.on("hoverNode", (params: any): void => {
+      params.event = "hoverNode";
       // @ts-ignore
       this.network.canvas.body.container.style.cursor = 'pointer';
     });
 
     this.network.on("blurNode", (params: any): void => {
+      params.event = "blurNode";
       // @ts-ignore
       this.network.canvas.body.container.style.cursor = 'default';
     });
@@ -355,7 +359,7 @@ export class BrowserComponent implements OnInit {
           this.refresh();
         } else {
           if (params.nodes[0]) {
-            let id: string = String(params.nodes[0]);
+            const id: string = String(params.nodes[0]);
             if (!isValidUUID(id)) {
               let datasetFeature: DatasetFeature = getById(this.datasetFeatures, id);
               if (!datasetFeature) {
@@ -400,7 +404,7 @@ export class BrowserComponent implements OnInit {
     });
   }
 
-  switchLayout($event: 'browser' | 'graph' | 'combined' ) {
+  switchLayout($event: 'browser' | 'graph' | 'combined' ): void {
     this.viewLayout=$event;
     this.settingsService.setValue('BROWSER_LAYOUT', this.viewLayout);
     //this.network?.fit();
