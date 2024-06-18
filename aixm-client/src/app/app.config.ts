@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule }    from '@angular/common/http';
+import { HTTP_INTERCEPTORS }    from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter }                          from '@angular/router';
 import { routes } from './app.routes';

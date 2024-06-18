@@ -23,8 +23,7 @@
       "dom"
     ],
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
