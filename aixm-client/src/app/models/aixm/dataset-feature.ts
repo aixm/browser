@@ -35,7 +35,7 @@ export class DatasetFeature {
     if (this.label) {
       return this.label;
     } else {
-      let fallbackLabel: string = this.feature?.abbreviation ? this.feature?.abbreviation : '';
+      const fallbackLabel: string = this.feature?.abbreviation ? this.feature?.abbreviation : '';
       let label: string = '';
       this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty):void => {
         if (dfp.property?.isIdentifying && dfp.value) {
@@ -51,7 +51,7 @@ export class DatasetFeature {
     if (this.tooltip) {
       return this.tooltip;
     } else {
-      let fallbackTooltip: string = `<p>${this.feature?.name}</p>`;
+      const fallbackTooltip: string = `<p>${this.feature?.name}</p>`;
       let tooltip: string = '';
       this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty):void => {
         if (dfp.property?.isIdentifying && dfp.value.trim().length>0) {
@@ -106,7 +106,7 @@ export class DatasetFeature {
       this.brokenFeatures = [];
       this.datasetFeatureProperties.forEach((dfp: DatasetFeatureProperty): void => {
         if (dfp.isBroken) {
-          let df: DatasetFeature = new DatasetFeature(this.featureService);
+          const df: DatasetFeature = new DatasetFeature(this.featureService);
           df.featureId = dfp.id;
           df.gmlIdentifierValue = dfp.xlinkHref;
           // @ts-ignore
@@ -124,19 +124,19 @@ export class DatasetFeature {
     // ref to
     this.referenceToFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      let accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
       this.edges.push({from: this.id, to: df.id, arrows: 'to', color: accentColor});
     });
     // ref by
     this.referencedByFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      let primaryColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-badge-background-color');
+      const primaryColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-badge-background-color');
       this.edges.push({from: this.id, to: df.id, arrows: 'from', color: primaryColor});
     });
     // broken
     this.getBrokenFeatures().forEach((df: DatasetFeature): void => {
       result = this.addBrokenFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      let accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
       this.edges.push({from: this.id, to: df.gmlIdentifierValue, arrows: 'to', color: accentColor});
     });
     return result;
@@ -186,7 +186,7 @@ export class DatasetFeature {
 
   // deprecated
   getReferenceUniqFeatures(): Feature[] {
-    let features: Feature[] = [];
+    const features: Feature[] = [];
     this.referenceToFeatures.forEach((df: DatasetFeature):void => {
       if (df.feature) {
         if (features.findIndex((f: Feature): boolean => f.id === df.feature?.id) === -1) {

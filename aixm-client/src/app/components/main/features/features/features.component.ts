@@ -1,5 +1,4 @@
 import { CommonModule }                                                           from '@angular/common';
-import { HttpHeaders }                                                            from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule }                    from '@angular/forms';
 import { MatButtonModule }                                     from '@angular/material/button';
@@ -8,7 +7,6 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule }           from '@angular/material/icon';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { getTitle }                                                               from '../../../../helpers/utils';
-import { Dataset }                                                                from '../../../../models/aixm/dataset';
 import { ApiResponse }                           from '../../../../models/api-response';
 import { Feature }                              from '../../../../models/aixm/feature';
 import { PipesModule }                                         from '../../../../pipes/pipes.module';
@@ -16,7 +14,6 @@ import { BackendApiService }                    from '../../../../services/backe
 import { BaseGridComponent } from '../../../common/base/base-grid.component';
 import { ConfirmComponent }                                                       from '../../../common/dialogs/confirm/confirm.component';
 import { AixmIconComponent }                                   from '../../../common/shared/aixm-icon/aixm-icon.component';
-import { DatasetEditComponent }                                                   from '../../datasets/dataset-edit/dataset-edit.component';
 import { FeatureEditComponent } from '../feature-edit/feature-edit.component';
 
 @Component({
@@ -139,6 +136,7 @@ export class FeaturesComponent extends BaseGridComponent {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   allowEdit(feature: Feature): boolean {
     return this.authService.User?.role === 'admin';
   }

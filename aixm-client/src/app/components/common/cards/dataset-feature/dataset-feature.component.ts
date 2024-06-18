@@ -1,24 +1,20 @@
 import { ClipboardModule }                                                       from '@angular/cdk/clipboard';
-import { AfterViewInit, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule }                                                          from '@angular/common';
 import { MatBadgeModule }                                                        from '@angular/material/badge';
-import {
-  MAT_BOTTOM_SHEET_DATA, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, MatBottomSheet, MatBottomSheetModule,
-}                                                                                from '@angular/material/bottom-sheet';
+import { MatBottomSheetModule }                                                  from '@angular/material/bottom-sheet';
 import { MatButtonModule }                                                       from '@angular/material/button';
 import { MatCardModule }                                                         from '@angular/material/card';
 import { MatChipsModule }                                                        from '@angular/material/chips';
 import { MatIconModule }                                                         from '@angular/material/icon';
-import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule }                                                      from '@angular/material/toolbar';
 import { MatTooltipModule }                           from '@angular/material/tooltip';
-import { copyToClipboard, getFeatureBrokenImagePath } from '../../../../helpers/utils';
+import { getFeatureBrokenImagePath } from '../../../../helpers/utils';
 import { Dataset }                                                               from '../../../../models/aixm/dataset';
 import { DatasetFeature }                             from '../../../../models/aixm/dataset-feature';
 import { Feature }                                from '../../../../models/aixm/feature';
 import { PipesModule }              from '../../../../pipes/pipes.module';
-import { FeatureService } from '../../../../services/feature.service';
-import { NotificationService }                                                   from '../../../../services/notification.service';
 import { AixmFeatureToggleComponent } from '../../shared/aixm-feature-toggle/aixm-feature-toggle.component';
 import { AixmIconComponent }                      from '../../shared/aixm-icon/aixm-icon.component';
 
@@ -33,7 +29,7 @@ import { AixmIconComponent }                      from '../../shared/aixm-icon/a
   templateUrl: './dataset-feature.component.html',
   styleUrl: './dataset-feature.component.scss'
 })
-export class DatasetFeatureComponent implements OnInit {
+export class DatasetFeatureComponent {
   @Input() feature?: Feature;
   @Input() datasetFeature?: DatasetFeature;
   @Output() cardClick: EventEmitter<DatasetFeature> = new EventEmitter<DatasetFeature>();
@@ -44,9 +40,6 @@ export class DatasetFeatureComponent implements OnInit {
 
   constructor(
   ) {}
-
-  ngOnInit(): void {
-  }
 
   click(): void {
     if (this.datasetFeature) {

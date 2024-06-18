@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,7 +28,7 @@ import { ThemeService } from './services/theme.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title: string = getTitle();
   version: string = packageInfo.version;
   themeOptions$: Observable<ThemeOption[]> = this.themeService.getThemeOptions();

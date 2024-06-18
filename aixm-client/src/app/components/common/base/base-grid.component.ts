@@ -3,7 +3,6 @@ import { PageEvent }                                                           f
 import { MtxGrid, MtxGridColumn }  from '@ng-matero/extensions/grid';
 import { Subscription }     from 'rxjs';
 import { ApiResponse } from '../../../models/api-response';
-import { User }                                                                      from '../../../models/auth/user';
 import { AuthService }                                                                       from '../../../services/auth.service';
 
 @Component({
@@ -32,7 +31,7 @@ export class BaseGridComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // TODO read previously saved columns for grid
     this.columns = this.defaultColumns;
-    this.subscriptions.push(this.authService.currentUser?.subscribe((value: User | null): void => {this.refresh()}));
+    this.subscriptions.push(this.authService.currentUser?.subscribe((): void => {this.refresh()}));
   }
 
   ngOnDestroy(): void {

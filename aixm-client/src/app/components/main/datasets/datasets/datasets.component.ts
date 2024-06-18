@@ -153,7 +153,7 @@ export class DatasetsComponent extends BaseGridComponent {
   }
 
   delete(dataset: Dataset): void {
-    let dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
+    const dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
       autoFocus: true,
       restoreFocus: false,
       data: { title: getTitle(), message: 'Delete dataset \''+dataset.name+'\'?' }
@@ -162,7 +162,7 @@ export class DatasetsComponent extends BaseGridComponent {
       if (result) {
         this.loading = true;
         this.backendApiService.deleteItem(this.url, dataset.id, {
-          headers: new HttpHeaders({ timeout: `${1200000}` }) }).subscribe((data: ApiResponse): void => {
+          headers: new HttpHeaders({ timeout: `${1200000}` }) }).subscribe((): void => {
           this.loading = false;
           this.refresh();
         });

@@ -124,7 +124,7 @@ export class UsersComponent extends BaseGridComponent {
   }
 
   delete(user: User): void {
-    let dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
+    const dialogRef: MatDialogRef<ConfirmComponent> = this.matDialog.open(ConfirmComponent, {
       autoFocus: true,
       restoreFocus: false,
       data: { title: getTitle(), message: 'Delete user \''+user.email+'\'?' }
@@ -132,7 +132,7 @@ export class UsersComponent extends BaseGridComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loading = true;
-        this.backendApiService.deleteItem(this.url, user.id).subscribe((data: ApiResponse): void => {
+        this.backendApiService.deleteItem(this.url, user.id).subscribe((): void => {
           this.loading = false;
           this.refresh();
         });
@@ -140,6 +140,7 @@ export class UsersComponent extends BaseGridComponent {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   allowEdit(user: User): boolean {
     return this.authService.User?.role === 'admin';
   }

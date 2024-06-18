@@ -1,5 +1,5 @@
 import { NgIf }             from '@angular/common';
-import { Component }                                               from '@angular/core';
+import { Component, OnInit }                                               from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }    from '@angular/material/card';
@@ -27,7 +27,7 @@ import { BackendApiService } from '../../../../services/backend-api.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loading: boolean = false;
   loginForm!: FormGroup;
   showPassword: boolean = false;

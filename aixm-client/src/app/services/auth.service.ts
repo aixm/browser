@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   get User(): User | null {
-    let u: string = this.settingsService.getValue('USER', '');
+    const u: string = this.settingsService.getValue('USER', '');
     return u ? JSON.parse(u) : null;
   }
   set User(value: User | null) {
@@ -61,7 +61,7 @@ export class AuthService {
       disableClose: true,
       autoFocus: false
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe((): void => {});
   }
 
   resetCredentials(): void {
@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   logout(navigateTo?: string): void {
-    this.backendApiService.getData(`auth/logout`).subscribe(result => {
+    this.backendApiService.getData(`auth/logout`).subscribe((): void => {
       this.resetCredentials();
       if (navigateTo) {
         this.router.navigateByUrl(navigateTo);
