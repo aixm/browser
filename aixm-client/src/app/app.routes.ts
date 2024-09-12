@@ -9,6 +9,7 @@ import { FeaturesComponent } from './components/main/features/features/features.
 import { HomeComponent } from './components/main/home/home.component';
 import { MapComponent }          from './components/main/map/map.component';
 import { canActivateAdminGuard } from './guards/can-activate-admin.guard';
+import { VocalInputComponent } from './components/main/vocal-input/vocal-input.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'browser', component: BrowserComponent },
   { path: 'datasets', component: DatasetsComponent },
   { path: 'features', component: FeaturesComponent },
+  { path: 'vocal-input', component: VocalInputComponent },
   { path: 'forbidden', component: ForbiddenComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'about', component: AboutComponent },

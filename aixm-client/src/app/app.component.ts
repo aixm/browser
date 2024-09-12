@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatLabel }          from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -23,7 +24,7 @@ import { ThemeService } from './services/theme.service';
   standalone: true,
   imports: [
     CommonModule, RouterOutlet, MatToolbarModule, MatSidenavModule, MatIconModule, MatButtonModule, RouterLink, RouterLinkActive,
-    MatListModule, MatTooltipModule, ThemeSwitcherComponent,
+    MatListModule, MatTooltipModule, ThemeSwitcherComponent, MatLabel,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

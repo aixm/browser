@@ -1,0 +1,20 @@
+<div class="page-container">
+    <div class="page-title">Vocal Input</div>
+    <div class="page-subtitle">Test voice input text</div>
+
+    <div style="margin-top: 1em; display: flex; flex-flow: wrap; justify-content: center">
+        <textarea style="font-size: large; width: 100%" [value]="transcript"></textarea>
+    </div>
+    <div style="display: flex; flex-flow: wrap; margin: 1em; justify-content: center">
+        <button mat-fab (click)="toggle()"
+                matTooltip="{{speechService.isListening ? 'Stop listening' : 'Start listening' }}"
+                color="{{speechService.isListening ? 'warn' : 'primary' }}">
+            <mat-icon>{{speechService.isListening ? 'mic_off' : 'mic'}}</mat-icon>
+        </button>
+    </div>
+
+    <app-voice-input-field label="NOTAM text field 1" appearance="fill" style="width: 100%" [value]="value"></app-voice-input-field>
+
+    <app-voice-input-field label="NOTAM text field 2" appearance="outline" style="width: 100%"></app-voice-input-field>
+
+</div>

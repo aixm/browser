@@ -1,0 +1,9 @@
+<mat-form-field [appearance]=appearance [style]=style>
+    <mat-label *ngIf="label">{{label}}</mat-label>
+    <input matInput [value]="transcript" [disabled]="disabled">
+    <button mat-icon-button matSuffix (click)="toggle()"
+            matTooltip="{{speechService.isListening ? 'Stop listening' : 'Start listening' }}"
+            color="{{speechService.isListening ? 'warn' : 'primary' }}" [disabled]="disabled">
+        <mat-icon>{{speechService.isListening ? 'mic_off' : 'mic'}}</mat-icon>
+    </button>
+</mat-form-field>

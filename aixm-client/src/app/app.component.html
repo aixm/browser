@@ -19,14 +19,6 @@
                 </a>
                 <mat-divider></mat-divider>
             </ng-container>
-            <ng-container *ngIf="authService.User?.role === 'admin'">
-                <a mat-list-item [routerLink]="'map'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
-                    <span class="entry">
-                      <mat-icon>map</mat-icon>
-                      <span>Map</span>
-                    </span>
-                </a>
-            </ng-container>
             <a mat-list-item [routerLink]="'browser'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
                 <span class="entry">
                   <mat-icon>web</mat-icon>
@@ -47,6 +39,21 @@
                 </span>
             </a>
             <mat-divider></mat-divider>
+            <ng-container *ngIf="authService.User?.role === 'admin'">
+                <a mat-list-item [routerLink]="'map'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                    <span class="entry">
+                      <mat-icon>map</mat-icon>
+                      <span>Map</span>
+                    </span>
+                </a>
+                <a mat-list-item [routerLink]="'vocal-input'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
+                <span class="entry">
+                  <mat-icon>keyboard_voice</mat-icon>
+                  <span>Vocal Input</span>
+                </span>
+                </a>
+                <mat-divider></mat-divider>
+            </ng-container>
             <a mat-list-item [routerLink]="'about'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-route">
                 <span class="entry">
                   <mat-icon>info</mat-icon>
@@ -64,7 +71,7 @@
                     <mat-icon>menu</mat-icon>
                 </button>
                 <img alt="Eurocontrol logo" style="margin-top: 0.3em" width="36px" src="assets/images/icons/ectl_logo_short.svg">
-                <label>{{ title }}</label>
+                <mat-label>{{ title }}</mat-label>
                 <span style="font-size: small">&nbsp;v{{ version }}</span>
 
                 <app-theme-switcher style="margin-left: 1em" [themeOptions]="themeOptions$ | async" (themeChange)="themeChangeHandler($event)">
