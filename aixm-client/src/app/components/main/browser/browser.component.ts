@@ -95,7 +95,7 @@ export class BrowserComponent implements OnInit {
       // dataset
     if (this.route.snapshot.queryParamMap.get('dataset')) {
       this.refreshDatasets((): void => {this.datasetClick(getById(
-          this.datasets, Number(this.route.snapshot.queryParamMap.get('dataset'))))});
+          this.datasets, Number(this.route.snapshot.queryParamMap.get('dataset'))))}, false);
     } else {
       this.refreshDatasets();
     }
@@ -162,9 +162,9 @@ export class BrowserComponent implements OnInit {
     }
   }
 
-  refreshDatasets(callback?: Function): void {
+  refreshDatasets(callback?: Function, paging: boolean = true): void {
     this.loading = true;
-    this.backendApiService.getData(`${this.urlDatasets}?${this.getPagingUrl()}`+ (this.searchText ? '&search=' + this.searchText : ''))
+    this.backendApiService.getData(`${this.urlDatasets}?${paging ? this.getPagingUrl() : '' }`+ (this.searchText ? '&search=' + this.searchText : ''))
         .subscribe((data: ApiResponse): void => {
       console.log(data);
       this.storePageState(data);

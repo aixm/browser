@@ -39,7 +39,7 @@ export class DatasetsComponent extends BaseGridComponent {
     {
       header: 'Operations',
       field: 'operation',
-      width: '240px',
+      width: '275px',
       pinned: 'right',
       type: 'button',
       buttons: [
@@ -69,6 +69,18 @@ export class DatasetsComponent extends BaseGridComponent {
         },
         {
           type: 'icon',
+          text: 'browse',
+          icon: 'web',
+          tooltip: 'Browse',
+          click: (record: Dataset): void => {
+            this.browse(record);
+          },
+          iif: (record: Dataset): boolean => {
+            return !this.isError(record);
+          },
+        },
+        {
+          type: 'icon',
           text: 'graph',
           icon: 'spoke',
           tooltip: 'Graph',
@@ -81,11 +93,11 @@ export class DatasetsComponent extends BaseGridComponent {
         },
         {
           type: 'icon',
-          text: 'browse',
-          icon: 'web',
-          tooltip: 'Browse',
+          text: 'combined',
+          icon: 'vertical_split',
+          tooltip: 'Combined',
           click: (record: Dataset): void => {
-            this.browse(record);
+            this.combined(record);
           },
           iif: (record: Dataset): boolean => {
             return !this.isError(record);
@@ -189,6 +201,10 @@ export class DatasetsComponent extends BaseGridComponent {
 
   browse(dataset: Dataset): void {
     this.router.navigate(['browser'], {queryParams: {layout: 'browser', dataset: dataset.id}});
+  }
+
+  combined(dataset: Dataset): void {
+    this.router.navigate(['browser'], {queryParams: {layout: 'combined', dataset: dataset.id}});
   }
 
 }
