@@ -33,6 +33,9 @@ export class FeaturesComponent extends BaseGridComponent {
     { header: 'Abbreviation', field: 'abbreviation', sortable: true },
 /*    { header: 'Color', field: 'color', sortable: false },*/
     { header: 'Icon', field: 'icon', sortable: false },
+    { header: 'Order', field: 'order', sortable: true },
+    { header: 'Prefix', field: 'prefix', sortable: true },
+    { header: 'Namespace', field: 'namespace', sortable: true },
     { header: 'Description', field: 'description', sortable: true },
     {
       header: 'Operations',

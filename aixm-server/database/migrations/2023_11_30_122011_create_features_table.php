@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('abbreviation');
             $table->string('color')->default('#000000');
             $table->string('icon')->nullable();
+            $table->string('prefix')->default('aixm');
+            $table->string('namespace')->nullable();
             $table->text('description')->nullable();
             $table->timestamp('created_at')->nullable()->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrent()->useCurrentOnUpdate();

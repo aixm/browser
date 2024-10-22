@@ -166,11 +166,20 @@ class Dataset extends AixmGraphModel
                     $this->parseDatasetFeatureProperty($dataset_feature, $property, $p, $ns);
                 }
             }
+            // parse Event extension
+            $eventNodes = $feature_node->xpath($ns . ':extension/event:' . $feature->name . 'Extension/event:theEvent');
+            //Log::channel('stderr')->info('Event Nodes: ' . strval($eventNodes));
+            $eventProperty = Property::getProperty('theEvent');
+            foreach ($eventNodes as $en) {
+                Log::channel('stderr')->info('Event Node: ' . $en->getName() . ': ' . $en->asXML());
+                $this->parseDatasetFeatureProperty($dataset_feature, $eventProperty, $en, 'event');
+            }
         }
     }
 
     private function parseDatasetFeatureProperty($dataset_feature, $property, $node, $ns, $parent_dataset_feature_property_id=0) {
-        //Log::channel('stderr')->info('Property: ' .$node->getName() . ': ' . strval($node));
+        Log::channel('stderr')->info('Property: ' .$property->id . ' - ' . $property->name);
+        Log::channel('stderr')->info('Property: ' .$node->getName() . ': ' . strval($node));
         $value = strval($node);
         $xlink_href = '';
         $xlink_href_type = '';

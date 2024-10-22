@@ -26,4 +26,10 @@ class Property extends AixmGraphModel
     ##################################################################################
     # Functions
     ##################################################################################
+    public static function getProperty($property_name, $feature_id=0) {
+        return Property::where([
+            ['feature_id', '=', $feature_id],
+            ['name', '=', $property_name]
+        ])->first();
+    }
 }

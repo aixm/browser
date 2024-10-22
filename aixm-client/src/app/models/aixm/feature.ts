@@ -5,5 +5,8 @@ export class Feature {
   abbreviation: string | undefined;
   icon: string | undefined;
   color: string | undefined;
+  order: number | undefined;
+  prefix: string | undefined;
+  namespace: string | undefined;
   description: string | undefined;
 }

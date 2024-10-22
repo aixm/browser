@@ -22,6 +22,9 @@ class FeatureResource extends JsonResource
             'abbreviation' => $this->abbreviation,
             'color' => $this->color,
             'icon' => $this->icon,
+            'order' => $this->order,
+            'prefix' => $this->prefix,
+            'namespace' => $this->namespace,
             'description' => $this->description,
             'properties' => PropertyResource::collection($this->whenLoaded('properties')),
         ];

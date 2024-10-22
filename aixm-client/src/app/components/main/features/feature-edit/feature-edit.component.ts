@@ -37,6 +37,9 @@ export class FeatureEditComponent implements OnInit {
   get name() { return this.featureForm.get('name'); }
   get type() { return this.featureForm.get('type'); }
   get abbreviation() { return this.featureForm.get('abbreviation'); }
+  get prefix() { return this.featureForm.get('prefix'); }
+  get order() { return this.featureForm.get('order'); }
+  get namespace() { return this.featureForm.get('namespace'); }
   get description() { return this.featureForm.get('description'); }
 
   constructor(
@@ -67,6 +70,17 @@ export class FeatureEditComponent implements OnInit {
         Validators.minLength(3),
         Validators.maxLength(3)
       ]),
+      order: new FormControl({value: this.feature?.order, disabled: this.data.disableForm}, [
+        Validators.pattern("^[0-9]*$")
+      ]),
+      prefix: new FormControl({value: this.feature?.prefix, disabled: this.data.disableForm}, [
+        Validators.minLength(2),
+        Validators.maxLength(255)
+      ]),
+      namespace: new FormControl({value: this.feature?.namespace, disabled: this.data.disableForm}, [
+        Validators.minLength(2),
+        Validators.maxLength(255)
+      ]),
       description: new FormControl({value: this.feature?.description, disabled: this.data.disableForm}, [
         Validators.minLength(2),
         Validators.maxLength(255)
@@ -83,6 +97,9 @@ export class FeatureEditComponent implements OnInit {
     this.feature.name = this.name?.value;
     this.feature.type = this.type?.value;
     this.feature.abbreviation = this.abbreviation?.value;
+    this.feature.order = this.order?.value;
+    this.feature.prefix = this.prefix?.value;
+    this.feature.namespace = this.namespace?.value;
     this.feature.description = this.description?.value;
     if (this.feature.id === undefined) {
       // new

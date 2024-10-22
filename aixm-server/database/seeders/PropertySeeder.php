@@ -1540,6 +1540,10 @@ class PropertySeeder extends Seeder
         $ref_feature_id = Feature::getFeature('ElevatedSurface')?->id; Property::create(['feature_id'=>$feature_id, 'name' => 'extent', 'ref_feature_id' => $ref_feature_id]);
         $ref_feature_id = Feature::getFeature('WorkareaActivity')?->id; Property::create(['feature_id'=>$feature_id, 'name' => 'activation', 'ref_feature_id' => $ref_feature_id]);
         $ref_feature_id = Feature::getFeature('Note')?->id; Property::create(['feature_id'=>$feature_id, 'name' => 'annotation', 'ref_feature_id' => $ref_feature_id]);
+
+        /**
+         * Objects' properties
+         */
         $feature_id = Feature::getFeature('AerialRefuellingAnchor')?->id; Property::create(['feature_id'=>$feature_id, 'name' => 'outboundCourse']);
         Property::create(['feature_id'=>$feature_id, 'name' => 'outboundCourseType']);
         Property::create(['feature_id'=>$feature_id, 'name' => 'inboundCourse']);
@@ -2338,6 +2342,5 @@ class PropertySeeder extends Seeder
         $ref_feature_id = Feature::getFeature('Note')?->id; Property::create(['feature_id'=>$feature_id, 'name' => 'annotation', 'ref_feature_id' => $ref_feature_id]);
         $ref_feature_id = Feature::getFeature('OrganisationAuthority')?->id; Property::create(['feature_id'=>$feature_id, 'name' => 'specialDateAuthority', 'ref_feature_id' => $ref_feature_id, 'is_xlink' => true]);
         Property::create(['feature_id'=>$feature_id, 'name' => 'isActive']);
-
     }
 }

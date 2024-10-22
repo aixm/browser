@@ -1,6 +1,6 @@
 <mat-card style="max-width: 30em" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
     <mat-card-header class="dialog-header" cdkDragHandle>
-        <mat-card-title>{{feature.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM feature</mat-card-title>
+        <mat-card-title>{{feature.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM class</mat-card-title>
         <div class="flex-full-row"></div>
         <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
             <mat-icon>close</mat-icon>
@@ -13,8 +13,8 @@
         <div>
             <form [formGroup]="featureForm">
                 <mat-form-field style="width: 100%" appearance="outline">
-                    <mat-label>Name of the Feature</mat-label>
-                    <input matInput placeholder="Name of the Feature" formControlName="name">
+                    <mat-label>Name of the Class</mat-label>
+                    <input matInput placeholder="Name of the Class" formControlName="name">
                     <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
                         <mat-hint *ngIf="name?.errors?.['required']">Name is required</mat-hint>
                         <mat-hint *ngIf="name?.errors?.['minlength']">At least 2 characters</mat-hint>
@@ -26,7 +26,7 @@
                 <div class="flex-row">
                     <mat-form-field appearance="outline" style="width: 100%">
                         <mat-label>Type</mat-label>
-                        <mtx-select [items]="featureService.types"  placeholder="Feature's type" formControlName="type"
+                        <mtx-select [items]="featureService.types"  placeholder="Class's type" formControlName="type"
                                     bindLabel="type" bindValue="type" [value]="type">
                         </mtx-select>
                         <mat-error *ngIf="type?.invalid && (type?.dirty || type?.touched)">
@@ -34,7 +34,7 @@
                             <mat-hint *ngIf="type?.errors?.['serverError']">{{ type?.errors?.['serverError'] }}</mat-hint>
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field style="width: 12em; margin-left: 0.1em" appearance="outline">
+                    <mat-form-field style="width: 15em; margin-left: 0.1em" appearance="outline">
                         <mat-label>Abbreviation</mat-label>
                         <input matInput placeholder="Abbreviation" formControlName="abbreviation">
                         <mat-error *ngIf="abbreviation?.invalid && (abbreviation?.dirty || abbreviation?.touched)">
@@ -44,11 +44,40 @@
                             <mat-hint *ngIf="abbreviation?.errors?.['serverError']">{{ abbreviation?.errors?.['serverError'] }}</mat-hint>
                         </mat-error>
                     </mat-form-field>
+
+                </div>
+                <div class="flex-row">
+                    <mat-form-field style="width: 9em" appearance="outline">
+                        <mat-label>Order</mat-label>
+                        <input matInput placeholder="Order" formControlName="order">
+                        <mat-error *ngIf="order?.invalid && (order?.dirty || order?.touched)">
+                            <mat-hint *ngIf="order?.errors?.['pattern']">Numbers</mat-hint>
+                            <mat-hint *ngIf="order?.errors?.['serverError']">{{ order?.errors?.['serverError'] }}</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 9em; margin-left: 0.1em" appearance="outline">
+                        <mat-label>Prefix</mat-label>
+                        <input matInput placeholder="Prefix" formControlName="prefix">
+                        <mat-error *ngIf="prefix?.invalid && (prefix?.dirty || prefix?.touched)">
+                            <mat-hint *ngIf="prefix?.errors?.['minlength']">At least 2 characters</mat-hint>
+                            <mat-hint *ngIf="prefix?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
+                            <mat-hint *ngIf="prefix?.errors?.['serverError']">{{ prefix?.errors?.['serverError'] }}</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 100%; margin-left: 0.1em" appearance="outline">
+                        <mat-label>Namespace of the Class</mat-label>
+                        <input matInput placeholder="Namespace of the Class" formControlName="namespace">
+                        <mat-error *ngIf="namespace?.invalid && (namespace?.dirty || namespace?.touched)">
+                            <mat-hint *ngIf="namespace?.errors?.['minlength']">At least 2 characters</mat-hint>
+                            <mat-hint *ngIf="namespace?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
+                            <mat-hint *ngIf="namespace?.errors?.['serverError']">{{ namespace?.errors?.['serverError'] }}</mat-hint>
+                        </mat-error>
+                    </mat-form-field>
                 </div>
 
                 <mat-form-field style="width: 100%" appearance="outline">
-                    <mat-label>Description of the Feature</mat-label>
-                    <textarea matInput style="height: 7em" placeholder="Description of the Feature" formControlName="description"></textarea>
+                    <mat-label>Description of the Class</mat-label>
+                    <textarea matInput style="height: 7em" placeholder="Description of the Class" formControlName="description"></textarea>
                     <mat-error *ngIf="description?.invalid && (description?.dirty || description?.touched)">
                         <mat-hint *ngIf="description?.errors?.['minlength']">At least 2 characters</mat-hint>
                         <mat-hint *ngIf="description?.errors?.['maxlength']">No longer than 255 characters</mat-hint>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feature extends AixmGraphModel
 {
-    public $searchable = ['name', 'type', 'abbreviation', 'description'];
+    public $searchable = ['name', 'type', 'abbreviation', 'prefix', 'namespace', 'description'];
 
     ##################################################################################
     # Relations
