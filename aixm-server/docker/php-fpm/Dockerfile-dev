@@ -61,8 +61,8 @@ COPY ./docker/php-fpm/queue.sh /opt/bin/queue.sh
 RUN chmod +x /opt/bin/queue.sh
 
 # Composer
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME /tmp
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_HOME=/tmp
 RUN wget https://getcomposer.org/installer -O - -q \
     | php -- --install-dir=/bin --filename=composer --quiet
 WORKDIR /var/www
