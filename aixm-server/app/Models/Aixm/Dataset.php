@@ -130,6 +130,7 @@ class Dataset extends AixmGraphModel
             Log::channel('stderr')->error('Error parsing dataset ' . $this->name);
             Log::channel('stderr')->error($exception->getMessage());
             $this->setStatus(ParseStatus::ERROR, $exception->getMessage());
+            return;
         }
 
         // update broken references
@@ -167,6 +168,7 @@ class Dataset extends AixmGraphModel
                 }
             }
             // parse Event extension
+            $feature_node->registerXPathNamespace('event','http://www.aixm.aero/schema/5.1.1/event');
             $eventNodes = $feature_node->xpath($ns . ':extension/event:' . $feature->name . 'Extension/event:theEvent');
             //Log::channel('stderr')->info('Event Nodes: ' . strval($eventNodes));
             $eventProperty = Property::getProperty('theEvent');
