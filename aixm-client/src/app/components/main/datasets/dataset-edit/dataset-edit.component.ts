@@ -89,7 +89,7 @@ export class DatasetEditComponent implements OnInit  {
       formData.append('name', this.name?.value);
       formData.append('description', this.description?.value);
       if (this.authService.User?.role==='admin') {
-        formData.append('userId', this.userId?.value);
+        formData.append('user_id', this.userId?.value);
       }
       formData.append('file', this.file?.value);
       this.backendApiService.postItem(this.url, formData, {
