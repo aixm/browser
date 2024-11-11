@@ -56,11 +56,12 @@ class DatasetController extends Controller
             }
             if ($uploaded_file->storeAs($dataset->getPath(), $dataset->filename, 'private')) {
                 // only admin can set user_id
-                if (!$user->isAdmin()) {
+                if (!$user?->isAdmin()) {
                     $dataset->user_id = $user ? $user->id : 0;
                 }
                 $dataset->save();
                 $dataset->setStatus(ParseStatus::UPLOADED);
+                //$dataset->parse();
                 ParseDataset::dispatch($dataset);
                 return $this->successResponse($dataset, null, 201);
             } else {
@@ -98,7 +99,7 @@ class DatasetController extends Controller
         // get user this way for public routes
         $user = Auth::guard('api')->user();
         // update own record or admin
-        if ($user->isAdmin() || $user->id === $dataset->user_id) {
+        if ($user?->isAdmin() || $user->id === $dataset->user_id) {
             $dataset->fill($request->all());
             $dataset->save();
             return $this->successResponse(DatasetResource::make($dataset));
@@ -119,7 +120,7 @@ class DatasetController extends Controller
         try {
             if ($user) {
                 // delete own record or admin
-                if ($user->isAdmin() ||  $user->id === $dataset->user_id) {
+                if ($user?->isAdmin() ||  $user->id === $dataset->user_id) {
                     $this->deleteDataset($dataset);
                     return $this->successResponse(null, null, 204);
                 } else {
