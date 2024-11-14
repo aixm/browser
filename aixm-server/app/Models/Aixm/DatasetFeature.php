@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use \Illuminate\Database\Eloquent\Builder;
 
 class DatasetFeature extends AixmGraphModel
 {
@@ -46,10 +47,11 @@ class DatasetFeature extends AixmGraphModel
 
     public function getReferenceToFeaturesAttribute()
     {
-        return DatasetFeature::where(function ($query) {
-                $query->where('dataset_id', $this->dataset_id);
+        return DatasetFeature::where(function (Builder $query) {
                 if (Request::input('datasets')) {
-                    $query->orWhereIn('dataset_id', explode(',', Request::input('datasets')));
+                    $query->whereIn('dataset_id', explode(',', Request::input('datasets')));
+                } else {
+                    $query->where('dataset_id', $this->dataset_id);
                 }
             })
             ->whereIn('gml_identifier_value', $this->dataset_feature_properties()
@@ -57,18 +59,26 @@ class DatasetFeature extends AixmGraphModel
                     ['xlink_href', '<>',''],
                     ['xlink_href', '<>',$this->gml_identifier_value]
                 ])->pluck('xlink_href')
-            )->get();
+            )->paginate(
+                $perPage = 50, $columns = ['*'], $pageName = 'rtf_page'
+            );
     }
 
     public function getReferencedByFeaturesAttribute()
     {
-        return DatasetFeature::whereHas('dataset_feature_properties', function ($query) {
-            $query->where('xlink_href', '=', $this->gml_identifier_value);
-            $query->where('dataset_id', $this->dataset_id);
+        return DatasetFeature::whereHas('dataset_feature_properties', function (Builder $query) {
             if (Request::input('datasets')) {
-                $query->orWhereIn('dataset_id', explode(',', Request::input('datasets')));
+                $query->where('xlink_href', '=', $this->gml_identifier_value)
+                    ->whereIn('dataset_id', explode(',', Request::input('datasets')));
+            } else {
+                $query->where([
+                    ['dataset_id', '=', $this->dataset_id],
+                    ['xlink_href', '=', $this->gml_identifier_value]
+                ]);
             }
-        })->get();
+        })->paginate(
+            $perPage = 50, $columns = ['*'], $pageName = 'rbf_page'
+        );
     }
 
     /*    public function getReferenceToFeaturesCountAttribute()

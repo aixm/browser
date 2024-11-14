@@ -18,6 +18,8 @@ class DatasetFeatureResource extends JsonResource
     {
         // return parent::toArray($request);
 
+        $referenced_by_features = $this->referenced_by_features;
+
         return [
             'id' => $this->id,
             'dataset_id' => $this->dataset_id,
@@ -30,7 +32,15 @@ class DatasetFeatureResource extends JsonResource
             'dataset' => DatasetResource::make($this->whenLoaded('dataset')),
             'feature' => FeatureResource::make($this->whenLoaded('feature')),
             'reference_to_features' => DatasetFeatureReferencesResource::collection($this->reference_to_features),
-            'referenced_by_features' => DatasetFeatureReferencesResource::collection($this->referenced_by_features),
+            'referenced_by_features' => DatasetFeatureReferencesResource::collection($referenced_by_features),
+
+            'referenced_by_features_pagination' => [
+                'total' => $referenced_by_features->total(),
+                'count' => $referenced_by_features->count(),
+                'per_page' => $referenced_by_features->perPage(),
+                'current_page' => $referenced_by_features->currentPage(),
+                'total_pages' => $referenced_by_features->lastPage()
+            ]
         ];
     }
 }
