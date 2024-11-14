@@ -40,7 +40,7 @@ class Dataset extends AixmGraphModel
 
     public function dataset_status()
     {
-        return $this->hasOne(DatasetStatus::class)->latest();
+        return $this->hasOne(DatasetStatus::class)->latest('id');
     }
 
     public function dataset_statuses()
