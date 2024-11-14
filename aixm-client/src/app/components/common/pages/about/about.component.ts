@@ -1,10 +1,18 @@
-import { Component } from '@angular/core';
-import { getTitle }  from '../../../../helpers/utils';
+import { Component }                                                                              from '@angular/core';
+import {
+  MatExpansionPanel, MatExpansionPanelDescription, MatExpansionPanelHeader, MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { getTitle }                                                                               from '../../../../helpers/utils';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [],
+  imports: [
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelDescription,
+    MatExpansionPanelTitle,
+  ],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
