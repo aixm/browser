@@ -20,7 +20,7 @@ class AixmParse extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'aixm:parse {file} {--validate}';
+    protected $signature = 'aixm:parse {file} {description=\'\'} {--validate}';
 
     /**
      * Create a new command instance.
@@ -50,7 +50,7 @@ class AixmParse extends Command implements PromptsForMissingInput
                 'filename' => $name,
                 'content_type' => 'application/xml',
                 'path' => $path,
-                'description' => ''
+                'description' => $this->argument('description')
             ]);
             $dataset->parse($this->option('validate'));
         } else {
