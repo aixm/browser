@@ -22,6 +22,7 @@ export class DatasetFeature {
   edges: Edge[] = [];
   label: string | undefined;
   tooltip: HTMLDivElement | undefined;
+  referencedByFeaturesPagination: any;
 
   constructor(
       private featureService: FeatureService

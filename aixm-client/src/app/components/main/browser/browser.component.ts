@@ -142,12 +142,17 @@ export class BrowserComponent implements OnInit {
       this.feature = feature;
     }
     this.datasetFeature = datasetFeature;
-    this.refreshDatasetFeature();
+    this.refreshDatasetFeature(new PageEvent());
+  }
+
+  goDatasetFeatureWithPageEvent(event: any): void {
+    this.datasetFeature = event.datasetFeature;
+    this.refreshDatasetFeature(event.pageEvent);
   }
 
   refresh(): void {
     if (this.datasetFeature){
-      this.refreshDatasetFeature();
+      this.refreshDatasetFeature(new PageEvent());
     } else {
       if (this.feature) {
         this.refreshDatasetFeatures();
@@ -204,8 +209,6 @@ export class BrowserComponent implements OnInit {
 
   refreshDatasetFeatures(): void {
     this.loading = true;
-    this.datasetFeatures = [];
-    this.clearGraph();
     this.backendApiService.getData(`${this.urlDatasets}/${this.dataset?.id? this.dataset.id : 0}/features_list/${this.feature?.id
     }?with=datasetfeature.dataset,datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property${
       this.getDatasetsUrl()}&${this.getPagingUrl()}` + (this.searchText ? '&search=' + this.searchText : '')).subscribe((data: ApiResponse): void => {
@@ -214,18 +217,20 @@ export class BrowserComponent implements OnInit {
       if (data.data) {
         this.datasetFeatures = data.data.map((x: DatasetFeature): DatasetFeature => Object.assign(new DatasetFeature(this.featureService), x));
         this.processNodesAndEdges();
+      } else {
+        this.datasetFeatures = [];
       }
       this.loading = false;
       this.updateGraph();
     });
   }
 
-  refreshDatasetFeature(): void {
+  refreshDatasetFeature(pageEvent: PageEvent): void {
     this.loading = true;
     this.clearGraph();
     this.backendApiService.getData(`${this.urlDatasetFeatures}/${this.datasetFeature?.id
-    }?with=datasetfeature.dataset,datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property`
-    ).subscribe((data: ApiResponse): void => {
+    }?with=datasetfeature.dataset,datasetfeature.feature,datasetfeature.dataset_feature_properties,datasetfeatureproperty.property&rbf_page=${
+        pageEvent.pageIndex ? pageEvent.pageIndex + 1 : 1}`).subscribe((data: ApiResponse): void => {
       console.log(data);
       this.resetPageState();
       if (data.data) {

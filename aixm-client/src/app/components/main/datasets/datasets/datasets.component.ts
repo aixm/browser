@@ -177,6 +177,11 @@ export class DatasetsComponent extends BaseGridComponent {
           headers: new HttpHeaders({ timeout: `${1200000}` }) }).subscribe((): void => {
           this.loading = false;
           this.refresh();
+          this.matDialog.open(InfoComponent, {
+            data: {
+              title: 'Deleting dataset',
+              message: 'It takes some time to delete dataset. Please, check dataset\'s status.'}
+          });
         });
       }
     });
@@ -188,7 +193,7 @@ export class DatasetsComponent extends BaseGridComponent {
   }
 
   isError(dataset: Dataset): boolean {
-    return dataset.datasetStatus?.status === 'Error';
+    return dataset.datasetStatus?.status === 'Error' || dataset.datasetStatus?.status === 'Deleting';
   }
 
   isParsing(dataset: Dataset): boolean {

@@ -16,7 +16,7 @@ The project can get easily up and running in any machine regardless the running 
 > Before proceeding to the next steps please make sure that you have installed on your machine:
 >   - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
 >   - [Docker](https://docs.docker.com/get-docker/)
->   - [Node.js v20](https://nodejs.org/dist/latest-v20.x/)
+>   - [Node.js v22](https://nodejs.org/dist/latest-v22.x/)
 
 ### Get the repository
 

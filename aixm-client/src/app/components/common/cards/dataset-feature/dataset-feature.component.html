@@ -5,6 +5,9 @@
         <mat-card-subtitle>{{datasetFeature?.getLabel()}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+        <div class="pg-bar">
+            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        </div>
         <mat-toolbar>
             <mat-toolbar-row style="padding: 0px">
                 <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Copy UUID"
@@ -47,6 +50,17 @@
                                      [feature]="f"
                                      (featureVisibilityChange)="toggleChange()"
             ></app-aixm-feature-toggle>
+            <div *ngIf="datasetFeature?.referencedByFeaturesPagination.total>datasetFeature?.referencedByFeaturesPagination.perPage" style="justify-content: flex-end; flex-grow: 1">
+                <mat-paginator
+                        (page)="handleReferencedByPageEvent($event)"
+                        [length]="datasetFeature?.referencedByFeaturesPagination.total"
+                        [pageSize]="datasetFeature?.referencedByFeaturesPagination.perPage"
+                        [showFirstLastButtons]="false"
+                        [hidePageSize]="true"
+                        [pageIndex]="referencedByPageEvent.pageIndex"
+                ></mat-paginator>
+            </div>
         </div>
+
     </mat-card-content>
 </mat-card>

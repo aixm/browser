@@ -93,15 +93,17 @@
                 <app-feature style="flex: 0.7;" *ngFor="let f of featureLists" [featureList]="f" (cardClick)="goDatasetFeatures($event)"></app-feature>
             </div>
             <div *ngIf="feature" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
-                <app-dataset-feature style="flex: 0.7;" *ngFor="let df of datasetFeatures"
-                                     [feature]="df.feature"
-                                     [datasetFeature]="df"
-                                     (cardClick)="goDatasetFeature($event)"
-                                     (featureVisibilityChange)="featureVisibilityChange()"
-                                     (copyToClipboardClick)="copyToCb($event)"
-                                     (goToDatasetClick)="goFeatureLists($event)"
-                ></app-dataset-feature>
-                <!--(cardClick)="datasetFeatureClick($event)"-->
+                <!--Need to use @for instead of ngFor for 2-way binding-->
+                @for (df of datasetFeatures; track df.id; let idx = $index) {
+                    <app-dataset-feature style="flex: 0.7;"
+                                         [feature]="df.feature"
+                                         [(datasetFeature)]="datasetFeatures[idx]"
+                                         (cardClick)="goDatasetFeatureWithPageEvent($event)"
+                                         (featureVisibilityChange)="featureVisibilityChange()"
+                                         (copyToClipboardClick)="copyToCb($event)"
+                                         (goToDatasetClick)="goFeatureLists($event)"
+                    ></app-dataset-feature>
+                }
             </div>
         </div>
         <div #graphContainer class="browser-panel" [ngStyle]="{
