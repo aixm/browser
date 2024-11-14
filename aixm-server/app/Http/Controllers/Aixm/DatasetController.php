@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Aixm;
 use App\Enums\ParseStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Aixm\DatasetResource;
+use App\Jobs\DeleteDataset;
 use App\Jobs\ParseDataset;
 use App\Models\Aixm\Dataset;
 use Illuminate\Http\Request;
@@ -141,10 +142,8 @@ class DatasetController extends Controller
     }
 
     private function deleteDataset(Dataset $dataset) {
-        $file_name = $dataset->getPathWithFileName();
-        if (Storage::disk('private')->exists($file_name)) {
-            Storage::disk('private')->delete($file_name);
-        }
-        $dataset->delete();
+        $dataset->setStatus(ParseStatus::DELETING);
+        DeleteDataset::dispatch($dataset);
+        return $this->successResponse(null, null, 204);
     }
 }
