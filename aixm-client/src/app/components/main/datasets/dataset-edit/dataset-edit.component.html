@@ -59,6 +59,7 @@
                     <input matInput type="text" placeholder="Select AIXM XML file" formControlName="fileName" [readonly]="true">
                     <mat-error *ngIf="fileName?.invalid && (fileName?.dirty || fileName?.touched)">
                         <mat-hint *ngIf="fileName?.errors?.['required']">XML file is required</mat-hint>
+                        <mat-hint *ngIf="fileName?.errors?.['maxsize']">Maximum XML file size is 100Mb</mat-hint>
                     </mat-error>
                 </mat-form-field>
             </form>

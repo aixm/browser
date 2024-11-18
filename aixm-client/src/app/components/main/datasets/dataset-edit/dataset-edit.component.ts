@@ -122,6 +122,10 @@ export class DatasetEditComponent implements OnInit  {
     if (file) {
       this.datasetForm.patchValue({ fileName: file.name});
       this.datasetForm.patchValue({ file: file});
+      // check file size < 100Mb
+      if (file.size > 100000 * 1024) {
+        this.fileName?.setErrors({ 'maxsize': true });
+      }
     }
   }
 
