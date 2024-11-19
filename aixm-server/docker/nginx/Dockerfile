@@ -1,4 +1,6 @@
-FROM nginx
+ARG NGINX_VERSION=1.27.2
+
+FROM nginx:$NGINX_VERSION
 
 # config
 ADD ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
