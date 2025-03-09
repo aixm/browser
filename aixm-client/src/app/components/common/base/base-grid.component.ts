@@ -9,7 +9,6 @@ import { AuthService }                                                          
     selector: 'app-base-grid',
     template: '',
     styleUrls: [],
-    standalone: false
 })
 export class BaseGridComponent implements OnInit, OnDestroy {
   @ViewChild('grid') grid!: MtxGrid;

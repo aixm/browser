@@ -11,7 +11,6 @@ import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { getTitle }                              from '../../../../helpers/utils';
 import { Dataset }                      from '../../../../models/aixm/dataset';
 import { ApiResponse }                  from '../../../../models/api-response';
-import { PipesModule }                  from '../../../../pipes/pipes.module';
 import { BackendApiService }            from '../../../../services/backend-api.service';
 import { BaseGridComponent }                     from '../../../common/base/base-grid.component';
 import { ConfirmComponent }             from '../../../common/dialogs/confirm/confirm.component';
@@ -19,10 +18,11 @@ import { InfoComponent }                         from '../../../common/dialogs/i
 import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
 
 @Component({
-    selector: 'app-datasets',
-    imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule],
-    templateUrl: './datasets.component.html',
-    styleUrl: './datasets.component.scss'
+  selector: 'app-datasets',
+  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule],
+  templateUrl: './datasets.component.html',
+  styleUrl: './datasets.component.scss',
+  standalone: true
 })
 export class DatasetsComponent extends BaseGridComponent {
   url: string = 'aixm/datasets';

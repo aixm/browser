@@ -9,16 +9,17 @@ import { MatIconModule }                from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { getTooltip }                             from '../../../../helpers/utils';
 import { Dataset }                      from '../../../../models/aixm/dataset';
-import { PipesModule }      from '../../../../pipes/pipes.module';
+import { LimitToPipe }                            from '../../../../pipes/limit-to.pipe';
 
 @Component({
-    selector: 'app-dataset',
-    imports: [
-        CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, MatCheckboxModule, FormsModule,
-        MatTooltipModule,
-    ],
-    templateUrl: './dataset.component.html',
-    styleUrl: './dataset.component.scss'
+  selector: 'app-dataset',
+  imports: [
+    CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatCheckboxModule, FormsModule,
+    MatTooltipModule, LimitToPipe
+  ],
+  templateUrl: './dataset.component.html',
+  styleUrl: './dataset.component.scss',
+  standalone: true
 })
 export class DatasetComponent {
   @Input() dataset: Dataset = new Dataset();

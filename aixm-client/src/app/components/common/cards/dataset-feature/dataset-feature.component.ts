@@ -16,19 +16,20 @@ import { getFeatureBrokenImagePath } from '../../../../helpers/utils';
 import { Dataset }                                                               from '../../../../models/aixm/dataset';
 import { DatasetFeature }                             from '../../../../models/aixm/dataset-feature';
 import { Feature }                                from '../../../../models/aixm/feature';
-import { PipesModule }              from '../../../../pipes/pipes.module';
+import { LimitToPipe }                                                           from '../../../../pipes/limit-to.pipe';
 import { AixmFeatureToggleComponent } from '../../shared/aixm-feature-toggle/aixm-feature-toggle.component';
 import { AixmIconComponent }                      from '../../shared/aixm-icon/aixm-icon.component';
 
 @Component({
-    selector: 'app-dataset-feature',
-    imports: [
-        CommonModule, MatButtonModule, MatBottomSheetModule, MatCardModule, MatChipsModule, MatIconModule, PipesModule, MatBadgeModule,
-        AixmIconComponent,
-        MatSlideToggleModule, AixmFeatureToggleComponent, ClipboardModule, MatTooltipModule, MatToolbarModule, MatPaginator, MatProgressBar,
-    ],
-    templateUrl: './dataset-feature.component.html',
-    styleUrl: './dataset-feature.component.scss'
+  selector: 'app-dataset-feature',
+  imports: [
+    CommonModule, MatButtonModule, MatBottomSheetModule, MatCardModule, MatChipsModule, MatIconModule, MatBadgeModule,
+    AixmIconComponent, LimitToPipe,
+    MatSlideToggleModule, AixmFeatureToggleComponent, ClipboardModule, MatTooltipModule, MatToolbarModule, MatPaginator, MatProgressBar,
+  ],
+  templateUrl: './dataset-feature.component.html',
+  styleUrl: './dataset-feature.component.scss',
+  standalone: true
 })
 export class DatasetFeatureComponent {
   url: string = 'aixm/dataset_features';

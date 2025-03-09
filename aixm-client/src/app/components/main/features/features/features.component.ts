@@ -9,7 +9,7 @@ import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { getTitle }                                                               from '../../../../helpers/utils';
 import { ApiResponse }                           from '../../../../models/api-response';
 import { Feature }                              from '../../../../models/aixm/feature';
-import { PipesModule }                                         from '../../../../pipes/pipes.module';
+import { HexToRgbAPipe }                                                          from '../../../../pipes/hex-to-rgb-a-pipe';
 import { BackendApiService }                    from '../../../../services/backend-api.service';
 import { BaseGridComponent } from '../../../common/base/base-grid.component';
 import { ConfirmComponent }                                                       from '../../../common/dialogs/confirm/confirm.component';
@@ -17,11 +17,14 @@ import { AixmIconComponent }                                   from '../../../co
 import { FeatureEditComponent } from '../feature-edit/feature-edit.component';
 
 @Component({
-    selector: 'app-features',
-    imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule,
-        AixmIconComponent],
-    templateUrl: './features.component.html',
-    styleUrl: './features.component.scss'
+  selector: 'app-features',
+  imports: [
+    CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule,
+    AixmIconComponent, HexToRgbAPipe
+  ],
+  templateUrl: './features.component.html',
+  styleUrl: './features.component.scss',
+  standalone: true
 })
 export class FeaturesComponent extends BaseGridComponent {
   url: string = 'aixm/features';

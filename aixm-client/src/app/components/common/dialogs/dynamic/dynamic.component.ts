@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     selector: 'app-dynamic',
     templateUrl: './dynamic.component.html',
     styleUrls: ['./dynamic.component.scss'],
-    standalone: false
 })
 export class DynamicComponent {
 

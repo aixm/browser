@@ -3,7 +3,6 @@ import { User } from '../models/auth/user';
 
 @Pipe({
     name: 'filterUser',
-    standalone: false
 })
 /**
  * Filter User

@@ -5,12 +5,12 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators }              
 import { MatButton, MatIconButton }                                             from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialogRef }                                        from '@angular/material/dialog';
-import { MatError, MatFormField, MatHint, MatLabel, MatSuffix }                 from '@angular/material/form-field';
+import { MatError, MatFormField, MatHint, MatLabel }                            from '@angular/material/form-field';
 import { MatIcon }                                                              from '@angular/material/icon';
 import { MatInput }                                                             from '@angular/material/input';
 import { MatProgressBar }                                                       from '@angular/material/progress-bar';
 import { MatTooltip }                                                           from '@angular/material/tooltip';
-import { MtxSelect, MtxSelectLabelTemplate, MtxSelectOptionTemplate }           from '@ng-matero/extensions/select';
+import { MtxSelect }                                                            from '@ng-matero/extensions/select';
 import { Feature }                                                              from '../../../../models/aixm/feature';
 import { ApiResponse }                                                          from '../../../../models/api-response';
 import { AuthService }                                                          from '../../../../services/auth.service';
@@ -18,14 +18,15 @@ import { BackendApiService }                                                    
 import { FeatureService }                                                       from '../../../../services/feature.service';
 
 @Component({
-    selector: 'app-feature-edit',
-    imports: [
-        MatButton, MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle, MatError, MatFormField,
-        MatHint, MatIcon, MatIconButton, MatInput, MatLabel, MatProgressBar, MatSuffix, MatTooltip, MtxSelect, MtxSelectLabelTemplate,
-        MtxSelectOptionTemplate, NgIf, ReactiveFormsModule, CdkDrag, CdkDragHandle,
-    ],
-    templateUrl: './feature-edit.component.html',
-    styleUrl: './feature-edit.component.scss'
+  selector: 'app-feature-edit',
+  imports: [
+    MatButton, MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle, MatError, MatFormField,
+    MatHint, MatIcon, MatIconButton, MatInput, MatLabel, MatProgressBar, MatTooltip, MtxSelect,
+    NgIf, ReactiveFormsModule, CdkDrag, CdkDragHandle,
+  ],
+  templateUrl: './feature-edit.component.html',
+  styleUrl: './feature-edit.component.scss',
+  standalone: true
 })
 export class FeatureEditComponent implements OnInit {
   url: string = 'aixm/features';

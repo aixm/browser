@@ -22,7 +22,7 @@ import { DatasetFeature }    from '../../../models/aixm/dataset-feature';
 import { Feature }           from '../../../models/aixm/feature';
 import { FeatureList } from '../../../models/aixm/feature-list';
 import { ApiResponse } from '../../../models/api-response';
-import { PipesModule } from '../../../pipes/pipes.module';
+import { LimitToPipe } from '../../../pipes/limit-to.pipe';
 import { AuthService } from '../../../services/auth.service';
 import { BackendApiService } from '../../../services/backend-api.service';
 import { FeatureService }                              from '../../../services/feature.service';
@@ -36,14 +36,15 @@ import { DatasetEditComponent } from '../datasets/dataset-edit/dataset-edit.comp
 import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.component';
 
 @Component({
-    selector: 'app-browser',
-    imports: [
-        CommonModule, DatasetComponent, MatTabsModule, MatButtonModule, MatIconModule, FeatureComponent, DatasetFeatureComponent,
-        AixmIconComponent, MatToolbarModule, MatButtonToggleModule, MatInputModule, MatTooltipModule, MatPaginatorModule, MatProgressBarModule,
-        FormsModule, MatCheckboxModule, MatBadgeModule, MatSlideToggleModule, PipesModule,
-    ],
-    templateUrl: './browser.component.html',
-    styleUrl: './browser.component.scss'
+  selector: 'app-browser',
+  imports: [
+    CommonModule, DatasetComponent, MatTabsModule, MatButtonModule, MatIconModule, FeatureComponent, DatasetFeatureComponent,
+    AixmIconComponent, MatToolbarModule, MatButtonToggleModule, MatInputModule, MatTooltipModule, MatPaginatorModule, MatProgressBarModule,
+    FormsModule, MatCheckboxModule, MatBadgeModule, MatSlideToggleModule, LimitToPipe
+  ],
+  templateUrl: './browser.component.html',
+  styleUrl: './browser.component.scss',
+  standalone: true
 })
 export class BrowserComponent implements OnInit {
   @ViewChild('graphContainer', { static: true }) graphContainer!: ElementRef;
@@ -166,6 +167,7 @@ export class BrowserComponent implements OnInit {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   refreshDatasets(callback?: Function, paging: boolean = true): void {
     this.loading = true;
     this.backendApiService.getData(`${this.urlDatasets}?${paging ? this.getPagingUrl() : '' }`+ (this.searchText ? '&search=' + this.searchText : ''))

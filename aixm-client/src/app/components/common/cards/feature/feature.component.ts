@@ -6,14 +6,15 @@ import { MatChipsModule }                                 from '@angular/materia
 import { MatIconModule }                                  from '@angular/material/icon';
 import { Feature } from '../../../../models/aixm/feature';
 import { FeatureList }                            from '../../../../models/aixm/feature-list';
-import { PipesModule }      from '../../../../pipes/pipes.module';
+import { LimitToPipe }                                    from '../../../../pipes/limit-to.pipe';
 import { AixmIconComponent }                              from '../../shared/aixm-icon/aixm-icon.component';
 
 @Component({
-    selector: 'app-feature',
-    imports: [CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, AixmIconComponent],
-    templateUrl: './feature.component.html',
-    styleUrl: './feature.component.scss'
+  selector: 'app-feature',
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, AixmIconComponent, LimitToPipe],
+  templateUrl: './feature.component.html',
+  styleUrl: './feature.component.scss',
+  standalone: true
 })
 export class FeatureComponent implements OnInit {
   @Input() feature?: Feature;

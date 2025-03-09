@@ -1,22 +1,19 @@
-import { NgIf }                                       from '@angular/common';
 import { Component, EventEmitter, Input, Output }     from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule }                           from '@angular/material/tooltip';
 import { handleErrorMissingFeatureImage }             from '../../../../helpers/utils';
 import { Feature }                                    from '../../../../models/aixm/feature';
 import { FeatureService }                             from '../../../../services/feature.service';
-import { AixmIconComponent }                          from '../aixm-icon/aixm-icon.component';
 
 @Component({
-    selector: 'app-aixm-feature-toggle',
-    imports: [
-        MatSlideToggleModule,
-        AixmIconComponent,
-        MatTooltipModule,
-        NgIf,
-    ],
-    templateUrl: './aixm-feature-toggle.component.html',
-    styleUrl: './aixm-feature-toggle.component.scss'
+  selector: 'app-aixm-feature-toggle',
+  imports: [
+    MatSlideToggleModule,
+    MatTooltipModule
+  ],
+  templateUrl: './aixm-feature-toggle.component.html',
+  styleUrl: './aixm-feature-toggle.component.scss',
+  standalone: true
 })
 export class AixmFeatureToggleComponent {
   @Input() feature?: Feature;

@@ -10,17 +10,17 @@ import { getById, getTitle }            from '../../../../helpers/utils';
 import { Role } from '../../../../models/auth/role';
 import { User }                         from '../../../../models/auth/user';
 import { ApiResponse }                  from '../../../../models/api-response';
-import { PipesModule }                  from '../../../../pipes/pipes.module';
 import { BackendApiService }            from '../../../../services/backend-api.service';
 import { BaseGridComponent }            from '../../../common/base/base-grid.component';
 import { ConfirmComponent } from '../../../common/dialogs/confirm/confirm.component';
 import { UserEditComponent } from '../user-edit/user-edit.component';
 
 @Component({
-    selector: 'app-users',
-    imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule],
-    templateUrl: './users.component.html',
-    styleUrl: './users.component.scss'
+  selector: 'app-users',
+  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule],
+  templateUrl: './users.component.html',
+  styleUrl: './users.component.scss',
+  standalone: true
 })
 export class UsersComponent extends BaseGridComponent {
   url: string = 'users';
