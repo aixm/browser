@@ -70,10 +70,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "aixm-graph-client:build:production"
+              "buildTarget": "aixm-browser-client:build:production"
             },
             "development": {
-              "buildTarget": "aixm-graph-client:build:development"
+              "buildTarget": "aixm-browser-client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -81,7 +81,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "aixm-graph-client:build"
+            "buildTarget": "aixm-browser-client:build"
           }
         },
         "test": {
