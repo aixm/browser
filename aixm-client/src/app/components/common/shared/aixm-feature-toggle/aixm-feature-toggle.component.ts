@@ -8,16 +8,15 @@ import { FeatureService }                             from '../../../../services
 import { AixmIconComponent }                          from '../aixm-icon/aixm-icon.component';
 
 @Component({
-  selector: 'app-aixm-feature-toggle',
-  standalone: true,
-  imports: [
-    MatSlideToggleModule,
-    AixmIconComponent,
-    MatTooltipModule,
-    NgIf,
-  ],
-  templateUrl: './aixm-feature-toggle.component.html',
-  styleUrl: './aixm-feature-toggle.component.scss'
+    selector: 'app-aixm-feature-toggle',
+    imports: [
+        MatSlideToggleModule,
+        AixmIconComponent,
+        MatTooltipModule,
+        NgIf,
+    ],
+    templateUrl: './aixm-feature-toggle.component.html',
+    styleUrl: './aixm-feature-toggle.component.scss'
 })
 export class AixmFeatureToggleComponent {
   @Input() feature?: Feature;

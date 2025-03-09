@@ -6,11 +6,10 @@ import { handleErrorMissingFeatureImage } from '../../../../helpers/utils';
 import { Feature } from '../../../../models/aixm/feature';
 
 @Component({
-  selector: 'app-aixm-icon',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule],
-  templateUrl: './aixm-icon.component.html',
-  styleUrl: './aixm-icon.component.scss'
+    selector: 'app-aixm-icon',
+    imports: [CommonModule, MatCardModule, MatIconModule],
+    templateUrl: './aixm-icon.component.html',
+    styleUrl: './aixm-icon.component.scss'
 })
 export class AixmIconComponent {
   @Input() feature?: Feature;

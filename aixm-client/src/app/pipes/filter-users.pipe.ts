@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { User } from '../models/auth/user';
 
 @Pipe({
-  name: 'filterUser'
+    name: 'filterUser',
+    standalone: false
 })
 /**
  * Filter User

@@ -17,11 +17,10 @@ import { ConfirmComponent } from '../../../common/dialogs/confirm/confirm.compon
 import { UserEditComponent } from '../user-edit/user-edit.component';
 
 @Component({
-  selector: 'app-users',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+    selector: 'app-users',
+    imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule],
+    templateUrl: './users.component.html',
+    styleUrl: './users.component.scss'
 })
 export class UsersComponent extends BaseGridComponent {
   url: string = 'users';

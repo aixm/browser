@@ -7,13 +7,12 @@ import { MatIconModule }                                    from '@angular/mater
 import { MatTooltipModule }                                 from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-confirm',
-  standalone: true,
-  imports: [
-    CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule,
-  ],
-  templateUrl: './confirm.component.html',
-  styleUrls: ['./confirm.component.scss']
+    selector: 'app-confirm',
+    imports: [
+        CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule,
+    ],
+    templateUrl: './confirm.component.html',
+    styleUrls: ['./confirm.component.scss']
 })
 export class ConfirmComponent {
 

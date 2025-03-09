@@ -5,16 +5,15 @@ import {
 import { getTitle }                                                                               from '../../../../helpers/utils';
 
 @Component({
-  selector: 'app-about',
-  standalone: true,
-  imports: [
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelDescription,
-    MatExpansionPanelTitle,
-  ],
-  templateUrl: './about.component.html',
-  styleUrl: './about.component.scss'
+    selector: 'app-about',
+    imports: [
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelDescription,
+        MatExpansionPanelTitle,
+    ],
+    templateUrl: './about.component.html',
+    styleUrl: './about.component.scss'
 })
 export class AboutComponent {
 

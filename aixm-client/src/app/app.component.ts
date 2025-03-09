@@ -20,14 +20,13 @@ import { IconService } from './services/icon.service';
 import { ThemeService } from './services/theme.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    CommonModule, RouterOutlet, MatToolbarModule, MatSidenavModule, MatIconModule, MatButtonModule, RouterLink, RouterLinkActive,
-    MatListModule, MatTooltipModule, ThemeSwitcherComponent, MatLabel,
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [
+        CommonModule, RouterOutlet, MatToolbarModule, MatSidenavModule, MatIconModule, MatButtonModule, RouterLink, RouterLinkActive,
+        MatListModule, MatTooltipModule, ThemeSwitcherComponent, MatLabel,
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title: string = getTitle();

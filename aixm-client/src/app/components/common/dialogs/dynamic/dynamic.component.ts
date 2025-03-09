@@ -2,9 +2,10 @@ import { Component, Inject }     from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-dynamic',
-  templateUrl: './dynamic.component.html',
-  styleUrls: ['./dynamic.component.scss']
+    selector: 'app-dynamic',
+    templateUrl: './dynamic.component.html',
+    styleUrls: ['./dynamic.component.scss'],
+    standalone: false
 })
 export class DynamicComponent {
 

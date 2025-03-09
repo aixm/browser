@@ -12,20 +12,19 @@ import { AuthService } from '../../../../services/auth.service';
 import { BackendApiService } from '../../../../services/backend-api.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatTooltipModule,
-    NgIf,
-    MatInputModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    imports: [
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        MatTooltipModule,
+        NgIf,
+        MatInputModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
   loading: boolean = false;

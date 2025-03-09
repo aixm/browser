@@ -10,11 +10,10 @@ import { PipesModule }      from '../../../../pipes/pipes.module';
 import { AixmIconComponent }                              from '../../shared/aixm-icon/aixm-icon.component';
 
 @Component({
-  selector: 'app-feature',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, AixmIconComponent],
-  templateUrl: './feature.component.html',
-  styleUrl: './feature.component.scss'
+    selector: 'app-feature',
+    imports: [CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, AixmIconComponent],
+    templateUrl: './feature.component.html',
+    styleUrl: './feature.component.scss'
 })
 export class FeatureComponent implements OnInit {
   @Input() feature?: Feature;

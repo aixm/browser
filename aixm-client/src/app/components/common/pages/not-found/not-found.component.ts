@@ -6,17 +6,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { getTitle }                     from '../../../../helpers/utils';
 
 @Component({
-  selector: 'app-not-found',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatListModule,
-    RouterLinkActive,
-    RouterLink,
-    MatButtonModule,
-  ],
-  templateUrl: './not-found.component.html',
-  styleUrl: './not-found.component.scss'
+    selector: 'app-not-found',
+    imports: [
+        MatIconModule,
+        MatListModule,
+        RouterLinkActive,
+        RouterLink,
+        MatButtonModule,
+    ],
+    templateUrl: './not-found.component.html',
+    styleUrl: './not-found.component.scss'
 })
 export class NotFoundComponent {
 

@@ -7,13 +7,12 @@ import { MatIconModule }                                    from '@angular/mater
 import { MatTooltipModule }                                 from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-info',
-  standalone: true,
-  imports: [
-    CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule,
-  ],
-  templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss']
+    selector: 'app-info',
+    imports: [
+        CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule,
+    ],
+    templateUrl: './info.component.html',
+    styleUrls: ['./info.component.scss']
 })
 export class InfoComponent {
 

@@ -10,21 +10,20 @@ import { Subscription }                        from 'rxjs';
 import { SpeechService }                       from '../../../../services/speech.service';
 
 @Component({
-  selector: 'app-voice-input-field',
-  standalone: true,
-  imports: [
-    MatFormField,
-    MatIcon,
-    MatIconButton,
-    MatInput,
-    MatLabel,
-    MatSuffix,
-    MatTooltip,
-    NgIf,
-  ],
-  templateUrl: './voice-input-field.component.html',
-  styleUrl: './voice-input-field.component.scss',
-  providers: [SpeechService]
+    selector: 'app-voice-input-field',
+    imports: [
+        MatFormField,
+        MatIcon,
+        MatIconButton,
+        MatInput,
+        MatLabel,
+        MatSuffix,
+        MatTooltip,
+        NgIf,
+    ],
+    templateUrl: './voice-input-field.component.html',
+    styleUrl: './voice-input-field.component.scss',
+    providers: [SpeechService]
 })
 export class VoiceInputFieldComponent implements OnInit, OnDestroy {
   @Input() appearance: MatFormFieldAppearance = 'fill';

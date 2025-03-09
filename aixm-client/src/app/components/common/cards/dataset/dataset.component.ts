@@ -12,14 +12,13 @@ import { Dataset }                      from '../../../../models/aixm/dataset';
 import { PipesModule }      from '../../../../pipes/pipes.module';
 
 @Component({
-  selector: 'app-dataset',
-  standalone: true,
-  imports: [
-    CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, MatCheckboxModule, FormsModule,
-    MatTooltipModule,
-  ],
-  templateUrl: './dataset.component.html',
-  styleUrl: './dataset.component.scss'
+    selector: 'app-dataset',
+    imports: [
+        CommonModule, MatCardModule, PipesModule, MatButtonModule, MatIconModule, MatChipsModule, MatCheckboxModule, FormsModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './dataset.component.html',
+    styleUrl: './dataset.component.scss'
 })
 export class DatasetComponent {
   @Input() dataset: Dataset = new Dataset();

@@ -17,12 +17,11 @@ import { AixmIconComponent }                                   from '../../../co
 import { FeatureEditComponent } from '../feature-edit/feature-edit.component';
 
 @Component({
-  selector: 'app-features',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule,
-    AixmIconComponent],
-  templateUrl: './features.component.html',
-  styleUrl: './features.component.scss',
+    selector: 'app-features',
+    imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule,
+        AixmIconComponent],
+    templateUrl: './features.component.html',
+    styleUrl: './features.component.scss'
 })
 export class FeaturesComponent extends BaseGridComponent {
   url: string = 'aixm/features';

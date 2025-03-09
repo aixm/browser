@@ -21,15 +21,14 @@ import { AixmFeatureToggleComponent } from '../../shared/aixm-feature-toggle/aix
 import { AixmIconComponent }                      from '../../shared/aixm-icon/aixm-icon.component';
 
 @Component({
-  selector: 'app-dataset-feature',
-  standalone: true,
-  imports: [
-    CommonModule, MatButtonModule, MatBottomSheetModule, MatCardModule, MatChipsModule, MatIconModule, PipesModule, MatBadgeModule,
-    AixmIconComponent,
-    MatSlideToggleModule, AixmFeatureToggleComponent, ClipboardModule, MatTooltipModule, MatToolbarModule, MatPaginator, MatProgressBar,
-  ],
-  templateUrl: './dataset-feature.component.html',
-  styleUrl: './dataset-feature.component.scss'
+    selector: 'app-dataset-feature',
+    imports: [
+        CommonModule, MatButtonModule, MatBottomSheetModule, MatCardModule, MatChipsModule, MatIconModule, PipesModule, MatBadgeModule,
+        AixmIconComponent,
+        MatSlideToggleModule, AixmFeatureToggleComponent, ClipboardModule, MatTooltipModule, MatToolbarModule, MatPaginator, MatProgressBar,
+    ],
+    templateUrl: './dataset-feature.component.html',
+    styleUrl: './dataset-feature.component.scss'
 })
 export class DatasetFeatureComponent {
   url: string = 'aixm/dataset_features';

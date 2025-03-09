@@ -36,15 +36,14 @@ import { DatasetEditComponent } from '../datasets/dataset-edit/dataset-edit.comp
 import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.component';
 
 @Component({
-  selector: 'app-browser',
-  standalone: true,
-  imports: [
-    CommonModule, DatasetComponent, MatTabsModule, MatButtonModule, MatIconModule, FeatureComponent, DatasetFeatureComponent,
-    AixmIconComponent, MatToolbarModule, MatButtonToggleModule, MatInputModule, MatTooltipModule, MatPaginatorModule, MatProgressBarModule,
-    FormsModule, MatCheckboxModule, MatBadgeModule, MatSlideToggleModule, PipesModule,
-  ],
-  templateUrl: './browser.component.html',
-  styleUrl: './browser.component.scss'
+    selector: 'app-browser',
+    imports: [
+        CommonModule, DatasetComponent, MatTabsModule, MatButtonModule, MatIconModule, FeatureComponent, DatasetFeatureComponent,
+        AixmIconComponent, MatToolbarModule, MatButtonToggleModule, MatInputModule, MatTooltipModule, MatPaginatorModule, MatProgressBarModule,
+        FormsModule, MatCheckboxModule, MatBadgeModule, MatSlideToggleModule, PipesModule,
+    ],
+    templateUrl: './browser.component.html',
+    styleUrl: './browser.component.scss'
 })
 export class BrowserComponent implements OnInit {
   @ViewChild('graphContainer', { static: true }) graphContainer!: ElementRef;

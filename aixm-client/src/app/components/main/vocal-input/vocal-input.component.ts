@@ -11,27 +11,26 @@ import { SpeechService }                                                        
 import { VoiceInputFieldComponent } from '../../common/shared/voice-input-field/voice-input-field.component';
 
 @Component({
-  selector: 'app-vocal-input',
-  standalone: true,
-  imports: [
-    MatButton,
-    MatFabButton,
-    MatIcon,
-    MatTooltip,
-    NgForOf,
-    AsyncPipe,
-    NgIf,
-    MatChip,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatIconButton,
-    MatSuffix,
-    VoiceInputFieldComponent,
-  ],
-  templateUrl: './vocal-input.component.html',
-  styleUrl: './vocal-input.component.scss',
-  providers: [SpeechService]
+    selector: 'app-vocal-input',
+    imports: [
+        MatButton,
+        MatFabButton,
+        MatIcon,
+        MatTooltip,
+        NgForOf,
+        AsyncPipe,
+        NgIf,
+        MatChip,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatIconButton,
+        MatSuffix,
+        VoiceInputFieldComponent,
+    ],
+    templateUrl: './vocal-input.component.html',
+    styleUrl: './vocal-input.component.scss',
+    providers: [SpeechService]
 })
 export class VocalInputComponent implements OnInit, OnDestroy {
   public transcript: string = '';

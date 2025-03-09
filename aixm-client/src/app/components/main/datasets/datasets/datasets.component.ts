@@ -19,11 +19,10 @@ import { InfoComponent }                         from '../../../common/dialogs/i
 import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
 
 @Component({
-  selector: 'app-datasets',
-  standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule],
-  templateUrl: './datasets.component.html',
-  styleUrl: './datasets.component.scss'
+    selector: 'app-datasets',
+    imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, PipesModule, MatCardModule],
+    templateUrl: './datasets.component.html',
+    styleUrl: './datasets.component.scss'
 })
 export class DatasetsComponent extends BaseGridComponent {
   url: string = 'aixm/datasets';

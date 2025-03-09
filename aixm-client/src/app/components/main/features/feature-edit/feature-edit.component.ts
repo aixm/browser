@@ -18,15 +18,14 @@ import { BackendApiService }                                                    
 import { FeatureService }                                                       from '../../../../services/feature.service';
 
 @Component({
-  selector: 'app-feature-edit',
-  standalone: true,
-  imports: [
-    MatButton, MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle, MatError, MatFormField,
-    MatHint, MatIcon, MatIconButton, MatInput, MatLabel, MatProgressBar, MatSuffix, MatTooltip, MtxSelect, MtxSelectLabelTemplate,
-    MtxSelectOptionTemplate, NgIf, ReactiveFormsModule, CdkDrag, CdkDragHandle,
-  ],
-  templateUrl: './feature-edit.component.html',
-  styleUrl: './feature-edit.component.scss'
+    selector: 'app-feature-edit',
+    imports: [
+        MatButton, MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle, MatError, MatFormField,
+        MatHint, MatIcon, MatIconButton, MatInput, MatLabel, MatProgressBar, MatSuffix, MatTooltip, MtxSelect, MtxSelectLabelTemplate,
+        MtxSelectOptionTemplate, NgIf, ReactiveFormsModule, CdkDrag, CdkDragHandle,
+    ],
+    templateUrl: './feature-edit.component.html',
+    styleUrl: './feature-edit.component.scss'
 })
 export class FeatureEditComponent implements OnInit {
   url: string = 'aixm/features';

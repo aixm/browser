@@ -6,9 +6,10 @@ import { ApiResponse } from '../../../models/api-response';
 import { AuthService }                                                                       from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-base-grid',
-  template: '',
-  styleUrls: []
+    selector: 'app-base-grid',
+    template: '',
+    styleUrls: [],
+    standalone: false
 })
 export class BaseGridComponent implements OnInit, OnDestroy {
   @ViewChild('grid') grid!: MtxGrid;

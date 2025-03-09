@@ -19,14 +19,13 @@ import { AuthService }                                             from '../../.
 import { BackendApiService }                                       from '../../../../services/backend-api.service';
 
 @Component({
-  selector: 'app-dataset-edit',
-  standalone: true,
-  imports: [
-    CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatTooltipModule,
-    MatInputModule, MtxSelectModule, CdkDrag, CdkDragHandle,
-  ],
-  templateUrl: './dataset-edit.component.html',
-  styleUrl: './dataset-edit.component.scss'
+    selector: 'app-dataset-edit',
+    imports: [
+        CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatTooltipModule,
+        MatInputModule, MtxSelectModule, CdkDrag, CdkDragHandle,
+    ],
+    templateUrl: './dataset-edit.component.html',
+    styleUrl: './dataset-edit.component.scss'
 })
 export class DatasetEditComponent implements OnInit  {
   url: string = 'aixm/datasets';

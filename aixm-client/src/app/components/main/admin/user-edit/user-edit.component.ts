@@ -17,14 +17,13 @@ import { AuthService }                                             from '../../.
 import { BackendApiService }                                       from '../../../../services/backend-api.service';
 
 @Component({
-  selector: 'app-user-edit',
-  standalone: true,
-  imports: [
-    CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatTooltipModule,
-    MatInputModule, MatCheckboxModule, MtxSelectModule, CdkDrag, CdkDragHandle,
-  ],
-  templateUrl: './user-edit.component.html',
-  styleUrl: './user-edit.component.scss'
+    selector: 'app-user-edit',
+    imports: [
+        CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatTooltipModule,
+        MatInputModule, MatCheckboxModule, MtxSelectModule, CdkDrag, CdkDragHandle,
+    ],
+    templateUrl: './user-edit.component.html',
+    styleUrl: './user-edit.component.scss'
 })
 export class UserEditComponent implements OnInit {
   url: string = 'users';

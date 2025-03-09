@@ -9,11 +9,10 @@ import { ThemeOption } from '../../../../models/theme-option';
 import { ThemeService }                           from '../../../../services/theme.service';
 
 @Component({
-  selector: 'app-theme-switcher',
-  standalone: true,
-  imports: [CommonModule, MatIconModule, MatMenuModule, MatButtonModule, MatTooltipModule, MatRadioModule],
-  templateUrl: './theme-switcher.component.html',
-  styleUrl: './theme-switcher.component.scss'
+    selector: 'app-theme-switcher',
+    imports: [CommonModule, MatIconModule, MatMenuModule, MatButtonModule, MatTooltipModule, MatRadioModule],
+    templateUrl: './theme-switcher.component.html',
+    styleUrl: './theme-switcher.component.scss'
 })
 export class ThemeSwitcherComponent {
   @Input() themeOptions: ThemeOption[] | null | undefined;
