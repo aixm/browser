@@ -1,88 +1,98 @@
 <div class="page-container">
     <div class="page-title">About {{ getTitle() }}</div>
     <div class="page-subtitle"></div>
+    <div style="height:calc(100vh - 7.5em); overflow-y: auto">
+        <div style="margin-top: 1em">
+            <div style="margin-top: 0.5em">See detailed information here:
+                <a href="https://ext.eurocontrol.int/aixm_confluence/pages/viewpage.action?pageId=151388575" target="_blank">
+                    AIXM - Graph Viewer
+                </a>
+            </div>
+            <div style="margin-top: 0.5em">Contributing project:
+                <a href="https://github.com/aixm/browser" target="_blank">
+                    aixm/browser on Github
+                </a>
+            </div>
+            <div style="margin-top: 2em">
+                <p>Copyright (c) 2023, EUROCONTROL</p>
 
-    <div style="margin-top: 1em">
-        <div style="margin-top: 0.5em">See detailed information here:
-            <a href="https://ext.eurocontrol.int/aixm_confluence/pages/viewpage.action?pageId=151388575" target="_blank">
-                AIXM - Graph Viewer
-            </a>
-        </div>
-        <div style="margin-top: 0.5em">Contributing project:
-            <a href="https://github.com/aixm/browser" target="_blank">
-                aixm/browser on Github
-            </a>
+                <p>Contributions:</p>
+                <ul>
+                    <li>current version - Sergiy VLASOV, UkSATSE (on secondment to EUROCONTROL)</li>
+                    <li>initial proof of concept - Alex NTAVELOS (see AIXM-GRAPH)</li>
+                    <li>project initiator - Eduard POROSNICU, EUROCONTROL</li>
+                </ul>
+
+                <p>Redistribution and use in source and binary forms, with or without
+                    modification, are permitted provided that the following conditions are met:</p>
+
+                <ul>
+                    <li>Redistributions of source code must retain the above copyright notice, this
+                        list of conditions and the following disclaimer.</li>
+
+                    <li>Redistributions in binary form must reproduce the above copyright notice,
+                    this list of conditions and the following disclaimer in the documentation
+                    and/or other materials provided with the distribution.</li>
+
+                    <li>Neither the name of the copyright holder nor the names of its
+                    contributors may be used to endorse or promote products derived from
+                    this software without specific prior written permission.</li>
+                </ul>
+
+                <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+                AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+                IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+                DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+                FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+                DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+                SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+                CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+                OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+                OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+            </div>
         </div>
         <div style="margin-top: 2em">
-            <p>Copyright (c) 2023, EUROCONTROL</p>
-
-            <p>Contributions:</p>
-            <ul>
-                <li>current version - Sergiy VLASOV, UkSATSE (on secondment to EUROCONTROL)</li>
-                <li>initial proof of concept - Alex NTAVELOS (see AIXM-GRAPH)</li>
-                <li>project initiator - Eduard POROSNICU, EUROCONTROL</li>
-            </ul>
-
-            <p>Redistribution and use in source and binary forms, with or without
-                modification, are permitted provided that the following conditions are met:</p>
-
-            <ul>
-                <li>Redistributions of source code must retain the above copyright notice, this
-                    list of conditions and the following disclaimer.</li>
-
-                <li>Redistributions in binary form must reproduce the above copyright notice,
-                this list of conditions and the following disclaimer in the documentation
-                and/or other materials provided with the distribution.</li>
-
-                <li>Neither the name of the copyright holder nor the names of its
-                contributors may be used to endorse or promote products derived from
-                this software without specific prior written permission.</li>
-            </ul>
-
-            <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-            AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-            IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-            DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-            FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-            DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-            SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-            CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-            OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-            OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-
+            <div class="page-title">History of changes:</div>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>v1.0.8</mat-panel-title>
+                    <mat-panel-description>17.06.2025</mat-panel-description>
+                </mat-expansion-panel-header>
+                <li>Update frontend libraries (Angular v20).</li>
+                <li>Resolve security vulnerability in backend libraries.</li>
+                <li>Upgrade frontend Node to v22.16.0.</li>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>v1.0.7</mat-panel-title>
+                    <mat-panel-description>09.03.2025</mat-panel-description>
+                </mat-expansion-panel-header>
+                <li>Update Nginx proxy to v1.27.4.</li>
+                <li>Update frontend and backend libraries (Angular v19.2, Laravel v12).</li>
+                <li>Upgrade frontend Node to v22.14.0.</li>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>v1.0.6</mat-panel-title>
+                    <mat-panel-description>14.11.2024</mat-panel-description>
+                </mat-expansion-panel-header>
+                <li>AIXM Event extension was added. Now additional features and objects from Event extension are parsed and visualized.</li>
+                <li>Links for combined layouts were added to dataset grid.</li>
+                <li>Update frontend libraries (Angular v18.2.13).</li>
+                <li>Resolve security vulnerability in backend libraries.</li>
+                <li>Several fixes and improvements.</li>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>v1.0.5</mat-panel-title>
+                    <mat-panel-description>22.10.2024</mat-panel-description>
+                </mat-expansion-panel-header>
+                <li>Update Nginx proxy to v1.26.2.</li>
+                <li>Update frontend and backend libraries (Angular v18.2.8, Laravel v11).</li>
+                <li>Upgrade frontend Node to v22.8.0.</li>
+                <li>Upgrade backend PHP to v8.2.</li>
+            </mat-expansion-panel>
         </div>
-    </div>
-    <div style="margin-top: 2em">
-        <div class="page-title">History of changes:</div>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>v1.0.7</mat-panel-title>
-                <mat-panel-description>09.03.2025</mat-panel-description>
-            </mat-expansion-panel-header>
-            <li>Update Nginx proxy to v1.27.4.</li>
-            <li>Update frontend and backend libraries (Angular v19.2, Laravel v12).</li>
-            <li>Upgrade frontend Node to v22.14.0.</li>
-        </mat-expansion-panel>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>v1.0.6</mat-panel-title>
-                <mat-panel-description>14.11.2024</mat-panel-description>
-            </mat-expansion-panel-header>
-            <li>AIXM Event extension was added. Now additional features and objects from Event extension are parsed and visualized.</li>
-            <li>Links for combined layouts were added to dataset grid.</li>
-            <li>Update frontend libraries (Angular v18.2.13).</li>
-            <li>Resolve security vulnerability in backend libraries.</li>
-            <li>Several fixes and improvements.</li>
-        </mat-expansion-panel>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>v1.0.5</mat-panel-title>
-                <mat-panel-description>22.10.2024</mat-panel-description>
-            </mat-expansion-panel-header>
-            <li>Update Nginx proxy to v1.26.2.</li>
-            <li>Update frontend and backend libraries (Angular v18.2.8, Laravel v11).</li>
-            <li>Upgrade frontend Node to v22.8.0.</li>
-            <li>Upgrade backend PHP to v8.2.</li>
-        </mat-expansion-panel>
     </div>
 </div>
