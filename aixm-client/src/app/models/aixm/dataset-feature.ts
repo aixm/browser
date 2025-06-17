@@ -125,7 +125,7 @@ export class DatasetFeature {
     // ref to
     this.referenceToFeatures.forEach((df: DatasetFeature): void => {
       result = this.addFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-checkbox-selected-icon-color');
       this.edges.push({from: this.id, to: df.id, arrows: 'to', color: accentColor});
     });
     // ref by
@@ -137,7 +137,7 @@ export class DatasetFeature {
     // broken
     this.getBrokenFeatures().forEach((df: DatasetFeature): void => {
       result = this.addBrokenFeatureNode(result, Object.assign(new DatasetFeature(this.featureService), df));
-      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mdc-checkbox-selected-icon-color');
+      const accentColor: string = getComputedStyle(document.documentElement).getPropertyValue('--mat-checkbox-selected-icon-color');
       this.edges.push({from: this.id, to: df.gmlIdentifierValue, arrows: 'to', color: accentColor});
     });
     return result;

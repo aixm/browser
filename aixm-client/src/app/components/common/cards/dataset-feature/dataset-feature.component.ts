@@ -68,7 +68,7 @@ export class DatasetFeatureComponent {
   toggleChange(): void {
     this.featureVisibilityChange.emit();
     //console.log(getComputedStyle(document.documentElement).getPropertyValue(`--mat-badge-background-color`));
-    //console.log(getComputedStyle(document.documentElement).getPropertyValue(`--mdc-checkbox-selected-icon-color`));
+    //console.log(getComputedStyle(document.documentElement).getPropertyValue(`--mat-checkbox-selected-icon-color`));
   }
 
   copyToClipboard(text?: string): void {
