@@ -1,6 +1,6 @@
 import { ClipboardModule }                                from '@angular/cdk/clipboard';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule }                                   from '@angular/common';
+
 import { MatBadgeModule }                                                        from '@angular/material/badge';
 import { MatBottomSheetModule }                                                  from '@angular/material/bottom-sheet';
 import { MatButtonModule }                                                       from '@angular/material/button';
@@ -23,10 +23,22 @@ import { AixmIconComponent }                      from '../../shared/aixm-icon/a
 @Component({
   selector: 'app-dataset-feature',
   imports: [
-    CommonModule, MatButtonModule, MatBottomSheetModule, MatCardModule, MatChipsModule, MatIconModule, MatBadgeModule,
-    AixmIconComponent, LimitToPipe,
-    MatSlideToggleModule, AixmFeatureToggleComponent, ClipboardModule, MatTooltipModule, MatToolbarModule, MatPaginator, MatProgressBar,
-  ],
+    MatButtonModule,
+    MatBottomSheetModule,
+    MatCardModule,
+    MatChipsModule,
+    MatIconModule,
+    MatBadgeModule,
+    AixmIconComponent,
+    LimitToPipe,
+    MatSlideToggleModule,
+    AixmFeatureToggleComponent,
+    ClipboardModule,
+    MatTooltipModule,
+    MatToolbarModule,
+    MatPaginator,
+    MatProgressBar
+],
   templateUrl: './dataset-feature.component.html',
   styleUrl: './dataset-feature.component.scss',
   standalone: true

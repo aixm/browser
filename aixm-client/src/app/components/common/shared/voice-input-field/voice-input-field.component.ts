@@ -1,4 +1,4 @@
-import { NgIf }                                        from '@angular/common';
+
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatIconButton }                                             from '@angular/material/button';
 import { MatDialog }                  from '@angular/material/dialog';
@@ -12,15 +12,14 @@ import { SpeechService }                       from '../../../../services/speech
 @Component({
     selector: 'app-voice-input-field',
     imports: [
-        MatFormField,
-        MatIcon,
-        MatIconButton,
-        MatInput,
-        MatLabel,
-        MatSuffix,
-        MatTooltip,
-        NgIf,
-    ],
+    MatFormField,
+    MatIcon,
+    MatIconButton,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    MatTooltip
+],
     templateUrl: './voice-input-field.component.html',
     styleUrl: './voice-input-field.component.scss',
     providers: [SpeechService]

@@ -1,4 +1,4 @@
-import { NgIf }             from '@angular/common';
+
 import { Component, OnInit }                                               from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
@@ -14,15 +14,14 @@ import { BackendApiService } from '../../../../services/backend-api.service';
 @Component({
     selector: 'app-login',
     imports: [
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-        MatTooltipModule,
-        NgIf,
-        MatInputModule,
-        MatProgressBarModule,
-        ReactiveFormsModule,
-    ],
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatProgressBarModule,
+    ReactiveFormsModule
+],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })

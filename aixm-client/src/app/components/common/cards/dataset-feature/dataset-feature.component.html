@@ -1,66 +1,82 @@
 <mat-card class="mat-card-dataset-feature">
-    <mat-card-header>
-        <app-aixm-icon [feature]="feature" [matCardAvatar]="true"></app-aixm-icon>
-        <mat-card-title>{{feature?.name}}</mat-card-title>
-        <mat-card-subtitle>{{datasetFeature?.getLabel()}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <div class="pg-bar">
-            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-        </div>
-        <mat-toolbar>
-            <mat-toolbar-row style="padding: 0px">
-                <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Copy UUID"
-                        (click)="copyToClipboard(datasetFeature?.gmlIdentifierValue)">
-                    <mat-icon>content_copy</mat-icon>
-                </button>
-                <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Focus"
-                        (click)="click()">
-                    <mat-icon>hub</mat-icon>
-                </button>
-                <div class="flex-full-row"></div>
-                <button mat-stroked-button class="tbr-btn" style="margin-right: 0.3em" color="primary"
-                        matTooltip="{{datasetFeature?.dataset?.name}}"
-                        (click)="goToDataset(datasetFeature?.dataset)">
-                    <mat-icon>storage</mat-icon>
-                    {{datasetFeature?.dataset?.name | limitTo: 15}}
-                </button>
-            </mat-toolbar-row>
-        </mat-toolbar>
+  <mat-card-header>
+    <app-aixm-icon [feature]="feature" [matCardAvatar]="true"></app-aixm-icon>
+    <mat-card-title>{{feature?.name}}</mat-card-title>
+    <mat-card-subtitle>{{datasetFeature?.getLabel()}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="pg-bar">
+      @if (loading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
+    </div>
+    <mat-toolbar>
+      <mat-toolbar-row style="padding: 0px">
+        <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Copy UUID"
+          (click)="copyToClipboard(datasetFeature?.gmlIdentifierValue)">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+        <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Focus"
+          (click)="click()">
+          <mat-icon>hub</mat-icon>
+        </button>
+        <div class="flex-full-row"></div>
+        <button mat-stroked-button class="tbr-btn" style="margin-right: 0.3em" color="primary"
+          matTooltip="{{datasetFeature?.dataset?.name}}"
+          (click)="goToDataset(datasetFeature?.dataset)">
+          <mat-icon>storage</mat-icon>
+          {{datasetFeature?.dataset?.name | limitTo: 15}}
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
 
-        <div *ngIf="datasetFeature?.getReferenceToFeaturesCount()" style="margin-top: 1em">References to features:</div>
-        <div class="aixm-features-container">
-            <app-aixm-feature-toggle [color]="'accent'" *ngFor="let f of datasetFeature?.getReferenceToFeatures()"
-                                     [feature]="f"
-                                     (featureVisibilityChange)="toggleChange()"
-            ></app-aixm-feature-toggle>
+    @if (datasetFeature?.getReferenceToFeaturesCount()) {
+      <div style="margin-top: 1em">References to features:</div>
+    }
+    <div class="aixm-features-container">
+      @for (f of datasetFeature?.getReferenceToFeatures(); track f) {
+        <app-aixm-feature-toggle [color]="'accent'"
+          [feature]="f"
+          (featureVisibilityChange)="toggleChange()"
+        ></app-aixm-feature-toggle>
+      }
 
+    </div>
+    @if (datasetFeature?.getBrokenFeatures()?.length) {
+      <div style="margin-top: 1em">Broker references:</div>
+    }
+    <div class="aixm-features-container">
+      @for (df of datasetFeature?.getBrokenFeatures(); track df) {
+        <button mat-icon-button color="accent"
+          matTooltip="Copy UUID"
+          (click)="copyToClipboard(df.gmlIdentifierValue)">
+          <mat-icon><img src="{{getFeatureBrokenImagePath()}}" alt="Unknown"></mat-icon>
+        </button>
+      }
+    </div>
+    @if (datasetFeature?.getReferencedByFeaturesCount()) {
+      <div style="margin-top: 1em">Referenced by features:</div>
+    }
+    <div class="aixm-features-container">
+      @for (f of datasetFeature?.getReferencedByFeatures(); track f) {
+        <app-aixm-feature-toggle [color]="'primary'"
+          [feature]="f"
+          (featureVisibilityChange)="toggleChange()"
+        ></app-aixm-feature-toggle>
+      }
+      @if (datasetFeature?.referencedByFeaturesPagination.total>datasetFeature?.referencedByFeaturesPagination.perPage) {
+        <div style="justify-content: flex-end; flex-grow: 1">
+          <mat-paginator
+            (page)="handleReferencedByPageEvent($event)"
+            [length]="datasetFeature?.referencedByFeaturesPagination.total"
+            [pageSize]="datasetFeature?.referencedByFeaturesPagination.perPage"
+            [showFirstLastButtons]="false"
+            [hidePageSize]="true"
+            [pageIndex]="referencedByPageEvent.pageIndex"
+          ></mat-paginator>
         </div>
-        <div *ngIf="datasetFeature?.getBrokenFeatures()?.length" style="margin-top: 1em">Broker references:</div>
-        <div class="aixm-features-container">
-            <button *ngFor="let df of datasetFeature?.getBrokenFeatures()" mat-icon-button color="accent"
-                    matTooltip="Copy UUID"
-                    (click)="copyToClipboard(df.gmlIdentifierValue)">
-                <mat-icon><img src="{{getFeatureBrokenImagePath()}}" alt="Unknown"></mat-icon>
-            </button>
-        </div>
-        <div *ngIf="datasetFeature?.getReferencedByFeaturesCount()" style="margin-top: 1em">Referenced by features:</div>
-        <div class="aixm-features-container">
-            <app-aixm-feature-toggle [color]="'primary'" *ngFor="let f of datasetFeature?.getReferencedByFeatures()"
-                                     [feature]="f"
-                                     (featureVisibilityChange)="toggleChange()"
-            ></app-aixm-feature-toggle>
-            <div *ngIf="datasetFeature?.referencedByFeaturesPagination.total>datasetFeature?.referencedByFeaturesPagination.perPage" style="justify-content: flex-end; flex-grow: 1">
-                <mat-paginator
-                        (page)="handleReferencedByPageEvent($event)"
-                        [length]="datasetFeature?.referencedByFeaturesPagination.total"
-                        [pageSize]="datasetFeature?.referencedByFeaturesPagination.perPage"
-                        [showFirstLastButtons]="false"
-                        [hidePageSize]="true"
-                        [pageIndex]="referencedByPageEvent.pageIndex"
-                ></mat-paginator>
-            </div>
-        </div>
+      }
+    </div>
 
-    </mat-card-content>
+  </mat-card-content>
 </mat-card>

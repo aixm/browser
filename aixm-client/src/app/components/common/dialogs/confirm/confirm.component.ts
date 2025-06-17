@@ -1,4 +1,4 @@
-import { CommonModule }                                     from '@angular/common';
+
 import { Component, Inject }                                from '@angular/core';
 import { MatButtonModule }                                  from '@angular/material/button';
 import { MatCardModule }                                    from '@angular/material/card';
@@ -9,8 +9,11 @@ import { MatTooltipModule }                                 from '@angular/mater
 @Component({
     selector: 'app-confirm',
     imports: [
-        CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule,
-    ],
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule
+],
     templateUrl: './confirm.component.html',
     styleUrls: ['./confirm.component.scss']
 })

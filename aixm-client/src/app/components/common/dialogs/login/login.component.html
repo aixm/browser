@@ -1,41 +1,57 @@
 <mat-card style="width: 20em">
-    <mat-card-header>
-        <mat-card-title>Login</mat-card-title>
-        <div class="flex-full-row"></div>
-        <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
-            <mat-icon>close</mat-icon>
+  <mat-card-header>
+    <mat-card-title>Login</mat-card-title>
+    <div class="flex-full-row"></div>
+    <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="pg-bar">
+      @if (loading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
+    </div>
+    <form style="display: flex; flex-flow: column; margin-top: 0.5em" [formGroup]="loginForm">
+      <mat-form-field appearance="outline" (keyup.enter)="login()">
+        <mat-label>Username</mat-label>
+        <input type="email" matInput placeholder="Username" formControlName="email" required key>
+        <mat-icon matSuffix>person</mat-icon>
+        @if (email?.invalid && (email?.dirty || email?.touched)) {
+          <mat-error>
+            @if (email?.errors?.['required']) {
+              <mat-hint>Login is required</mat-hint>
+            }
+            @if (email?.errors?.['email']) {
+              <mat-hint>Login must be in email format</mat-hint>
+            }
+            @if (email?.errors?.['serverError']) {
+              <mat-hint>{{ email?.errors?.['serverError'] }}</mat-hint>
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline" (keyup.enter)="login()">
+        <mat-label>Password</mat-label>
+        <input type="{{showPassword ? 'text' : 'password'}}" matInput placeholder="Password" formControlName="password" required>
+        <button mat-icon-button matSuffix color="primary" [matTooltip]="showPassword ? 'Hide' : 'Show'" (click)="showPassword=!showPassword;">
+          <mat-icon>{{showPassword ? 'key_off' : 'key'}}</mat-icon>
         </button>
-    </mat-card-header>
-    <mat-card-content>
-        <div class="pg-bar">
-            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-        </div>
-        <form style="display: flex; flex-flow: column; margin-top: 0.5em" [formGroup]="loginForm">
-                <mat-form-field appearance="outline" (keyup.enter)="login()">
-                    <mat-label>Username</mat-label>
-                    <input type="email" matInput placeholder="Username" formControlName="email" required key>
-                    <mat-icon matSuffix>person</mat-icon>
-                    <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
-                        <mat-hint *ngIf="email?.errors?.['required']">Login is required</mat-hint>
-                        <mat-hint *ngIf="email?.errors?.['email']">Login must be in email format</mat-hint>
-                        <mat-hint *ngIf="email?.errors?.['serverError']">{{ email?.errors?.['serverError'] }}</mat-hint>
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline" (keyup.enter)="login()">
-                    <mat-label>Password</mat-label>
-                    <input type="{{showPassword ? 'text' : 'password'}}" matInput placeholder="Password" formControlName="password" required>
-                    <button mat-icon-button matSuffix color="primary" [matTooltip]="showPassword ? 'Hide' : 'Show'" (click)="showPassword=!showPassword;">
-                        <mat-icon>{{showPassword ? 'key_off' : 'key'}}</mat-icon>
-                    </button>
-                    <mat-error *ngIf="password?.invalid && (password?.dirty || password?.touched)">
-                        <mat-hint *ngIf="password?.errors?.['required']">Password is required</mat-hint>
-                        <mat-hint *ngIf="password?.errors?.['serverError']">{{ password?.errors?.['serverError'] }}</mat-hint>
-                    </mat-error>
-                </mat-form-field>
-        </form>
-    </mat-card-content>
-    <mat-card-actions style="justify-content: flex-end">
-        <!--<button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>-->
-        <button mat-stroked-button class="tbr-btn" color="primary" type="submit" (click)="login()"><mat-icon>login</mat-icon>Login</button>
-    </mat-card-actions>
+        @if (password?.invalid && (password?.dirty || password?.touched)) {
+          <mat-error>
+            @if (password?.errors?.['required']) {
+              <mat-hint>Password is required</mat-hint>
+            }
+            @if (password?.errors?.['serverError']) {
+              <mat-hint>{{ password?.errors?.['serverError'] }}</mat-hint>
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions style="justify-content: flex-end">
+    <!--<button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>-->
+    <button mat-stroked-button class="tbr-btn" color="primary" type="submit" (click)="login()"><mat-icon>login</mat-icon>Login</button>
+  </mat-card-actions>
 </mat-card>

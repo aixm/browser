@@ -1,95 +1,153 @@
 <mat-card style="max-width: 30em" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
-    <mat-card-header class="dialog-header" cdkDragHandle>
-        <mat-card-title>{{feature.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM class</mat-card-title>
-        <div class="flex-full-row"></div>
-        <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
-            <mat-icon>close</mat-icon>
-        </button>
-    </mat-card-header>
-    <mat-card-content>
-        <div class="pg-bar">
-            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <mat-card-header class="dialog-header" cdkDragHandle>
+    <mat-card-title>{{feature.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM class</mat-card-title>
+    <div class="flex-full-row"></div>
+    <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="pg-bar">
+      @if (loading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
+    </div>
+    <div>
+      <form [formGroup]="featureForm">
+        <mat-form-field style="width: 100%" appearance="outline">
+          <mat-label>Name of the Class</mat-label>
+          <input matInput placeholder="Name of the Class" formControlName="name">
+          @if (name?.invalid && (name?.dirty || name?.touched)) {
+            <mat-error>
+              @if (name?.errors?.['required']) {
+                <mat-hint>Name is required</mat-hint>
+              }
+              @if (name?.errors?.['minlength']) {
+                <mat-hint>At least 2 characters</mat-hint>
+              }
+              @if (name?.errors?.['maxlength']) {
+                <mat-hint>No longer than 50 characters</mat-hint>
+              }
+              @if (name?.errors?.['serverError']) {
+                <mat-hint>{{ name?.errors?.['serverError'] }}</mat-hint>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <div class="flex-row">
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>Type</mat-label>
+            <mtx-select [items]="featureService.types"  placeholder="Class's type" formControlName="type"
+              bindLabel="type" bindValue="type" [value]="type">
+            </mtx-select>
+            @if (type?.invalid && (type?.dirty || type?.touched)) {
+              <mat-error>
+                @if (type?.errors?.['required']) {
+                  <mat-hint>Type is required</mat-hint>
+                }
+                @if (type?.errors?.['serverError']) {
+                  <mat-hint>{{ type?.errors?.['serverError'] }}</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field style="width: 15em; margin-left: 0.1em" appearance="outline">
+            <mat-label>Abbreviation</mat-label>
+            <input matInput placeholder="Abbreviation" formControlName="abbreviation">
+            @if (abbreviation?.invalid && (abbreviation?.dirty || abbreviation?.touched)) {
+              <mat-error>
+                @if (abbreviation?.errors?.['required']) {
+                  <mat-hint>Required</mat-hint>
+                }
+                @if (abbreviation?.errors?.['minlength']) {
+                  <mat-hint>3 characters</mat-hint>
+                }
+                @if (abbreviation?.errors?.['maxlength']) {
+                  <mat-hint>3 characters</mat-hint>
+                }
+                @if (abbreviation?.errors?.['serverError']) {
+                  <mat-hint>{{ abbreviation?.errors?.['serverError'] }}</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
         </div>
-        <div>
-            <form [formGroup]="featureForm">
-                <mat-form-field style="width: 100%" appearance="outline">
-                    <mat-label>Name of the Class</mat-label>
-                    <input matInput placeholder="Name of the Class" formControlName="name">
-                    <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
-                        <mat-hint *ngIf="name?.errors?.['required']">Name is required</mat-hint>
-                        <mat-hint *ngIf="name?.errors?.['minlength']">At least 2 characters</mat-hint>
-                        <mat-hint *ngIf="name?.errors?.['maxlength']">No longer than 50 characters</mat-hint>
-                        <mat-hint *ngIf="name?.errors?.['serverError']">{{ name?.errors?.['serverError'] }}</mat-hint>
-                    </mat-error>
-                </mat-form-field>
-
-                <div class="flex-row">
-                    <mat-form-field appearance="outline" style="width: 100%">
-                        <mat-label>Type</mat-label>
-                        <mtx-select [items]="featureService.types"  placeholder="Class's type" formControlName="type"
-                                    bindLabel="type" bindValue="type" [value]="type">
-                        </mtx-select>
-                        <mat-error *ngIf="type?.invalid && (type?.dirty || type?.touched)">
-                            <mat-hint *ngIf="type?.errors?.['required']">Type is required</mat-hint>
-                            <mat-hint *ngIf="type?.errors?.['serverError']">{{ type?.errors?.['serverError'] }}</mat-hint>
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field style="width: 15em; margin-left: 0.1em" appearance="outline">
-                        <mat-label>Abbreviation</mat-label>
-                        <input matInput placeholder="Abbreviation" formControlName="abbreviation">
-                        <mat-error *ngIf="abbreviation?.invalid && (abbreviation?.dirty || abbreviation?.touched)">
-                            <mat-hint *ngIf="abbreviation?.errors?.['required']">Required</mat-hint>
-                            <mat-hint *ngIf="abbreviation?.errors?.['minlength']">3 characters</mat-hint>
-                            <mat-hint *ngIf="abbreviation?.errors?.['maxlength']">3 characters</mat-hint>
-                            <mat-hint *ngIf="abbreviation?.errors?.['serverError']">{{ abbreviation?.errors?.['serverError'] }}</mat-hint>
-                        </mat-error>
-                    </mat-form-field>
-
-                </div>
-                <div class="flex-row">
-                    <mat-form-field style="width: 9em" appearance="outline">
-                        <mat-label>Order</mat-label>
-                        <input matInput placeholder="Order" formControlName="order">
-                        <mat-error *ngIf="order?.invalid && (order?.dirty || order?.touched)">
-                            <mat-hint *ngIf="order?.errors?.['pattern']">Numbers</mat-hint>
-                            <mat-hint *ngIf="order?.errors?.['serverError']">{{ order?.errors?.['serverError'] }}</mat-hint>
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field style="width: 9em; margin-left: 0.1em" appearance="outline">
-                        <mat-label>Prefix</mat-label>
-                        <input matInput placeholder="Prefix" formControlName="prefix">
-                        <mat-error *ngIf="prefix?.invalid && (prefix?.dirty || prefix?.touched)">
-                            <mat-hint *ngIf="prefix?.errors?.['minlength']">At least 2 characters</mat-hint>
-                            <mat-hint *ngIf="prefix?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
-                            <mat-hint *ngIf="prefix?.errors?.['serverError']">{{ prefix?.errors?.['serverError'] }}</mat-hint>
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field style="width: 100%; margin-left: 0.1em" appearance="outline">
-                        <mat-label>Namespace of the Class</mat-label>
-                        <input matInput placeholder="Namespace of the Class" formControlName="namespace">
-                        <mat-error *ngIf="namespace?.invalid && (namespace?.dirty || namespace?.touched)">
-                            <mat-hint *ngIf="namespace?.errors?.['minlength']">At least 2 characters</mat-hint>
-                            <mat-hint *ngIf="namespace?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
-                            <mat-hint *ngIf="namespace?.errors?.['serverError']">{{ namespace?.errors?.['serverError'] }}</mat-hint>
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-
-                <mat-form-field style="width: 100%" appearance="outline">
-                    <mat-label>Description of the Class</mat-label>
-                    <textarea matInput style="height: 7em" placeholder="Description of the Class" formControlName="description"></textarea>
-                    <mat-error *ngIf="description?.invalid && (description?.dirty || description?.touched)">
-                        <mat-hint *ngIf="description?.errors?.['minlength']">At least 2 characters</mat-hint>
-                        <mat-hint *ngIf="description?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
-                    </mat-error>
-                </mat-form-field>
-            </form>
+        <div class="flex-row">
+          <mat-form-field style="width: 9em" appearance="outline">
+            <mat-label>Order</mat-label>
+            <input matInput placeholder="Order" formControlName="order">
+            @if (order?.invalid && (order?.dirty || order?.touched)) {
+              <mat-error>
+                @if (order?.errors?.['pattern']) {
+                  <mat-hint>Numbers</mat-hint>
+                }
+                @if (order?.errors?.['serverError']) {
+                  <mat-hint>{{ order?.errors?.['serverError'] }}</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field style="width: 9em; margin-left: 0.1em" appearance="outline">
+            <mat-label>Prefix</mat-label>
+            <input matInput placeholder="Prefix" formControlName="prefix">
+            @if (prefix?.invalid && (prefix?.dirty || prefix?.touched)) {
+              <mat-error>
+                @if (prefix?.errors?.['minlength']) {
+                  <mat-hint>At least 2 characters</mat-hint>
+                }
+                @if (prefix?.errors?.['maxlength']) {
+                  <mat-hint>No longer than 255 characters</mat-hint>
+                }
+                @if (prefix?.errors?.['serverError']) {
+                  <mat-hint>{{ prefix?.errors?.['serverError'] }}</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field style="width: 100%; margin-left: 0.1em" appearance="outline">
+            <mat-label>Namespace of the Class</mat-label>
+            <input matInput placeholder="Namespace of the Class" formControlName="namespace">
+            @if (namespace?.invalid && (namespace?.dirty || namespace?.touched)) {
+              <mat-error>
+                @if (namespace?.errors?.['minlength']) {
+                  <mat-hint>At least 2 characters</mat-hint>
+                }
+                @if (namespace?.errors?.['maxlength']) {
+                  <mat-hint>No longer than 255 characters</mat-hint>
+                }
+                @if (namespace?.errors?.['serverError']) {
+                  <mat-hint>{{ namespace?.errors?.['serverError'] }}</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
-    </mat-card-content>
-    <mat-card-actions style="justify-content: flex-end">
-        <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
-        <button *ngIf="!data.disableForm" mat-stroked-button class="tbr-btn" color="primary" (click)="save()">
-            <mat-icon>save</mat-icon>Save</button>
+
+        <mat-form-field style="width: 100%" appearance="outline">
+          <mat-label>Description of the Class</mat-label>
+          <textarea matInput style="height: 7em" placeholder="Description of the Class" formControlName="description"></textarea>
+          @if (description?.invalid && (description?.dirty || description?.touched)) {
+            <mat-error>
+              @if (description?.errors?.['minlength']) {
+                <mat-hint>At least 2 characters</mat-hint>
+              }
+              @if (description?.errors?.['maxlength']) {
+                <mat-hint>No longer than 255 characters</mat-hint>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </div>
+  </mat-card-content>
+  <mat-card-actions style="justify-content: flex-end">
+    <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
+    @if (!data.disableForm) {
+      <button mat-stroked-button class="tbr-btn" color="primary" (click)="save()">
+        <mat-icon>save</mat-icon>Save</button>
+      }
     </mat-card-actions>
-</mat-card>
+  </mat-card>
 

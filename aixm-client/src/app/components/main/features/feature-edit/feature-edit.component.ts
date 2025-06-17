@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
-import { NgIf }                   from '@angular/common';
+
 import { Component, Inject, OnInit }                                            from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators }              from '@angular/forms';
 import { MatButton, MatIconButton }                                             from '@angular/material/button';
@@ -20,10 +20,26 @@ import { FeatureService }                                                       
 @Component({
   selector: 'app-feature-edit',
   imports: [
-    MatButton, MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle, MatError, MatFormField,
-    MatHint, MatIcon, MatIconButton, MatInput, MatLabel, MatProgressBar, MatTooltip, MtxSelect,
-    NgIf, ReactiveFormsModule, CdkDrag, CdkDragHandle,
-  ],
+    MatButton,
+    MatCard,
+    MatCardActions,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+    MatError,
+    MatFormField,
+    MatHint,
+    MatIcon,
+    MatIconButton,
+    MatInput,
+    MatLabel,
+    MatProgressBar,
+    MatTooltip,
+    MtxSelect,
+    ReactiveFormsModule,
+    CdkDrag,
+    CdkDragHandle
+],
   templateUrl: './feature-edit.component.html',
   styleUrl: './feature-edit.component.scss',
   standalone: true

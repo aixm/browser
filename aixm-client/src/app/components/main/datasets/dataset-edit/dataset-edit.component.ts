@@ -1,7 +1,7 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { HttpHeaders }            from '@angular/common/http';
 import { Component, Inject, OnInit }                               from '@angular/core';
-import { CommonModule }                                            from '@angular/common';
+
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }                                           from '@angular/material/card';
@@ -21,9 +21,17 @@ import { BackendApiService }                                       from '../../.
 @Component({
     selector: 'app-dataset-edit',
     imports: [
-        CommonModule, ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, MatTooltipModule,
-        MatInputModule, MtxSelectModule, CdkDrag, CdkDragHandle,
-    ],
+    ReactiveFormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatTooltipModule,
+    MatInputModule,
+    MtxSelectModule,
+    CdkDrag,
+    CdkDragHandle
+],
     templateUrl: './dataset-edit.component.html',
     styleUrl: './dataset-edit.component.scss'
 })

@@ -1,4 +1,4 @@
-import { CommonModule }                                     from '@angular/common';
+
 import { Component, Inject }                                from '@angular/core';
 import { MatButtonModule }                                  from '@angular/material/button';
 import { MatCardModule }                                    from '@angular/material/card';
@@ -9,8 +9,11 @@ import { MatTooltipModule }                                 from '@angular/mater
 @Component({
     selector: 'app-info',
     imports: [
-        CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule,
-    ],
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule
+],
     templateUrl: './info.component.html',
     styleUrls: ['./info.component.scss']
 })

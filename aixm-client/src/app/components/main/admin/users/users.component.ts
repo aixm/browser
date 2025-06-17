@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component }          from '@angular/core';
 import { FormsModule }                  from '@angular/forms';
 import { MatButtonModule }              from '@angular/material/button';
@@ -17,7 +17,7 @@ import { UserEditComponent } from '../user-edit/user-edit.component';
 
 @Component({
   selector: 'app-users',
-  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule],
+  imports: [FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
   standalone: true

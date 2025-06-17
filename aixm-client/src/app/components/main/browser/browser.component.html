@@ -1,124 +1,140 @@
 <div class="page-container">
-    <div class="page-title">Dataset Browser</div>
-    <div class="page-subtitle">Browse dataset features and its properties</div>
+  <div class="page-title">Dataset Browser</div>
+  <div class="page-subtitle">Browse dataset features and its properties</div>
 
-    <div class="pg-bar">
-        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-    </div>
+  <div class="pg-bar">
+    @if (loading) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+  </div>
 
-    <mat-toolbar>
-        <mat-toolbar-row style="padding-left: 0.3em">
-            <button *ngIf="authService.User" color="primary" mat-stroked-button class="tbr-btn" matTooltip="New" (click)="addDataset()" ><mat-icon>add</mat-icon></button>
-            <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
-            <div style="margin-left: 2em"></div>
-            <mat-slide-toggle class="tbr-btn" color="primary"
-                [matBadge]="getSelectedDatasets().length"
-                [matBadgeHidden]="getSelectedDatasets().length===0"
-                [(ngModel)]="multiMode"
-                (ngModelChange)="multiModeToggle()">Multi Mode
-            </mat-slide-toggle>
-<!--                <mat-checkbox class="tbr-btn" color="primary"
-                          [matBadge]="getSelectedDatasets().length"
-                          [matBadgeHidden]="getSelectedDatasets().length===0"
-                          [(ngModel)]="multiMode"
-                          (ngModelChange)="multiModeToggle()">Multi Mode</mat-checkbox>-->
-            <button *ngIf="multiMode && (!featureLists && getSelectedDatasets().length>0)"
-                    color="primary" mat-stroked-button class="tbr-btn" style="margin-left: 1em!important;"
-                    matTooltip="Browse together"
-                    (click)="refresh()"><mat-icon>merge_type</mat-icon></button>
+  <mat-toolbar>
+    <mat-toolbar-row style="padding-left: 0.3em">
+      @if (authService.User) {
+        <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="New" (click)="addDataset()" ><mat-icon>add</mat-icon></button>
+      }
+      <button color="primary" mat-stroked-button class="tbr-btn" matTooltip="Refresh" (click)="refresh()" ><mat-icon>refresh</mat-icon></button>
+      <div style="margin-left: 2em"></div>
+      <mat-slide-toggle class="tbr-btn" color="primary"
+        [matBadge]="getSelectedDatasets().length"
+        [matBadgeHidden]="getSelectedDatasets().length===0"
+        [(ngModel)]="multiMode"
+        (ngModelChange)="multiModeToggle()">Multi Mode
+      </mat-slide-toggle>
+      <!--                <mat-checkbox class="tbr-btn" color="primary"
+      [matBadge]="getSelectedDatasets().length"
+      [matBadgeHidden]="getSelectedDatasets().length===0"
+      [(ngModel)]="multiMode"
+    (ngModelChange)="multiModeToggle()">Multi Mode</mat-checkbox>-->
+    @if (multiMode && (!featureLists && getSelectedDatasets().length>0)) {
+      <button
+        color="primary" mat-stroked-button class="tbr-btn" style="margin-left: 1em!important;"
+        matTooltip="Browse together"
+        (click)="refresh()"><mat-icon>merge_type</mat-icon></button>
+      }
 
-            <div style="margin-left: 2em">
-                <ng-container *ngIf="dataset || featureLists">
-                    <button class="tbr-btn" mat-button (click)="goDatasets()">
-                        <mat-icon style="transform: rotate(-90deg)">turn_right</mat-icon>
-                        <span>..</span>
-                    </button>
-                    <span>/</span>
-                    <button mat-button (click)="goFeatureLists(dataset)" [matTooltip]="getTooltip(dataset?.name,10)">
-                        <mat-icon>storage</mat-icon>
-                        <span>{{dataset ? (dataset.name | limitTo : 10 ) : getSelectedDatasets().length + ' Datasets'}}</span>
-                    </button>
-                </ng-container>
-                <ng-container *ngIf="feature">
-                    <span>/</span>
-                    <button mat-button (click)="goDatasetFeatures(feature)">
-                        <mat-icon>
-                            <app-aixm-icon [feature]="feature" [width]="18"></app-aixm-icon>
-                        </mat-icon>
-                        <span>{{feature.name}}</span>
-                    </button>
-                </ng-container>
-                <ng-container *ngIf="datasetFeature">
-                    <span>/</span>
-                    <button mat-button (click)="goDatasetFeature(datasetFeature)" matTooltip="{{datasetFeature.getLabel()}}">
-                        <mat-icon>
-                            <app-aixm-icon [feature]="datasetFeature.feature ? datasetFeature.feature : feature" [width]="18"></app-aixm-icon>
-                        </mat-icon>
-                        <span>{{datasetFeature.getLabel() | limitTo: 10}}</span>
-                    </button>
-                </ng-container>
-            </div>
-            <div style="display: flex; flex-grow: 1"></div>
-            <mat-button-toggle-group [value]="viewLayout" (valueChange)="switchLayout($event)">
-                <mat-button-toggle value="browser" matTooltip="Browser layout">
-                    <mat-icon>web</mat-icon>
-                </mat-button-toggle>
-                <mat-button-toggle value="graph" matTooltip="Graph layout">
-                    <mat-icon>spoke</mat-icon>
-                </mat-button-toggle>
-                <mat-button-toggle value="combined" matTooltip="Combined layout">
-                    <mat-icon>vertical_split</mat-icon>
-                </mat-button-toggle>
-            </mat-button-toggle-group>
-            <div style="width: 1em"></div>
-            <mat-form-field style="width: 25%" appearance="outline" subscriptSizing="dynamic" >
-                <mat-icon matPrefix>search</mat-icon>
+      <div style="margin-left: 2em">
+        @if (dataset || featureLists) {
+          <button class="tbr-btn" mat-button (click)="goDatasets()">
+            <mat-icon style="transform: rotate(-90deg)">turn_right</mat-icon>
+            <span>..</span>
+          </button>
+          <span>/</span>
+          <button mat-button (click)="goFeatureLists(dataset)" [matTooltip]="getTooltip(dataset?.name,10)">
+            <mat-icon>storage</mat-icon>
+            <span>{{dataset ? (dataset.name | limitTo : 10 ) : getSelectedDatasets().length + ' Datasets'}}</span>
+          </button>
+        }
+        @if (feature) {
+          <span>/</span>
+          <button mat-button (click)="goDatasetFeatures(feature)">
+            <mat-icon>
+              <app-aixm-icon [feature]="feature" [width]="18"></app-aixm-icon>
+            </mat-icon>
+            <span>{{feature.name}}</span>
+          </button>
+        }
+        @if (datasetFeature) {
+          <span>/</span>
+          <button mat-button (click)="goDatasetFeature(datasetFeature)" matTooltip="{{datasetFeature.getLabel()}}">
+            <mat-icon>
+              <app-aixm-icon [feature]="datasetFeature.feature ? datasetFeature.feature : feature" [width]="18"></app-aixm-icon>
+            </mat-icon>
+            <span>{{datasetFeature.getLabel() | limitTo: 10}}</span>
+          </button>
+        }
+      </div>
+      <div style="display: flex; flex-grow: 1"></div>
+      <mat-button-toggle-group [value]="viewLayout" (valueChange)="switchLayout($event)">
+        <mat-button-toggle value="browser" matTooltip="Browser layout">
+          <mat-icon>web</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="graph" matTooltip="Graph layout">
+          <mat-icon>spoke</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="combined" matTooltip="Combined layout">
+          <mat-icon>vertical_split</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      <div style="width: 1em"></div>
+      <mat-form-field style="width: 25%" appearance="outline" subscriptSizing="dynamic" >
+        <mat-icon matPrefix>search</mat-icon>
                 <input matInput type="search" placeholder="search {{datasetFeature || feature?'feature UUID or property value':
                     (dataset?'feature name, abbreviation or description':'dataset attributes')}}"
-                    [(ngModel)]="searchText" (search)="refresh()">
-            </mat-form-field>
-        </mat-toolbar-row>
+          [(ngModel)]="searchText" (search)="refresh()">
+        </mat-form-field>
+      </mat-toolbar-row>
     </mat-toolbar>
 
     <div style="display: flex; flex-flow: row; width: 100%">
         <div class="browser-panel" style="overflow: scroll; overflow-x: hidden; margin-top: 0.3em" [ngStyle]="{
             width: viewLayout==='browser' ? '100%' : (viewLayout==='combined' ? '50%' : '0')}">
-            <div *ngIf="!featureLists" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
-                <app-dataset style="flex: 0.1;" *ngFor="let d of datasets"
-                             [dataset]="d"
-                             [showCheckBox]="multiMode"
-                             (cardClick)="datasetClick($event)"></app-dataset>
-            </div>
-            <div *ngIf="featureLists && !feature" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
-                <app-feature style="flex: 0.7;" *ngFor="let f of featureLists" [featureList]="f" (cardClick)="goDatasetFeatures($event)"></app-feature>
-            </div>
-            <div *ngIf="feature" [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
-                <!--Need to use @for instead of ngFor for 2-way binding-->
-                @for (df of datasetFeatures; track df.id; let idx = $index) {
-                    <app-dataset-feature style="flex: 0.7;"
-                                         [feature]="df.feature"
-                                         [(datasetFeature)]="datasetFeatures[idx]"
-                                         (cardClick)="goDatasetFeatureWithPageEvent($event)"
-                                         (featureVisibilityChange)="featureVisibilityChange()"
-                                         (copyToClipboardClick)="copyToCb($event)"
-                                         (goToDatasetClick)="goFeatureLists($event)"
-                    ></app-dataset-feature>
-                }
-            </div>
-        </div>
+        @if (!featureLists) {
+          <div [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
+            @for (d of datasets; track d) {
+              <app-dataset style="flex: 0.1;"
+                [dataset]="d"
+                [showCheckBox]="multiMode"
+              (cardClick)="datasetClick($event)"></app-dataset>
+            }
+          </div>
+        }
+        @if (featureLists && !feature) {
+          <div [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
+            @for (f of featureLists; track f) {
+              <app-feature style="flex: 0.7;" [featureList]="f" (cardClick)="goDatasetFeatures($event)"></app-feature>
+            }
+          </div>
+        }
+        @if (feature) {
+          <div [ngStyle]="{display: viewLayout==='graph' ? 'none' : 'flex' }" style="flex-flow: wrap;">
+            <!--Need to use @for instead of ngFor for 2-way binding-->
+            @for (df of datasetFeatures; track df.id; let idx = $index) {
+              <app-dataset-feature style="flex: 0.7;"
+                [feature]="df.feature"
+                [(datasetFeature)]="datasetFeatures[idx]"
+                (cardClick)="goDatasetFeatureWithPageEvent($event)"
+                (featureVisibilityChange)="featureVisibilityChange()"
+                (copyToClipboardClick)="copyToCb($event)"
+                (goToDatasetClick)="goFeatureLists($event)"
+              ></app-dataset-feature>
+            }
+          </div>
+        }
+      </div>
         <div #graphContainer class="browser-panel" [ngStyle]="{
             width: viewLayout==='browser' ? '0' : (viewLayout==='combined' ? '50%' : '100%')}">
-        </div>
+      </div>
     </div>
 
     <mat-paginator mat-paginator #paginator style="position: sticky; bottom: 1px; left: 1px; display: flex; width: 100%; z-index: 5000"
-                   (page)="handlePageEvent($event)"
-                   [length]="pageEvent.length"
-                   [pageSize]="pageEvent.pageSize"
-                   [showFirstLastButtons]="true"
-                   [pageSizeOptions]= pageSizeOptions
-                   [pageIndex]="pageEvent.pageIndex"
-                   aria-label="Select page">
+      (page)="handlePageEvent($event)"
+      [length]="pageEvent.length"
+      [pageSize]="pageEvent.pageSize"
+      [showFirstLastButtons]="true"
+      [pageSizeOptions]= pageSizeOptions
+      [pageIndex]="pageEvent.pageIndex"
+      aria-label="Select page">
     </mat-paginator>
 
-</div>
+  </div>

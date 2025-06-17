@@ -1,74 +1,108 @@
 <mat-card style="max-width: 30em" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
-    <mat-card-header class="dialog-header" cdkDragHandle>
-        <mat-card-title>
-            {{dataset.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM dataset</mat-card-title>
-        <div class="flex-full-row"></div>
-        <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
-            <mat-icon>close</mat-icon>
-        </button>
-    </mat-card-header>
-    <mat-card-content>
-        <div class="pg-bar">
-            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-        </div>
-        <div>
-            <form [formGroup]="datasetForm">
+  <mat-card-header class="dialog-header" cdkDragHandle>
+    <mat-card-title>
+    {{dataset.id ? (data.disableForm?'View':'Edit') : 'Create'}} AIXM dataset</mat-card-title>
+    <div class="flex-full-row"></div>
+    <button mat-icon-button matTooltip="Close" (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="pg-bar">
+      @if (loading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
+    </div>
+    <div>
+      <form [formGroup]="datasetForm">
 
-                <mat-form-field style="width: 100%" appearance="outline">
-                    <mat-label>Name of the Dataset</mat-label>
-                    <input matInput placeholder="Name of the Dataset" formControlName="name">
-                    <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
-                        <mat-hint *ngIf="name?.errors?.['required']">Name is required</mat-hint>
-                        <mat-hint *ngIf="name?.errors?.['minlength']">At least 2 characters</mat-hint>
-                        <mat-hint *ngIf="name?.errors?.['maxlength']">No longer than 50 characters</mat-hint>
-                        <mat-hint *ngIf="name?.errors?.['serverError']">{{ name?.errors?.['serverError'] }}</mat-hint>
-                    </mat-error>
-                </mat-form-field>
+        <mat-form-field style="width: 100%" appearance="outline">
+          <mat-label>Name of the Dataset</mat-label>
+          <input matInput placeholder="Name of the Dataset" formControlName="name">
+          @if (name?.invalid && (name?.dirty || name?.touched)) {
+            <mat-error>
+              @if (name?.errors?.['required']) {
+                <mat-hint>Name is required</mat-hint>
+              }
+              @if (name?.errors?.['minlength']) {
+                <mat-hint>At least 2 characters</mat-hint>
+              }
+              @if (name?.errors?.['maxlength']) {
+                <mat-hint>No longer than 50 characters</mat-hint>
+              }
+              @if (name?.errors?.['serverError']) {
+                <mat-hint>{{ name?.errors?.['serverError'] }}</mat-hint>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
 
-                <mat-form-field appearance="outline" *ngIf="authService.User?.role==='admin'" style="width: 100%">
-                    <mat-label>User</mat-label>
-                    <mtx-select [items]="users"  placeholder="Dataset's user" formControlName="userId"
-                                bindLabel="id" bindValue="id" [value]="userId" [searchFn]="userSearchFn">
-                        <ng-template ng-label-tmp let-item="item">
-                            {{ item.firstName + ' ' + item.lastName }}
-                        </ng-template>
-                        <ng-template ng-option-tmp  let-item="item" let-index="index" let-search="searchTerm">
-                            <div>{{ item.firstName + ' ' + item.lastName }}</div>
-                            <div>{{ item.email }}</div>
-                        </ng-template>
-                    </mtx-select>
-                    <mat-error *ngIf="userId?.invalid && (userId?.dirty || userId?.touched)">
-                        <mat-hint *ngIf="userId?.errors?.['required']">User is required</mat-hint>
-                        <mat-hint *ngIf="userId?.errors?.['serverError']">{{ userId?.errors?.['serverError'] }}</mat-hint>
-                    </mat-error>
-                </mat-form-field>
+        @if (authService.User?.role==='admin') {
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>User</mat-label>
+            <mtx-select [items]="users"  placeholder="Dataset's user" formControlName="userId"
+              bindLabel="id" bindValue="id" [value]="userId" [searchFn]="userSearchFn">
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.firstName + ' ' + item.lastName }}
+              </ng-template>
+              <ng-template ng-option-tmp  let-item="item" let-index="index" let-search="searchTerm">
+                <div>{{ item.firstName + ' ' + item.lastName }}</div>
+                <div>{{ item.email }}</div>
+              </ng-template>
+            </mtx-select>
+            @if (userId?.invalid && (userId?.dirty || userId?.touched)) {
+              <mat-error>
+                @if (userId?.errors?.['required']) {
+                  <mat-hint>User is required</mat-hint>
+                }
+                @if (userId?.errors?.['serverError']) {
+                  <mat-hint>{{ userId?.errors?.['serverError'] }}</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
 
-                <mat-form-field style="width: 100%" appearance="outline">
-                    <mat-label>Description of the Dataset</mat-label>
-                    <input matInput placeholder="Description of the Dataset" formControlName="description">
-                    <mat-error *ngIf="description?.invalid && (description?.dirty || description?.touched)">
-                        <mat-hint *ngIf="description?.errors?.['minlength']">At least 2 characters</mat-hint>
-                        <mat-hint *ngIf="description?.errors?.['maxlength']">No longer than 255 characters</mat-hint>
-                    </mat-error>
-                </mat-form-field>
+        <mat-form-field style="width: 100%" appearance="outline">
+          <mat-label>Description of the Dataset</mat-label>
+          <input matInput placeholder="Description of the Dataset" formControlName="description">
+          @if (description?.invalid && (description?.dirty || description?.touched)) {
+            <mat-error>
+              @if (description?.errors?.['minlength']) {
+                <mat-hint>At least 2 characters</mat-hint>
+              }
+              @if (description?.errors?.['maxlength']) {
+                <mat-hint>No longer than 255 characters</mat-hint>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
 
-                <input #fileUpload type="file" accept="text/xml" (change)="onFileSelected($event)"
-                       [multiple]="false" style="display:none;" [disabled]="data.disableForm || dataset.id" />
-                <mat-form-field style="width: 100%; cursor: pointer" (click)="fileUpload.click()" appearance="outline">
-                    <mat-icon matSuffix color="accent">upload</mat-icon>
-                    <input matInput type="text" placeholder="Select AIXM XML file" formControlName="fileName" [readonly]="true">
-                    <mat-error *ngIf="fileName?.invalid && (fileName?.dirty || fileName?.touched)">
-                        <mat-hint *ngIf="fileName?.errors?.['required']">XML file is required</mat-hint>
-                        <mat-hint *ngIf="fileName?.errors?.['maxsize']">Maximum XML file size is 100Mb</mat-hint>
-                    </mat-error>
-                </mat-form-field>
-            </form>
-        </div>
+        <input #fileUpload type="file" accept="text/xml" (change)="onFileSelected($event)"
+          [multiple]="false" style="display:none;" [disabled]="data.disableForm || dataset.id" />
+          <mat-form-field style="width: 100%; cursor: pointer" (click)="fileUpload.click()" appearance="outline">
+            <mat-icon matSuffix color="accent">upload</mat-icon>
+            <input matInput type="text" placeholder="Select AIXM XML file" formControlName="fileName" [readonly]="true">
+            @if (fileName?.invalid && (fileName?.dirty || fileName?.touched)) {
+              <mat-error>
+                @if (fileName?.errors?.['required']) {
+                  <mat-hint>XML file is required</mat-hint>
+                }
+                @if (fileName?.errors?.['maxsize']) {
+                  <mat-hint>Maximum XML file size is 100Mb</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        </form>
+      </div>
     </mat-card-content>
     <mat-card-actions style="justify-content: flex-end">
-        <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
-        <button *ngIf="!data.disableForm" mat-stroked-button class="tbr-btn" color="primary" (click)="save()">
-            <mat-icon>save</mat-icon>Save</button>
-    </mat-card-actions>
-</mat-card>
+      <button mat-stroked-button class="tbr-btn" color="accent" (click)="dialogRef.close(false)"><mat-icon>cancel</mat-icon>Cancel</button>
+      @if (!data.disableForm) {
+        <button mat-stroked-button class="tbr-btn" color="primary" (click)="save()">
+          <mat-icon>save</mat-icon>Save</button>
+        }
+      </mat-card-actions>
+    </mat-card>
 

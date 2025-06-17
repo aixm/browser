@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule }      from '@angular/common';
+
 import * as L                                   from 'leaflet';
 
 @Component({
     selector: 'app-map',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './map.component.html',
     styleUrl: './map.component.scss'
 })

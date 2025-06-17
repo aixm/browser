@@ -1,6 +1,6 @@
 import { HttpHeaders }                             from '@angular/common/http';
 import { Component } from '@angular/core';
-import { CommonModule }                            from '@angular/common';
+
 import { FormsModule }                           from '@angular/forms';
 import { MatButtonModule }                       from '@angular/material/button';
 import { MatCardModule }                         from '@angular/material/card';
@@ -19,7 +19,7 @@ import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
 
 @Component({
   selector: 'app-datasets',
-  imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule],
+  imports: [FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule],
   templateUrl: './datasets.component.html',
   styleUrl: './datasets.component.scss',
   standalone: true
