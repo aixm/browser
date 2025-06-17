@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
-import { Component, Inject, OnInit }                                       from '@angular/core';
+import { Component, OnInit, inject }                                       from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }                                           from '@angular/material/card';
@@ -35,6 +35,11 @@ import { BackendApiService }                                       from '../../.
     styleUrl: './user-edit.component.scss'
 })
 export class UserEditComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<UserEditComponent>>(MatDialogRef);
+  authService = inject(AuthService);
+  data = inject(MAT_DIALOG_DATA);
+  private backendApiService = inject(BackendApiService);
+
   url: string = 'users';
   user!: User;
   loading: boolean = false;
@@ -50,13 +55,6 @@ export class UserEditComponent implements OnInit {
   get company() { return this.userForm.get('company'); }
   get position() { return this.userForm.get('position'); }
   get role() { return this.userForm.get('role'); }
-
-  constructor(
-      public dialogRef: MatDialogRef<UserEditComponent>,
-      public authService: AuthService,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      private backendApiService: BackendApiService
-  ) { }
 
   ngOnInit(): void {
     this.user = this.data.user;

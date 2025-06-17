@@ -25,6 +25,8 @@ import { SpeechService }                       from '../../../../services/speech
     providers: [SpeechService]
 })
 export class VoiceInputFieldComponent implements OnInit, OnDestroy {
+  speechService = inject(SpeechService);
+
   @Input() appearance: MatFormFieldAppearance = 'fill';
   @Input() label: string = '';
   @Input() style: string = '';
@@ -40,8 +42,6 @@ export class VoiceInputFieldComponent implements OnInit, OnDestroy {
   public transcript: string = '';
   private subscription: Subscription | undefined;
   readonly dialog: MatDialog = inject(MatDialog);
-
-  constructor(public speechService: SpeechService) {}
 
   ngOnInit(): void {
     this.subscription = this.speechService.transcript.subscribe((text: string): void => {

@@ -1,5 +1,5 @@
 
-import { Component }          from '@angular/core';
+import { Component, inject }          from '@angular/core';
 import { FormsModule }                  from '@angular/forms';
 import { MatButtonModule }              from '@angular/material/button';
 import { MatCardModule }           from '@angular/material/card';
@@ -23,6 +23,9 @@ import { UserEditComponent } from '../user-edit/user-edit.component';
   standalone: true
 })
 export class UsersComponent extends BaseGridComponent {
+  private backendApiService = inject(BackendApiService);
+  private matDialog = inject(MatDialog);
+
   url: string = 'users';
   users: User[] = [];
   roles: Role[]  = this.authService.roles;
@@ -86,11 +89,6 @@ export class UsersComponent extends BaseGridComponent {
       ], sortable: false
     },
   ];
-
-  constructor(
-      private backendApiService: BackendApiService,
-      private matDialog: MatDialog,
-  ) {super()}
 
   override refresh(): void {
     this.loading = true;

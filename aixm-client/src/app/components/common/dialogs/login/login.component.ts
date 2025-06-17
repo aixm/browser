@@ -1,5 +1,5 @@
 
-import { Component, OnInit }                                               from '@angular/core';
+import { Component, OnInit, inject }                                               from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }    from '@angular/material/card';
@@ -26,18 +26,16 @@ import { BackendApiService } from '../../../../services/backend-api.service';
     styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<LoginComponent>>(MatDialogRef);
+  private backendApiService = inject(BackendApiService);
+  private authService = inject(AuthService);
+
   loading: boolean = false;
   loginForm!: FormGroup;
   showPassword: boolean = false;
 
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
-
-  constructor(
-      public dialogRef: MatDialogRef<LoginComponent>,
-      private backendApiService: BackendApiService,
-      private authService: AuthService
-  ) {}
 
   ngOnInit(): void {
     this.initForm();

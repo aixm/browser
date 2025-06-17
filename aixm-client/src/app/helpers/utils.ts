@@ -101,8 +101,8 @@ export function toCamel(o: any): any {
   } else {
     newO = {};
     for (origKey in o) {
-      if (o.hasOwnProperty(origKey)) {
-        newKey = origKey.replace(/(\_\w)/g, (m) => {
+      if (Object.prototype.hasOwnProperty.call(o, origKey)) {
+        newKey = origKey.replace(/(_\w)/g, (m) => {
           return m[1].toUpperCase();
         });
       }

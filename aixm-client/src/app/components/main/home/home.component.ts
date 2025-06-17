@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -12,10 +12,7 @@ import { AuthService } from '../../../services/auth.service';
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent {  authService = inject(AuthService);
 
-  constructor(
-      public authService: AuthService,
-  ) {}
 
 }

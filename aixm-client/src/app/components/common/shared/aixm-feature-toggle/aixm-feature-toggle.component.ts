@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output }     from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject }     from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule }                           from '@angular/material/tooltip';
 import { handleErrorMissingFeatureImage }             from '../../../../helpers/utils';
@@ -16,13 +16,11 @@ import { FeatureService }                             from '../../../../services
   standalone: true
 })
 export class AixmFeatureToggleComponent {
+  featureService = inject(FeatureService);
+
   @Input() feature?: Feature;
   @Input() color: string = 'primary';
   @Output() featureVisibilityChange: EventEmitter<Feature> = new EventEmitter<Feature>();
-
-  constructor(
-      public featureService: FeatureService
-  ) {}
 
   toggleChange($event: MatSlideToggleChange): void {
     // console.log($event);

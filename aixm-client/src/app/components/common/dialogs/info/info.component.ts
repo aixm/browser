@@ -1,5 +1,5 @@
 
-import { Component, Inject }                                from '@angular/core';
+import { Component, inject }                                from '@angular/core';
 import { MatButtonModule }                                  from '@angular/material/button';
 import { MatCardModule }                                    from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA }                    from '@angular/material/dialog';
@@ -17,11 +17,8 @@ import { MatTooltipModule }                                 from '@angular/mater
     templateUrl: './info.component.html',
     styleUrls: ['./info.component.scss']
 })
-export class InfoComponent {
+export class InfoComponent {  dialogRef = inject<MatDialogRef<InfoComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
 
-  constructor(
-      public dialogRef: MatDialogRef<InfoComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
 
 }

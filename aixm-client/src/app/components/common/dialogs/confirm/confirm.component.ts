@@ -1,5 +1,5 @@
 
-import { Component, Inject }                                from '@angular/core';
+import { Component, inject }                                from '@angular/core';
 import { MatButtonModule }                                  from '@angular/material/button';
 import { MatCardModule }                                    from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA }                    from '@angular/material/dialog';
@@ -17,11 +17,8 @@ import { MatTooltipModule }                                 from '@angular/mater
     templateUrl: './confirm.component.html',
     styleUrls: ['./confirm.component.scss']
 })
-export class ConfirmComponent {
+export class ConfirmComponent {  dialogRef = inject<MatDialogRef<ConfirmComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
 
-  constructor(
-      public dialogRef: MatDialogRef<ConfirmComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
 
 }

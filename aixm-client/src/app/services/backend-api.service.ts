@@ -1,5 +1,5 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
-import { Injectable }    from '@angular/core';
+import { Injectable, inject }    from '@angular/core';
 import { FormGroup }                            from '@angular/forms';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -11,13 +11,12 @@ import { ApiResponse }                          from '../models/api-response';
   providedIn: 'root'
 })
 export class BackendApiService {
+  private httpClient = inject(HttpClient);
+  private snackBar = inject(MatSnackBar);
+
   //backendUrlValue: string 'http://localhost:3000';
   //backendUrlValue: string = 'http://localhost:5000';
   backendUrlValue: string = environment.apiUrl;
-  constructor(
-      private httpClient: HttpClient,
-      private snackBar: MatSnackBar,
-  ) { }
 
   /**
    * Get backend base path

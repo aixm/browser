@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule }                           from '@angular/common';
 import { MatButtonModule }                        from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,13 +15,11 @@ import { ThemeService }                           from '../../../../services/the
     styleUrl: './theme-switcher.component.scss'
 })
 export class ThemeSwitcherComponent {
+  themeService = inject(ThemeService);
+
   @Input() themeOptions: ThemeOption[] | null | undefined;
   @Output() themeChange: EventEmitter<string> = new EventEmitter<string>();
   selectedTheme: string = this.themeService.getTheme();
-
-  constructor(
-      public themeService: ThemeService
-  ) {}
 
   changeTheme(themeToSet: string): void {
     this.themeChange.emit(themeToSet);

@@ -1,5 +1,5 @@
 import { HttpClient }          from '@angular/common/http';
-import { Injectable }          from "@angular/core";
+import { Injectable, inject }          from "@angular/core";
 import { Observable }          from 'rxjs';
 import { ThemeOption }         from '../models/theme-option';
 import { SettingsService }     from './settings.service';
@@ -8,14 +8,12 @@ import { SettingsService }     from './settings.service';
   providedIn: 'root'
 })
 export class ThemeService {
+  private httpClient = inject(HttpClient);
+  private settingsService = inject(SettingsService);
+
   url: string = 'assets/theme-options.json';
   defaultTheme: string = 'light-app-theme';
   themes: string[] = ['dark-app-theme', 'light-app-theme'];
-
-  constructor(
-      private httpClient: HttpClient,
-      private settingsService: SettingsService,
-  ) {}
 
   getThemeOptions(): Observable<ThemeOption[]> {
     return this.httpClient.get<ThemeOption[]>(this.url);

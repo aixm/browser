@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
-import { Component, Inject, OnInit }                                            from '@angular/core';
+import { Component, OnInit, inject }                                            from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators }              from '@angular/forms';
 import { MatButton, MatIconButton }                                             from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
@@ -45,6 +45,12 @@ import { FeatureService }                                                       
   standalone: true
 })
 export class FeatureEditComponent implements OnInit {
+  authService = inject(AuthService);
+  featureService = inject(FeatureService);
+  dialogRef = inject<MatDialogRef<FeatureEditComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private backendApiService = inject(BackendApiService);
+
   url: string = 'aixm/features';
   feature!: Feature;
   loading: boolean = false;
@@ -57,14 +63,6 @@ export class FeatureEditComponent implements OnInit {
   get order() { return this.featureForm.get('order'); }
   get namespace() { return this.featureForm.get('namespace'); }
   get description() { return this.featureForm.get('description'); }
-
-  constructor(
-      public authService: AuthService,
-      public featureService: FeatureService,
-      public dialogRef: MatDialogRef<FeatureEditComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      private backendApiService: BackendApiService,
-  ) { }
 
   ngOnInit(): void {
     this.feature = this.data.feature;

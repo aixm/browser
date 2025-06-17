@@ -1,5 +1,5 @@
 import { HttpClient }        from '@angular/common/http';
-import { Injectable }        from '@angular/core';
+import { Injectable, inject }        from '@angular/core';
 import { MatIconRegistry, IconResolver }   from '@angular/material/icon';
 import { DomSanitizer }                             from '@angular/platform-browser';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -11,16 +11,19 @@ import { BackendApiService } from './backend-api.service';
   providedIn: 'root'
 })
 export class IconService {
+  private backendApiService = inject(BackendApiService);
+  private matIconRegistry = inject(MatIconRegistry);
+  private domSanitizer = inject(DomSanitizer);
+  private httpClient = inject(HttpClient);
+
   private url: string = 'aixm/features';
   private features: Feature[] = [];
   private defaultSvgIcon: string = 'assets/images/icons/AIXM/default.svg';
 
-  constructor(
-      private backendApiService: BackendApiService,
-      private matIconRegistry: MatIconRegistry,
-      private domSanitizer: DomSanitizer,
-      private httpClient: HttpClient
-  ) {
+  constructor() {
+    const matIconRegistry = this.matIconRegistry;
+    const domSanitizer = this.domSanitizer;
+
     const resolver: IconResolver = (name: string) => domSanitizer.bypassSecurityTrustResourceUrl(`assets/images/icons/AIXM/${name}/${name}.svg`);
     matIconRegistry.addSvgIconResolver(resolver);
 

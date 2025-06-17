@@ -1,4 +1,4 @@
-import { Component, Inject }     from '@angular/core';
+import { Component, inject }     from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -6,11 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     templateUrl: './dynamic.component.html',
     styleUrls: ['./dynamic.component.scss'],
 })
-export class DynamicComponent {
+export class DynamicComponent {  dialogRef = inject<MatDialogRef<DynamicComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
 
-  constructor(
-      public dialogRef: MatDialogRef<DynamicComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
 
 }

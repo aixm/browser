@@ -1,5 +1,5 @@
 import { HttpHeaders }                             from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { FormsModule }                           from '@angular/forms';
 import { MatButtonModule }                       from '@angular/material/button';
@@ -25,6 +25,10 @@ import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
   standalone: true
 })
 export class DatasetsComponent extends BaseGridComponent {
+  private backendApiService = inject(BackendApiService);
+  private matDialog = inject(MatDialog);
+  private router = inject(Router);
+
   url: string = 'aixm/datasets';
   datasets: Dataset[] = [];
 
@@ -118,12 +122,6 @@ export class DatasetsComponent extends BaseGridComponent {
       ], sortable: false
     },
   ];
-
-  constructor(
-      private backendApiService: BackendApiService,
-      private matDialog: MatDialog,
-      private router: Router,
-  ) {super()}
 
   override refresh(): void {
     this.loading = true;

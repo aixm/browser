@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken }                   from '@angular/core';
+import { Injectable, InjectionToken, inject }                   from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, timeout }                                  from 'rxjs';
 import { AuthService }                                          from '../services/auth.service';
@@ -7,11 +7,9 @@ export const DEFAULT_TIMEOUT: InjectionToken<number> = new InjectionToken<number
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
+  protected defaultTimeout = inject(DEFAULT_TIMEOUT);
+  authService = inject(AuthService);
 
-  constructor(
-      @Inject(DEFAULT_TIMEOUT) protected defaultTimeout: number,
-      public authService: AuthService
-  ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

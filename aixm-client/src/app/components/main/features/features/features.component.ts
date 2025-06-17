@@ -1,5 +1,5 @@
 import { CommonModule }                                                           from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule }                    from '@angular/forms';
 import { MatButtonModule }                                     from '@angular/material/button';
 import { MatCardModule }           from '@angular/material/card';
@@ -27,6 +27,9 @@ import { FeatureEditComponent } from '../feature-edit/feature-edit.component';
   standalone: true
 })
 export class FeaturesComponent extends BaseGridComponent {
+  private backendApiService = inject(BackendApiService);
+  private matDialog = inject(MatDialog);
+
   url: string = 'aixm/features';
   features: Feature[] = [];
   override defaultColumns: MtxGridColumn[] = [
@@ -86,11 +89,6 @@ export class FeaturesComponent extends BaseGridComponent {
       ], sortable: false
     },
   ];
-
-  constructor(
-      private backendApiService: BackendApiService,
-      private matDialog: MatDialog,
-  ) {super()}
 
   override refresh(): void {
     this.loading = true;

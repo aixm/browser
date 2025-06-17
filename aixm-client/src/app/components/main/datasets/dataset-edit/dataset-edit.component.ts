@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { HttpHeaders }            from '@angular/common/http';
-import { Component, Inject, OnInit }                               from '@angular/core';
+import { Component, OnInit, inject }                               from '@angular/core';
 
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
@@ -36,6 +36,11 @@ import { BackendApiService }                                       from '../../.
     styleUrl: './dataset-edit.component.scss'
 })
 export class DatasetEditComponent implements OnInit  {
+  authService = inject(AuthService);
+  dialogRef = inject<MatDialogRef<DatasetEditComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private backendApiService = inject(BackendApiService);
+
   url: string = 'aixm/datasets';
   urlUsers: string = 'users';
   users: User[] = [];
@@ -48,13 +53,6 @@ export class DatasetEditComponent implements OnInit  {
   get userId() { return this.datasetForm.get('userId'); }
   get fileName() { return this.datasetForm.get('fileName'); }
   get file() { return this.datasetForm.get('file'); }
-
-  constructor(
-      public authService: AuthService,
-      public dialogRef: MatDialogRef<DatasetEditComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      private backendApiService: BackendApiService,
-  ) { }
 
   ngOnInit(): void {
     this.dataset = this.data.dataset;

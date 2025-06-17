@@ -1,12 +1,12 @@
 @if (feature) {
   @if (matCardAvatar) {
-<img mat-card-avatar alt="{{ feature?.abbreviation }}" width="{{ width }}" [src]="(feature?.icon ? feature?.icon :
-            'assets/images/icons/AIXM/'+ feature?.abbreviation+'/'+feature?.abbreviation+'.svg')"
+<img mat-card-avatar alt="{{ feature.abbreviation }}" width="{{ width }}" [src]="(feature.icon ? feature.icon :
+            'assets/images/icons/AIXM/'+ feature.abbreviation+'/'+feature.abbreviation+'.svg')"
       (error)="handleErrorMissingFeatureImage($event)">
   }
   @if (!matCardAvatar) {
-<img alt="{{ feature?.abbreviation }}" width="{{ width }}" [src]="(feature?.icon ? feature?.icon :
-            'assets/images/icons/AIXM/'+ feature?.abbreviation+'/'+feature?.abbreviation+'.svg')"
+<img alt="{{ feature.abbreviation }}" width="{{ width }}" [src]="(feature.icon ? feature.icon :
+            'assets/images/icons/AIXM/'+ feature.abbreviation+'/'+feature.abbreviation+'.svg')"
       (error)="handleErrorMissingFeatureImage($event)">
   }
 } @else {

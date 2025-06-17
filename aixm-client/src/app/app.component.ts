@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,16 +29,16 @@ import { ThemeService } from './services/theme.service';
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+  private readonly themeService = inject(ThemeService);
+  private matDialog = inject(MatDialog);
+  authService = inject(AuthService);
+  private iconService = inject(IconService);
+
   title: string = getTitle();
   version: string = packageInfo.version;
   themeOptions$: Observable<ThemeOption[]> = this.themeService.getThemeOptions();
   show: boolean = false;
-  constructor(
-      private readonly themeService: ThemeService,
-      private matDialog: MatDialog,
-      public authService: AuthService,
-      private iconService: IconService
-  ) {
+  constructor() {
     //this.iconService.initIcons();
     this.themeService.setTheme();
   }

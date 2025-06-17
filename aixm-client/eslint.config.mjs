@@ -13,7 +13,7 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
-    globalIgnores(["projects/**/*", "**/dist", "**/docker", "**/node_modules"]),
+    globalIgnores(["projects/**/*", "**/dist", "**/docker", "**/node_modules", "**/.angular"]),
     {
         files: ["**/*.ts"],
 

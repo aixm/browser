@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule }                             from '@angular/common';
 import { FormsModule }                              from '@angular/forms';
 import { MatBadgeModule }                           from '@angular/material/badge';
@@ -47,6 +47,14 @@ import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.compo
   standalone: true
 })
 export class BrowserComponent implements OnInit {
+  private backendApiService = inject(BackendApiService);
+  private matDialog = inject(MatDialog);
+  private settingsService = inject(SettingsService);
+  private route = inject(ActivatedRoute);
+  private featureService = inject(FeatureService);
+  private notificationService = inject(NotificationService);
+  authService = inject(AuthService);
+
   @ViewChild('graphContainer', { static: true }) graphContainer!: ElementRef;
   private network: Network | undefined;
   private urlDatasets: string = 'aixm/datasets';
@@ -65,17 +73,6 @@ export class BrowserComponent implements OnInit {
   nodes: Node[] = [];
   edges: Edge[] = [];
   multiMode: boolean = false;
-
-
-  constructor(
-      private backendApiService: BackendApiService,
-      private matDialog: MatDialog,
-      private settingsService: SettingsService,
-      private route: ActivatedRoute,
-      private featureService: FeatureService,
-      private notificationService: NotificationService,
-      public authService: AuthService
-  ) {}
 
   ngOnInit(): void {
     // graph
@@ -167,8 +164,7 @@ export class BrowserComponent implements OnInit {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  refreshDatasets(callback?: Function, paging: boolean = true): void {
+  refreshDatasets(callback?: (...args: any[]) => void, paging: boolean = true): void {
     this.loading = true;
     this.backendApiService.getData(`${this.urlDatasets}?${paging ? this.getPagingUrl() : '' }`+ (this.searchText ? '&search=' + this.searchText : ''))
         .subscribe((data: ApiResponse): void => {

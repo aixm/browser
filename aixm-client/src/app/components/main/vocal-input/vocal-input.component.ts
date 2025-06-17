@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit }      from '@angular/core';
+import { Component, OnDestroy, OnInit, inject }      from '@angular/core';
 import { MatFabButton }                      from '@angular/material/button';
 import { MatIcon }                           from '@angular/material/icon';
 import { MatTooltip }                                                                 from '@angular/material/tooltip';
@@ -20,11 +20,11 @@ import { VoiceInputFieldComponent } from '../../common/shared/voice-input-field/
   standalone: true
 })
 export class VocalInputComponent implements OnInit, OnDestroy {
+  speechService = inject(SpeechService);
+
   public transcript: string = '';
   private subscription: Subscription | undefined;
   value: string = 'test';
-
-  constructor(public speechService: SpeechService) { }
 
   ngOnInit(): void {
     this.subscription = this.speechService.transcript.subscribe((text: string): void => {
