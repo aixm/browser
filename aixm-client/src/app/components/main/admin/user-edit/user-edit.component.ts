@@ -55,6 +55,7 @@ export class UserEditComponent implements OnInit {
   get lastName() { return this.userForm.get('lastName'); }
   get company() { return this.userForm.get('company'); }
   get position() { return this.userForm.get('position'); }
+  get displayName() { return this.userForm.get('displayName'); }
   get role() { return this.userForm.get('role'); }
 
   ngOnInit(): void {
@@ -92,6 +93,10 @@ export class UserEditComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(255)
       ]),
+      displayName: new FormControl(this.user?.displayName, [
+        Validators.minLength(2),
+        Validators.maxLength(100)
+      ]),
       role: new FormControl(this.user?.role, [
         Validators.required
       ]),
@@ -128,6 +133,7 @@ export class UserEditComponent implements OnInit {
     this.user.lastName = this.lastName?.value;
     this.user.company = this.company?.value;
     this.user.position = this.position?.value;
+    this.user.displayName = this.displayName?.value;
     if (this.changePassword?.value) {
       this.user.password = this.password?.value;
       this.user.changePassword = true;

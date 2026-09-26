@@ -25,6 +25,7 @@ class User extends Authenticatable
         'role',
         'company',
         'position',
+        'display_name',
         'active_at'
     ];
 
@@ -35,7 +36,8 @@ class User extends Authenticatable
         'last_name',
         'role',
         'company',
-        'position'
+        'position',
+        'display_name'
     ];
 
     protected $hidden = [

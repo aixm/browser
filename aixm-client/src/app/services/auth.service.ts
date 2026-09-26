@@ -101,6 +101,9 @@ export class AuthService {
   getUserTitle(): string {
     let user: string = 'unknown';
     if (this.User){
+      if (this.User.displayName) {
+        return this.User.displayName;
+      }
       if (this.User.firstName) {
         user = this.User.firstName
       }

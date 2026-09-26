@@ -36,8 +36,12 @@
     </ng-template>
     <ng-template #userTpl let-row let-index="index">
       @if (row.user) {
-        <div>{{ row.user.firstName + ' ' + row.user.lastName }}</div>
-        <div>{{ row.user.email }}</div>
+        @if (row.user.displayName) {
+          <div>{{ row.user.displayName }}</div>
+        } @else {
+          <div>{{ row.user.firstName + ' ' + row.user.lastName }}</div>
+          <div>{{ row.user.email }}</div>
+        }
       }
     </ng-template>
     <ng-template #statusTpl let-row let-index="index">

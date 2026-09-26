@@ -84,7 +84,7 @@
         }
         @if (authService.User) {
           <mat-icon style="cursor: pointer" matTooltip="My profile" (click)="profile()">person</mat-icon>
-          <span style="font-size: medium">{{authService.User.email}}</span>
+          <span style="font-size: medium">{{authService.getUserTitle()}}</span>
           <button  mat-icon-button class="main-tbr-btn" matTooltip="{{authService.getUserTitle()}} Logout" (click)="authService.logout()">
             <mat-icon>logout</mat-icon></button>
           }

@@ -5,6 +5,7 @@ export class User {
     lastName: string | undefined;
     company: string | undefined;
     position: string | undefined;
+    displayName: string | undefined;
     role!: string;
     email!: string;
     password: string | undefined;

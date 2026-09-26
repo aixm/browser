@@ -21,7 +21,8 @@ export class FilterUsersPipe implements PipeTransform {
       (user.firstName ? user.firstName.toLocaleLowerCase().includes(searchText) : false) ||
       (user.lastName ? user.lastName.toLocaleLowerCase().includes(searchText) : false) ||
       (user.company ? user.company.toLocaleLowerCase().includes(searchText) : false) ||
-      (user.position ? user.position.toLocaleLowerCase().includes(searchText) : false)
+      (user.position ? user.position.toLocaleLowerCase().includes(searchText) : false) ||
+      (user.displayName ? user.displayName.toLocaleLowerCase().includes(searchText) : false)
     );
   }
 }

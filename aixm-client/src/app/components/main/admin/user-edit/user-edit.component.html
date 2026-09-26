@@ -166,6 +166,23 @@
           </mat-form-field>
         </div>
 
+        <div class="flex-row">
+          <mat-form-field appearance="outline" style="flex-grow: 1">
+            <mat-label>Display name</mat-label>
+            <input matInput placeholder="Shown to other users instead of name/email" formControlName="displayName">
+            @if (displayName?.invalid && (displayName?.dirty || displayName?.touched)) {
+              <mat-error>
+                @if (displayName?.errors?.['minlength']) {
+                  <mat-hint>At least 2 characters</mat-hint>
+                }
+                @if (displayName?.errors?.['maxlength']) {
+                  <mat-hint>No longer than 100 characters</mat-hint>
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        </div>
+
       </form>
     </div>
 
