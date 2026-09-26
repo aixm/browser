@@ -1,4 +1,4 @@
-import { Component }                                                                              from '@angular/core';
+import { Component, ChangeDetectionStrategy }                                                                              from '@angular/core';
 import {
   MatExpansionPanel, MatExpansionPanelDescription, MatExpansionPanelHeader, MatExpansionPanelTitle,
 } from '@angular/material/expansion';
@@ -13,6 +13,7 @@ import { getTitle }                                                             
         MatExpansionPanelTitle,
     ],
     templateUrl: './about.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './about.component.scss'
 })
 export class AboutComponent {

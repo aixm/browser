@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
         RouterLink,
     ],
     templateUrl: './forbidden.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './forbidden.component.scss'
 })
 export class ForbiddenComponent {

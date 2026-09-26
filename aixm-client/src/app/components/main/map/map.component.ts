@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import * as L                                   from 'leaflet';
 
@@ -6,6 +6,7 @@ import * as L                                   from 'leaflet';
     selector: 'app-map',
     imports: [],
     templateUrl: './map.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './map.component.scss'
 })
 export class MapComponent implements OnInit {

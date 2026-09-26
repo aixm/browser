@@ -1,5 +1,5 @@
 import { HttpHeaders }                             from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule }                           from '@angular/forms';
 import { MatButtonModule }                       from '@angular/material/button';
@@ -22,6 +22,7 @@ import { DatasetEditComponent } from '../dataset-edit/dataset-edit.component';
   imports: [FormsModule, MatButtonModule, MatIconModule, MtxGridModule, MatCardModule],
   templateUrl: './datasets.component.html',
   styleUrl: './datasets.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class DatasetsComponent extends BaseGridComponent {

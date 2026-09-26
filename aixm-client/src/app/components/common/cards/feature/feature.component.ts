@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule }                                   from '@angular/common';
 import { MatButtonModule }                                from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +14,7 @@ import { AixmIconComponent }                              from '../../shared/aix
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, AixmIconComponent, LimitToPipe],
   templateUrl: './feature.component.html',
   styleUrl: './feature.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class FeatureComponent implements OnInit {

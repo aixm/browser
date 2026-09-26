@@ -36,7 +36,7 @@
           </mat-form-field>
           @if (!data.profile) {
             <section style="width: 7em;margin-left: 0.1em">
-              <mat-checkbox formControlName="active" [value]="active?.value" [labelPosition]="'after'">Active</mat-checkbox>
+              <mat-checkbox formControlName="active" [value]="$safeNavigationMigration(active?.value)" [labelPosition]="'after'">Active</mat-checkbox>
             </section>
           }
         </div>
@@ -45,11 +45,11 @@
           <mat-form-field appearance="outline" style="flex-grow: 1">
             <mat-label>Password</mat-label>
             <input matInput type="{{showPassword ? 'text' : 'password'}}" placeholder="User's password" formControlName="password">
-            <button mat-icon-button matSuffix color="primary" [matTooltip]="showPassword ? 'Hide' : 'Show'" [disabled]="password?.disabled"
+            <button mat-icon-button matSuffix color="primary" [matTooltip]="showPassword ? 'Hide' : 'Show'" [disabled]="$safeNavigationMigration(password?.disabled)"
               (click)="showPassword=!showPassword;">
               <mat-icon>{{showPassword ? 'key_off' : 'key'}}</mat-icon>
             </button>
-            <button mat-icon-button matSuffix color="primary" [matTooltip]="'Generate'" [disabled]="password?.disabled"
+            <button mat-icon-button matSuffix color="primary" [matTooltip]="'Generate'" [disabled]="$safeNavigationMigration(password?.disabled)"
               (click)="password?.setValue(Math.random().toString(36).slice(-8));">
               <mat-icon>keyboard</mat-icon>
             </button>
@@ -66,7 +66,7 @@
           </mat-form-field>
           @if (user.id) {
             <section style="width: 7em;margin-left: 0.1em">
-              <mat-checkbox formControlName="changePassword" [value]="changePassword?.value" [labelPosition]="'after'">Change</mat-checkbox>
+              <mat-checkbox formControlName="changePassword" [value]="$safeNavigationMigration(changePassword?.value)" [labelPosition]="'after'">Change</mat-checkbox>
             </section>
           }
         </div>

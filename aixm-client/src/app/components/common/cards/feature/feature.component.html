@@ -9,6 +9,6 @@
         <mat-card-subtitle>{{feature?.name}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-        {{feature?.description | limitTo: 100}}
+        {{$safeNavigationMigration(feature?.description) | limitTo: 100}}
     </mat-card-content>
 </mat-card>

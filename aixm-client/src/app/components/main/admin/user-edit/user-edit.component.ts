@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
-import { Component, OnInit, inject }                                       from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy }                                       from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }                                           from '@angular/material/card';
@@ -32,6 +32,7 @@ import { BackendApiService }                                       from '../../.
     CdkDragHandle
 ],
     templateUrl: './user-edit.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './user-edit.component.scss'
 })
 export class UserEditComponent implements OnInit {

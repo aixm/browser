@@ -1,5 +1,5 @@
 import { ClipboardModule }                                from '@angular/cdk/clipboard';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatBadgeModule }                                                        from '@angular/material/badge';
 import { MatBottomSheetModule }                                                  from '@angular/material/bottom-sheet';
@@ -41,6 +41,7 @@ import { AixmIconComponent }                      from '../../shared/aixm-icon/a
 ],
   templateUrl: './dataset-feature.component.html',
   styleUrl: './dataset-feature.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class DatasetFeatureComponent {

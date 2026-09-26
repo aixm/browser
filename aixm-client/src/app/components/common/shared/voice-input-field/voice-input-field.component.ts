@@ -1,5 +1,5 @@
 
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconButton }                                             from '@angular/material/button';
 import { MatDialog }                  from '@angular/material/dialog';
 import { MatFormField, MatFormFieldAppearance, MatLabel, MatSuffix } from '@angular/material/form-field';
@@ -22,6 +22,7 @@ import { SpeechService }                       from '../../../../services/speech
 ],
     templateUrl: './voice-input-field.component.html',
     styleUrl: './voice-input-field.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [SpeechService]
 })
 export class VoiceInputFieldComponent implements OnInit, OnDestroy {

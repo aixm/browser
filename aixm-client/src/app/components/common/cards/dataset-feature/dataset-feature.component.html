@@ -13,7 +13,7 @@
     <mat-toolbar>
       <mat-toolbar-row style="padding: 0px">
         <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Copy UUID"
-          (click)="copyToClipboard(datasetFeature?.gmlIdentifierValue)">
+          (click)="copyToClipboard($safeNavigationMigration(datasetFeature?.gmlIdentifierValue))">
           <mat-icon>content_copy</mat-icon>
         </button>
         <button mat-stroked-button class="tbr-btn" color="primary" matTooltip="Focus"
@@ -23,9 +23,9 @@
         <div class="flex-full-row"></div>
         <button mat-stroked-button class="tbr-btn" style="margin-right: 0.3em" color="primary"
           matTooltip="{{datasetFeature?.dataset?.name}}"
-          (click)="goToDataset(datasetFeature?.dataset)">
+          (click)="goToDataset($safeNavigationMigration(datasetFeature?.dataset))">
           <mat-icon>storage</mat-icon>
-          {{datasetFeature?.dataset?.name | limitTo: 15}}
+          {{$safeNavigationMigration(datasetFeature?.dataset?.name) | limitTo: 15}}
         </button>
       </mat-toolbar-row>
     </mat-toolbar>
@@ -68,8 +68,8 @@
         <div style="justify-content: flex-end; flex-grow: 1">
           <mat-paginator
             (page)="handleReferencedByPageEvent($event)"
-            [length]="datasetFeature?.referencedByFeaturesPagination.total"
-            [pageSize]="datasetFeature?.referencedByFeaturesPagination.perPage"
+            [length]="$safeNavigationMigration(datasetFeature?.referencedByFeaturesPagination.total)"
+            [pageSize]="$safeNavigationMigration(datasetFeature?.referencedByFeaturesPagination.perPage)"
             [showFirstLastButtons]="false"
             [hidePageSize]="true"
             [pageIndex]="referencedByPageEvent.pageIndex"

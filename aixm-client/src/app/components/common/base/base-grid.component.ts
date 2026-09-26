@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { PageEvent }                                                           from '@angular/material/paginator';
 import { MtxGrid, MtxGridColumn }  from '@ng-matero/extensions/grid';
 import { Subscription }     from 'rxjs';
@@ -8,6 +8,7 @@ import { AuthService }                                                          
 @Component({
     selector: 'app-base-grid',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: [],
 })
 export class BaseGridComponent implements OnInit, OnDestroy {

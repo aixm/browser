@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject }      from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectionStrategy }      from '@angular/core';
 import { MatFabButton }                      from '@angular/material/button';
 import { MatIcon }                           from '@angular/material/icon';
 import { MatTooltip }                                                                 from '@angular/material/tooltip';
@@ -17,6 +17,7 @@ import { VoiceInputFieldComponent } from '../../common/shared/voice-input-field/
   templateUrl: './vocal-input.component.html',
   styleUrl: './vocal-input.component.scss',
   providers: [SpeechService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class VocalInputComponent implements OnInit, OnDestroy {

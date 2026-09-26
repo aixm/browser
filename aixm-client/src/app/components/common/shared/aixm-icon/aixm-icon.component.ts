@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule }    from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { Feature } from '../../../../models/aixm/feature';
     selector: 'app-aixm-icon',
     imports: [MatCardModule, MatIconModule],
     templateUrl: './aixm-icon.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './aixm-icon.component.scss'
 })
 export class AixmIconComponent {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule }                             from '@angular/common';
 import { FormsModule }                              from '@angular/forms';
 import { MatBadgeModule }                           from '@angular/material/badge';
@@ -44,6 +44,7 @@ import { AixmIconComponent } from '../../common/shared/aixm-icon/aixm-icon.compo
   ],
   templateUrl: './browser.component.html',
   styleUrl: './browser.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class BrowserComponent implements OnInit {

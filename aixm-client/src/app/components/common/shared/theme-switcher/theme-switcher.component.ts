@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule }                           from '@angular/common';
 import { MatButtonModule }                        from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { ThemeService }                           from '../../../../services/the
     selector: 'app-theme-switcher',
     imports: [CommonModule, MatIconModule, MatMenuModule, MatButtonModule, MatTooltipModule, MatRadioModule],
     templateUrl: './theme-switcher.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './theme-switcher.component.scss'
 })
 export class ThemeSwitcherComponent {

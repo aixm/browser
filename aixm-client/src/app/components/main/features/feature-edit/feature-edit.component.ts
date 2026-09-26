@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
-import { Component, OnInit, inject }                                            from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy }                                            from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators }              from '@angular/forms';
 import { MatButton, MatIconButton }                                             from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
@@ -42,6 +42,7 @@ import { FeatureService }                                                       
 ],
   templateUrl: './feature-edit.component.html',
   styleUrl: './feature-edit.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class FeatureEditComponent implements OnInit {

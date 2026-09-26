@@ -40,7 +40,7 @@
             <span>..</span>
           </button>
           <span>/</span>
-          <button mat-button (click)="goFeatureLists(dataset)" [matTooltip]="getTooltip(dataset?.name,10)">
+          <button mat-button (click)="goFeatureLists(dataset)" [matTooltip]="getTooltip($safeNavigationMigration(dataset?.name),10)">
             <mat-icon>storage</mat-icon>
             <span>{{dataset ? (dataset.name | limitTo : 10 ) : getSelectedDatasets().length + ' Datasets'}}</span>
           </button>

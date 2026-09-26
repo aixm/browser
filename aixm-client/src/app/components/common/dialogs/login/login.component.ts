@@ -1,5 +1,5 @@
 
-import { Component, OnInit, inject }                                               from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy }                                               from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
 import { MatCardModule }    from '@angular/material/card';
@@ -23,6 +23,7 @@ import { BackendApiService } from '../../../../services/backend-api.service';
     ReactiveFormsModule
 ],
     templateUrl: './login.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {

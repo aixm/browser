@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject }     from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy }     from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule }                           from '@angular/material/tooltip';
 import { handleErrorMissingFeatureImage }             from '../../../../helpers/utils';
@@ -13,6 +13,7 @@ import { FeatureService }                             from '../../../../services
   ],
   templateUrl: './aixm-feature-toggle.component.html',
   styleUrl: './aixm-feature-toggle.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class AixmFeatureToggleComponent {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth.service';
     selector: 'app-home',
     imports: [MatCardModule, MatChipsModule, MatIconModule, RouterLink],
     templateUrl: './home.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './home.component.scss'
 })
 export class HomeComponent {  authService = inject(AuthService);

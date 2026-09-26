@@ -1,5 +1,5 @@
 
-import { Component, inject }                                from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy }                                from '@angular/core';
 import { MatButtonModule }                                  from '@angular/material/button';
 import { MatCardModule }                                    from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA }                    from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { MatTooltipModule }                                 from '@angular/mater
     MatTooltipModule
 ],
     templateUrl: './info.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./info.component.scss']
 })
 export class InfoComponent {  dialogRef = inject<MatDialogRef<InfoComponent>>(MatDialogRef);

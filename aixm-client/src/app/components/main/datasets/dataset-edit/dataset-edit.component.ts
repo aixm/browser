@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { HttpHeaders }            from '@angular/common/http';
-import { Component, OnInit, inject }                               from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy }                               from '@angular/core';
 
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule }                                         from '@angular/material/button';
@@ -33,6 +33,7 @@ import { BackendApiService }                                       from '../../.
     CdkDragHandle
 ],
     templateUrl: './dataset-edit.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './dataset-edit.component.scss'
 })
 export class DatasetEditComponent implements OnInit  {
