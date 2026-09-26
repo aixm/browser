@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.5-fpm
 
 RUN apt-get update && apt-get install -y \
        git \
@@ -21,9 +21,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install bcmath
 
-# Opcache
-RUN docker-php-ext-configure opcache --enable-opcache \
-    && docker-php-ext-install opcache
+# Opcache ships built-in and enabled as of PHP 8.5; only ini settings are needed (see php.ini)
 
 # Docker PostgreSQL
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \

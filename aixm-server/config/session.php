@@ -22,6 +22,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Session Serialization
+    |--------------------------------------------------------------------------
+    |
+    | Laravel 13's default skeleton switches this to "json" to help prevent
+    | PHP deserialization gadget chain attacks. Kept as "php" explicitly here
+    | to avoid invalidating active sessions on upgrade; the "web" guard/session
+    | middleware isn't used by this API (auth is stateless via Sanctum bearer
+    | tokens on the "api" guard), so this is effectively inert either way.
+    |
+    */
+
+    'serialization' => env('SESSION_SERIALIZATION', 'php'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Session Lifetime
     |--------------------------------------------------------------------------
     |
