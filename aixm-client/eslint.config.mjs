@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import angular from "angular-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,12 +18,15 @@ export default defineConfig([
     {
         files: ["**/*.ts"],
 
-        extends: compat.extends(
-            "eslint:recommended",
-            "plugin:@typescript-eslint/recommended",
-            "plugin:@angular-eslint/recommended",
-            "plugin:@angular-eslint/template/process-inline-templates",
-        ),
+        extends: [
+            ...compat.extends(
+                "eslint:recommended",
+                "plugin:@typescript-eslint/recommended",
+            ),
+            ...angular.configs.tsRecommended,
+        ],
+
+        processor: angular.processInlineTemplates,
 
         rules: {
             "@angular-eslint/directive-selector": ["error", {
@@ -39,15 +43,19 @@ export default defineConfig([
 
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/ban-ts-comment": "off",
+
+            // All components explicitly use ChangeDetectionStrategy.Eager (pre-v22 default,
+            // set by the Angular v22 ng update migration) pending a dedicated OnPush migration.
+            "@angular-eslint/prefer-on-push-component-change-detection": "off",
         },
     },
     {
         files: ["**/*.html"],
 
-        extends: compat.extends(
-            "plugin:@angular-eslint/template/recommended",
-            "plugin:@angular-eslint/template/accessibility",
-        ),
+        extends: [
+            ...angular.configs.templateRecommended,
+            ...angular.configs.templateAccessibility,
+        ],
 
         rules: {},
     },
