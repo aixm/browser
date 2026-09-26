@@ -1,4 +1,4 @@
-# AIXM Browser [![version](https://img.shields.io/badge/version-1.0.8-yellow.svg)](https://semver.org)
+# AIXM Browser [![version](https://img.shields.io/badge/version-1.0.9-yellow.svg)](https://semver.org)
 > Visualizing AIXM feature associations
 
 AIXM Browser is a tool which evolves from [AIXM browser](https://github.com/eurocontrol-swim/aixm-graph) that aims at visualizing the various features that can be found in an [AIXM](http://aixm.aero/) 
@@ -16,7 +16,7 @@ The project can get easily up and running in any machine regardless the running 
 > Before proceeding to the next steps please make sure that you have installed on your machine:
 >   - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
 >   - [Docker](https://docs.docker.com/get-docker/)
->   - [Node.js v22](https://nodejs.org/dist/latest-v22.x/)
+>   - [Node.js v24](https://nodejs.org/dist/latest-v24.x/)
 
 ### Get the repository
 
